@@ -1,0 +1,296 @@
+{
+  "metro.ApplicationSpec": {
+    "executedFeatures": [
+      "should load metro map and start CLI"
+    ],
+    "ignoredFeatures": [
+      "should print a message in case of error"
+    ],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "totalRuns": 1,
+      "totalFeatures": 2,
+      "passed": 1,
+      "successRate": 1.0,
+      "time": 46
+    },
+    "title": "HyperMetro Application",
+    "narrative": ""
+  },
+  "metro.algorithm.BreadthFirstSearchSpec": {
+    "executedFeatures": [
+      "should find the shortest path for a complex graph",
+      "should find the shortest path for a simple graph"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 2,
+      "totalFeatures": 2,
+      "passed": 2,
+      "successRate": 1.0,
+      "time": 36
+    },
+    "title": "Breadth First Search Algorithm",
+    "narrative": "Breadth First Search algorithm for finding the shortest paths between nodes in a graph"
+  },
+  "metro.algorithm.DijkstrasAlgorithmSpec": {
+    "executedFeatures": [
+      "should find the fastest route for a complex graph",
+      "should find the fastest route for a medium graph",
+      "should find the fastest route for a simple graph"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 3,
+      "totalFeatures": 3,
+      "passed": 3,
+      "successRate": 1.0,
+      "time": 47
+    },
+    "title": "Dijkstra's Algorithm",
+    "narrative": "Dijkstra's algorithm is an algorithm for finding the fastest paths between nodes in a graph"
+  },
+  "metro.algorithm.GraphSpec": {
+    "executedFeatures": [
+      "should be zero distance for an empty path",
+      "should be zero distance for any one node path",
+      "should calculate distance for a path",
+      "should return edges for a given node",
+      "should throw NPE for incorrect path"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 5,
+      "totalFeatures": 5,
+      "passed": 5,
+      "successRate": 1.0,
+      "time": 75
+    },
+    "title": "Graph",
+    "narrative": "A simple implementation of Graph"
+  },
+  "metro.command.AddHeadSpec": {
+    "executedFeatures": [
+      "should check number of parameters",
+      "should execute add-head command"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 2,
+      "totalFeatures": 2,
+      "passed": 2,
+      "successRate": 1.0,
+      "time": 9
+    },
+    "title": "Command: /add-head",
+    "narrative": "add-head adds a new station at the beginning of the metro line"
+  },
+  "metro.command.AppendSpec": {
+    "executedFeatures": [
+      "should check number of parameters",
+      "should execute append command"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 2,
+      "totalFeatures": 2,
+      "passed": 2,
+      "successRate": 1.0,
+      "time": 4
+    },
+    "title": "Command: /append",
+    "narrative": "Append adds a new station at the end of the line"
+  },
+  "metro.command.ConnectSpec": {
+    "executedFeatures": [
+      "should execute connect command",
+      "should throw an exception for incorrect number of parameters"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 2,
+      "totalFeatures": 2,
+      "passed": 2,
+      "successRate": 1.0,
+      "time": 23
+    },
+    "title": "Command: /connect",
+    "narrative": "Connect the stations using the command /connect \"[line 1]\" \"[station 1]\" \"[line 2]\" \"[station 2]\""
+  },
+  "metro.command.HyperMetroCommandSpec": {
+    "executedFeatures": [
+      "should not throw an exception for correct number of parameters",
+      "should throw an exception for incorrect number of parameters"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 10,
+      "totalFeatures": 2,
+      "passed": 10,
+      "successRate": 1.0,
+      "time": 19
+    },
+    "title": "Abstract HyperMetro Command",
+    "narrative": "Contains method to validate number of parameters"
+  },
+  "metro.command.RemoveSpec": {
+    "executedFeatures": [
+      "should execute remove command",
+      "should throw an exception for incorrect number of parameters"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 2,
+      "totalFeatures": 2,
+      "passed": 2,
+      "successRate": 1.0,
+      "time": 8
+    },
+    "title": "Command: /remove",
+    "narrative": "Remove a metro station"
+  },
+  "metro.controller.BrokerSpec": {
+    "executedFeatures": [
+      "should execute correct command",
+      "should print error messages",
+      "should reject invalid command"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 3,
+      "totalFeatures": 3,
+      "passed": 3,
+      "successRate": 1.0,
+      "time": 37
+    },
+    "title": "Commands Broker",
+    "narrative": "The broker parse the user input and execute appropriate commands"
+  },
+  "metro.controller.ParameterParserSpec": {
+    "executedFeatures": [
+      "should parse parameters"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 1,
+      "totalFeatures": 1,
+      "passed": 1,
+      "successRate": 1.0,
+      "time": 31
+    },
+    "title": "Command's parameters parser",
+    "narrative": "if the name of the line or station consists of several words, \nyou should write it in quotation marks (after, they should be \nexcluded from the name). If the name of a station consists \nof one word it should be parseable with or without quotes."
+  },
+  "metro.model.MetroLineSpec": {
+    "executedFeatures": [
+      "should append a station to the empty line",
+      "should get the name of the metro line"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 2,
+      "totalFeatures": 2,
+      "passed": 2,
+      "successRate": 1.0,
+      "time": 26
+    },
+    "title": "Model of Metro Line",
+    "narrative": ""
+  },
+  "metro.model.MetroStationSpec": {
+    "executedFeatures": [
+      "should create a metro station with id and time"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 1,
+      "totalFeatures": 1,
+      "passed": 1,
+      "successRate": 1.0,
+      "time": 5
+    },
+    "title": "Model of Metro Station",
+    "narrative": ""
+  },
+  "metro.repository.MetroRepositoryImpSpec": {
+    "executedFeatures": [
+      "should find metro line by name",
+      "should load a metro map"
+    ],
+    "ignoredFeatures": [
+      "should find a metro station by id"
+    ],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "totalRuns": 2,
+      "totalFeatures": 3,
+      "passed": 2,
+      "successRate": 1.0,
+      "time": 65
+    },
+    "title": "Repository of Metro Map",
+    "narrative": ""
+  },
+  "metro.service.MetroServiceImplSpec": {
+    "executedFeatures": [
+      "should add a new station at the beginning of metro line",
+      "should append a new station at the end of the line",
+      "should connect the source station to the target station",
+      "should remove the metro station from the metro map",
+      "should return metro line by it's name"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 5,
+      "totalFeatures": 5,
+      "passed": 5,
+      "successRate": 1.0,
+      "time": 11
+    },
+    "title": "Metro Service",
+    "narrative": ""
+  }
+}
