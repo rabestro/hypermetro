@@ -1,0 +1,235 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > MapLoader</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">metro.repository</a>
+</div>
+
+<h1>Coverage Summary for Class: MapLoader (metro.repository)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MapLoader</td>
+<td class="coverageStat">
+  <span class="percent">
+    8.3%
+  </span>
+  <span class="absValue">
+    (1/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2%
+  </span>
+  <span class="absValue">
+    (1/51)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">MapLoader$SpockMock$1419105171</td>
+  </tr>
+  <tr>
+    <td class="name">MapLoader$SpockMock$1419105171$auxiliary$aenUWQ2y</td>
+  </tr>
+  <tr>
+    <td class="name">MapLoader$SpockMock$1419105171$auxiliary$hvO6rg3h</td>
+  </tr>
+  <tr>
+    <td class="name">MapLoader$SpockMock$1419105171$auxiliary$sSUXiM3V</td>
+  </tr>
+  <tr>
+    <td class="name">MapLoader$SpockMock$1419105171$auxiliary$UpIB6AYV</td>
+  </tr>
+  <tr>
+    <td class="name">MapLoader$SpockMock$1419105171$auxiliary$uzokLeBD</td>
+  </tr>
+  <tr>
+    <td class="name">MapLoader$SpockMock$1419105171$auxiliary$Y7Tnxwz5</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    8.3%
+  </span>
+  <span class="absValue">
+    (1/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2%
+  </span>
+  <span class="absValue">
+    (1/51)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package metro.repository;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.google.gson.JsonElement;
+<i class="no-highlight">4</i>&nbsp;import com.google.gson.JsonObject;
+<i class="no-highlight">5</i>&nbsp;import com.google.gson.JsonParser;
+<i class="no-highlight">6</i>&nbsp;import metro.model.MetroLine;
+<i class="no-highlight">7</i>&nbsp;import metro.model.MetroMap;
+<i class="no-highlight">8</i>&nbsp;import metro.model.MetroStation;
+<i class="no-highlight">9</i>&nbsp;import metro.model.StationId;
+<i class="no-highlight">10</i>&nbsp;
+<i class="no-highlight">11</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">12</i>&nbsp;import java.nio.file.Files;
+<i class="no-highlight">13</i>&nbsp;import java.nio.file.Paths;
+<i class="no-highlight">14</i>&nbsp;import java.util.HashSet;
+<i class="no-highlight">15</i>&nbsp;import java.util.Map;
+<i class="no-highlight">16</i>&nbsp;import java.util.Set;
+<i class="no-highlight">17</i>&nbsp;
+<i class="no-highlight">18</i>&nbsp;import static java.lang.System.Logger.Level.*;
+<i class="no-highlight">19</i>&nbsp;import static java.util.function.Function.identity;
+<i class="no-highlight">20</i>&nbsp;import static java.util.stream.Collectors.toUnmodifiableMap;
+<i class="no-highlight">21</i>&nbsp;
+<b class="nc"><i class="no-highlight">22</i>&nbsp;public class MapLoader {</b>
+<b class="fc"><i class="no-highlight">23</i>&nbsp;    private static final System.Logger LOGGER = System.getLogger(&quot;HyperMetro&quot;);</b>
+<i class="no-highlight">24</i>&nbsp;
+<i class="no-highlight">25</i>&nbsp;    private static Set&lt;StationId&gt; parseStations(final String line, final JsonElement jsonElement) {
+<b class="nc"><i class="no-highlight">26</i>&nbsp;        LOGGER.log(TRACE, &quot;Parse stations {0}&quot;, jsonElement);</b>
+<b class="nc"><i class="no-highlight">27</i>&nbsp;        final var stations = new HashSet&lt;StationId&gt;();</b>
+<b class="nc"><i class="no-highlight">28</i>&nbsp;        if (!jsonElement.isJsonNull()) {</b>
+<b class="nc"><i class="no-highlight">29</i>&nbsp;            jsonElement.getAsJsonArray().forEach(element -&gt; {</b>
+<b class="nc"><i class="no-highlight">30</i>&nbsp;                final var name = element.getAsString();</b>
+<b class="nc"><i class="no-highlight">31</i>&nbsp;                final var id = new StationId(line, name);</b>
+<b class="nc"><i class="no-highlight">32</i>&nbsp;                stations.add(id);</b>
+<i class="no-highlight">33</i>&nbsp;            });
+<i class="no-highlight">34</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">35</i>&nbsp;        LOGGER.log(TRACE, &quot;Stations: {0}&quot;, stations);</b>
+<b class="nc"><i class="no-highlight">36</i>&nbsp;        return stations;</b>
+<i class="no-highlight">37</i>&nbsp;    }
+<i class="no-highlight">38</i>&nbsp;
+<i class="no-highlight">39</i>&nbsp;    private static int getTime(final JsonObject jsonStation) {
+<b class="nc"><i class="no-highlight">40</i>&nbsp;        final var hasTime = jsonStation.has(&quot;time&quot;) &amp;&amp; !jsonStation.get(&quot;time&quot;).isJsonNull();</b>
+<b class="nc"><i class="no-highlight">41</i>&nbsp;        return hasTime ? jsonStation.get(&quot;time&quot;).getAsInt() : 1;</b>
+<i class="no-highlight">42</i>&nbsp;    }
+<i class="no-highlight">43</i>&nbsp;
+<i class="no-highlight">44</i>&nbsp;    public MetroMap load(final String fileName) throws IOException {
+<b class="nc"><i class="no-highlight">45</i>&nbsp;        LOGGER.log(INFO, &quot;Loading Metro from file: &quot; + fileName);</b>
+<b class="nc"><i class="no-highlight">46</i>&nbsp;        final var reader = Files.newBufferedReader(Paths.get(fileName));</b>
+<b class="nc"><i class="no-highlight">47</i>&nbsp;        final var json = JsonParser.parseReader(reader);</b>
+<b class="nc"><i class="no-highlight">48</i>&nbsp;        final var lines = json.getAsJsonObject()</b>
+<b class="nc"><i class="no-highlight">49</i>&nbsp;                .entrySet().stream()</b>
+<b class="nc"><i class="no-highlight">50</i>&nbsp;                .map(this::parseMetroLine)</b>
+<b class="nc"><i class="no-highlight">51</i>&nbsp;                .collect(toUnmodifiableMap(MetroLine::name, identity()));</b>
+<b class="nc"><i class="no-highlight">52</i>&nbsp;        LOGGER.log(INFO, &quot;Loaded metro lines: &quot; + lines.keySet());</b>
+<b class="nc"><i class="no-highlight">53</i>&nbsp;        return new MetroMap(lines);</b>
+<i class="no-highlight">54</i>&nbsp;    }
+<i class="no-highlight">55</i>&nbsp;
+<i class="no-highlight">56</i>&nbsp;    private MetroLine parseMetroLine(final Map.Entry&lt;String, JsonElement&gt; jsonLine) {
+<b class="nc"><i class="no-highlight">57</i>&nbsp;        final var lineName = jsonLine.getKey();</b>
+<b class="nc"><i class="no-highlight">58</i>&nbsp;        final var metroLine = new MetroLine(lineName);</b>
+<b class="nc"><i class="no-highlight">59</i>&nbsp;        LOGGER.log(DEBUG, &quot;Import metro line: &quot; + lineName);</b>
+<i class="no-highlight">60</i>&nbsp;
+<b class="nc"><i class="no-highlight">61</i>&nbsp;        final var jsonStations = jsonLine.getValue().getAsJsonArray();</b>
+<b class="nc"><i class="no-highlight">62</i>&nbsp;        jsonStations.forEach(station -&gt; {</b>
+<b class="nc"><i class="no-highlight">63</i>&nbsp;            final var jsonStation = station.getAsJsonObject();</b>
+<b class="nc"><i class="no-highlight">64</i>&nbsp;            final var metroStation = parseMetroStation(lineName, jsonStation);</b>
+<b class="nc"><i class="no-highlight">65</i>&nbsp;            metroLine.add(metroStation);</b>
+<i class="no-highlight">66</i>&nbsp;        });
+<b class="nc"><i class="no-highlight">67</i>&nbsp;        return metroLine;</b>
+<i class="no-highlight">68</i>&nbsp;    }
+<i class="no-highlight">69</i>&nbsp;
+<i class="no-highlight">70</i>&nbsp;    private MetroStation parseMetroStation(final String line, final JsonObject jsonStation) {
+<b class="nc"><i class="no-highlight">71</i>&nbsp;        final var name = jsonStation.get(&quot;name&quot;).getAsString();</b>
+<b class="nc"><i class="no-highlight">72</i>&nbsp;        LOGGER.log(TRACE, &quot;Create station &#39;&quot; + name + &quot;&#39; (&quot; + line + &quot;)&quot;);</b>
+<b class="nc"><i class="no-highlight">73</i>&nbsp;        final var time = getTime(jsonStation);</b>
+<b class="nc"><i class="no-highlight">74</i>&nbsp;        final var id = new StationId(line, name);</b>
+<b class="nc"><i class="no-highlight">75</i>&nbsp;        final var prevStations = parseStations(line, jsonStation.get(&quot;prev&quot;));</b>
+<b class="nc"><i class="no-highlight">76</i>&nbsp;        final var nextStations = parseStations(line, jsonStation.get(&quot;next&quot;));</b>
+<b class="nc"><i class="no-highlight">77</i>&nbsp;        final var tranStations = parseTransfer(jsonStation.get(&quot;transfer&quot;));</b>
+<b class="nc"><i class="no-highlight">78</i>&nbsp;        final var station = new MetroStation(id, time, nextStations, prevStations, tranStations);</b>
+<b class="nc"><i class="no-highlight">79</i>&nbsp;        LOGGER.log(TRACE, station);</b>
+<b class="nc"><i class="no-highlight">80</i>&nbsp;        return station;</b>
+<i class="no-highlight">81</i>&nbsp;    }
+<i class="no-highlight">82</i>&nbsp;
+<i class="no-highlight">83</i>&nbsp;    private Set&lt;StationId&gt; parseTransfer(final JsonElement jsonElement) {
+<b class="nc"><i class="no-highlight">84</i>&nbsp;        final var transfer = new HashSet&lt;StationId&gt;();</b>
+<b class="nc"><i class="no-highlight">85</i>&nbsp;        if (!jsonElement.isJsonNull()) {</b>
+<b class="nc"><i class="no-highlight">86</i>&nbsp;            jsonElement.getAsJsonArray().forEach(element -&gt; {</b>
+<b class="nc"><i class="no-highlight">87</i>&nbsp;                final var jsonObject = element.getAsJsonObject();</b>
+<b class="nc"><i class="no-highlight">88</i>&nbsp;                final var id = parseStationId(jsonObject);</b>
+<b class="nc"><i class="no-highlight">89</i>&nbsp;                transfer.add(id);</b>
+<i class="no-highlight">90</i>&nbsp;            });
+<i class="no-highlight">91</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">92</i>&nbsp;        return transfer;</b>
+<i class="no-highlight">93</i>&nbsp;    }
+<i class="no-highlight">94</i>&nbsp;
+<i class="no-highlight">95</i>&nbsp;    private StationId parseStationId(final JsonObject jsonObject) {
+<b class="nc"><i class="no-highlight">96</i>&nbsp;        return new StationId(</b>
+<b class="nc"><i class="no-highlight">97</i>&nbsp;                jsonObject.get(&quot;line&quot;).getAsString(),</b>
+<b class="nc"><i class="no-highlight">98</i>&nbsp;                jsonObject.get(&quot;station&quot;).getAsString()</b>
+<i class="no-highlight">99</i>&nbsp;        );
+<i class="no-highlight">100</i>&nbsp;    }
+<i class="no-highlight">101</i>&nbsp;
+<i class="no-highlight">102</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-01-09 23:09</div>
+</div>
+</body>
+</html>

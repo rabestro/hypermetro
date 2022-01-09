@@ -1,0 +1,148 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > MetroService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">metro.service</a>
+</div>
+
+<h1>Coverage Summary for Class: MetroService (metro.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">MetroService$addHead$0</td>
+  </tr>
+  <tr>
+    <td class="name">MetroService$append$1</td>
+  </tr>
+  <tr>
+    <td class="name">MetroService$connect$2</td>
+  </tr>
+  <tr>
+    <td class="name">MetroService$getMetroLine</td>
+  </tr>
+  <tr>
+    <td class="name">MetroService$remove$3</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package metro.service;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import metro.algorithm.Graph;
+<i class="no-highlight">4</i>&nbsp;import metro.model.MetroLine;
+<i class="no-highlight">5</i>&nbsp;import metro.model.MetroStation;
+<i class="no-highlight">6</i>&nbsp;import metro.model.StationId;
+<i class="no-highlight">7</i>&nbsp;
+<i class="no-highlight">8</i>&nbsp;public interface MetroService {
+<i class="no-highlight">9</i>&nbsp;    /**
+<i class="no-highlight">10</i>&nbsp;     * Gets MetroLine by name
+<i class="no-highlight">11</i>&nbsp;     *
+<i class="no-highlight">12</i>&nbsp;     * @param name is the name of Metro Line
+<i class="no-highlight">13</i>&nbsp;     * @return object representing the Metro Line
+<i class="no-highlight">14</i>&nbsp;     */
+<i class="no-highlight">15</i>&nbsp;    MetroLine getMetroLine(String name);
+<i class="no-highlight">16</i>&nbsp;
+<i class="no-highlight">17</i>&nbsp;    /**
+<i class="no-highlight">18</i>&nbsp;     * Gets Metro MetroStation by MetroStation ID
+<i class="no-highlight">19</i>&nbsp;     *
+<i class="no-highlight">20</i>&nbsp;     * @param stationId is metro station id
+<i class="no-highlight">21</i>&nbsp;     * @return object representing Metro MetroStation
+<i class="no-highlight">22</i>&nbsp;     */
+<i class="no-highlight">23</i>&nbsp;    MetroStation getMetroStation(StationId stationId);
+<i class="no-highlight">24</i>&nbsp;
+<i class="no-highlight">25</i>&nbsp;    /**
+<i class="no-highlight">26</i>&nbsp;     * Adds a new station at the beginning of metro line.
+<i class="no-highlight">27</i>&nbsp;     *
+<i class="no-highlight">28</i>&nbsp;     * @param lineName    is the name of Metro Line
+<i class="no-highlight">29</i>&nbsp;     * @param stationName is the name of Metro MetroStation
+<i class="no-highlight">30</i>&nbsp;     */
+<i class="no-highlight">31</i>&nbsp;    void addHead(String lineName, String stationName);
+<i class="no-highlight">32</i>&nbsp;
+<i class="no-highlight">33</i>&nbsp;    /**
+<i class="no-highlight">34</i>&nbsp;     * Appends a new station at the end of the line.
+<i class="no-highlight">35</i>&nbsp;     *
+<i class="no-highlight">36</i>&nbsp;     * @param lineName    is the name of Metro Line
+<i class="no-highlight">37</i>&nbsp;     * @param stationName is the name of Metro MetroStation
+<i class="no-highlight">38</i>&nbsp;     */
+<i class="no-highlight">39</i>&nbsp;    void append(String lineName, String stationName);
+<i class="no-highlight">40</i>&nbsp;
+<i class="no-highlight">41</i>&nbsp;    /**
+<i class="no-highlight">42</i>&nbsp;     * Connects the source metro station to the target station
+<i class="no-highlight">43</i>&nbsp;     *
+<i class="no-highlight">44</i>&nbsp;     * @param source metro station id
+<i class="no-highlight">45</i>&nbsp;     * @param target metro station id
+<i class="no-highlight">46</i>&nbsp;     */
+<i class="no-highlight">47</i>&nbsp;    void connect(StationId source, StationId target);
+<i class="no-highlight">48</i>&nbsp;
+<i class="no-highlight">49</i>&nbsp;    /**
+<i class="no-highlight">50</i>&nbsp;     * Removes the metro station from metro map
+<i class="no-highlight">51</i>&nbsp;     *
+<i class="no-highlight">52</i>&nbsp;     * @param target metro station id
+<i class="no-highlight">53</i>&nbsp;     */
+<i class="no-highlight">54</i>&nbsp;    void remove(StationId target);
+<i class="no-highlight">55</i>&nbsp;
+<i class="no-highlight">56</i>&nbsp;    /**
+<i class="no-highlight">57</i>&nbsp;     * Creates an abstract Graph representing the metro schema
+<i class="no-highlight">58</i>&nbsp;     *
+<i class="no-highlight">59</i>&nbsp;     * @param transferTime time to transfer between metro lines
+<i class="no-highlight">60</i>&nbsp;     * @return the graph with nodes as metro station
+<i class="no-highlight">61</i>&nbsp;     */
+<i class="no-highlight">62</i>&nbsp;    Graph&lt;StationId&gt; getMetroGraph(int transferTime);
+<i class="no-highlight">63</i>&nbsp;
+<i class="no-highlight">64</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-01-09 23:09</div>
+</div>
+</body>
+</html>
