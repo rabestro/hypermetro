@@ -1,18 +1,16 @@
 package metro.algorithm
 
-import metro.model.StationId
 import spock.lang.Narrative
 import spock.lang.Specification
 import spock.lang.Title
 
-@Title("Graph")
-@Narrative("A simple implementation of Graph")
+@Title("Generic Graph")
+@Narrative("A simple implementation of Graph structure")
 class GraphSpec extends Specification {
 
     def "should return edges for a given node"() {
-
         given: 'a simple graph with three nodes'
-        def graph = new Graph([
+        def graph = Graph.of([
                 A: [B: 7, C: 2],
                 B: [A: 3, C: 5],
                 C: [A: 1, B: 3]
@@ -30,7 +28,7 @@ class GraphSpec extends Specification {
 
     def 'should calculate distance for a path'() {
         given: "a complex graph with eight nodes"
-        def graph = new Graph([
+        def graph = Graph.of([
                 A: [B: 5, H: 2],
                 B: [A: 5, C: 7],
                 C: [B: 7, D: 3, G: 4],
@@ -58,7 +56,7 @@ class GraphSpec extends Specification {
 
     def 'should be zero distance for an empty path'() {
         given: 'any graph'
-        def graph = new Graph(_ as Map)
+        def graph = Graph.of(_ as Map)
 
         expect: 'the distance is zero for an empty path'
         graph.getDistance([]) == 0
@@ -66,20 +64,20 @@ class GraphSpec extends Specification {
 
     def 'should be zero distance for any one node path'() {
         given: 'any graph'
-        def graph = new Graph(_ as Map)
+        def graph = Graph.of(_ as Map)
 
         expect: 'the zero distance for any one-node path'
         graph.getDistance(oneNodePath) == 0
 
         where: 'the node may be of any type and even non-existent'
         oneNodePath << [
-                ['A'], ['B'], [2], ['X' as char], [12.56], [new StationId('one', 'two')]
+                ['A'], ['B'], [2], ['X' as char], [12.56]
         ]
     }
 
     def 'should throw NPE for incorrect path'() {
         given: "a medium graph with five nodes"
-        def graph = new Graph([
+        def graph = Graph.of([
                 A: [B: 5],
                 B: [A: 5, C: 10],
                 C: [B: 20, D: 5],
