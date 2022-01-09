@@ -1,3 +1,6 @@
+/**
+ * HyperMetro application
+ */
 module hypermetro.main {
     exports metro;
     opens metro.config to spring.core, spring.beans, spring.context;

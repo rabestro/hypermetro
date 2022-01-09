@@ -1,4 +1,6 @@
 /**
- * The main application for HyperMetro project
+ * HyperMetro application
+ *
+ * @version 1.1
  */
 package metro;
