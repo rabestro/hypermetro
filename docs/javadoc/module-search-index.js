@@ -1,2 +1,1 @@
-moduleSearchIndex = [{"l": "hypermetro.main"}];
-updateSearchResults();
+moduleSearchIndex = [{"l":"hypermetro.main"}];updateSearchResults();

@@ -1,507 +1,503 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
-    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'></meta>
-    <style>body {
-        font-family: Helvetica, Arial, sans-serif;
-        font-weight: 300;
-    }
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'></meta>
+<style>body {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 300;
+}
 
-    h2 {
-        font-weight: 400;
-    }
+h2 {
+  font-weight: 400;
+}
 
-    h3 {
-        font-weight: 200;
-    }
+h3 {
+  font-weight: 200;
+}
 
-    .back-link {
-        font-size: small;
-    }
+.back-link {
+  font-size: small;
+}
 
-    table {
-        margin: 5px;
-    }
+table {
+  margin: 5px;
+}
 
-    div.date-test-ran {
-        font-size: small;
-        font-style: italic;
-    }
+div.date-test-ran {
+  font-size: small;
+  font-style: italic;
+}
 
-    table.features-table {
-        width: 800px;
-    }
+table.features-table {
+  width: 800px;
+}
 
-    table.summary-table {
-        width: 800px;
-        text-align: left;
-        font-weight: bold;
-        font-size: small;
-    }
+table.summary-table {
+  width: 800px;
+  text-align: left;
+  font-weight: bold;
+  font-size: small;
+}
 
-    table.summary-table th {
-        background: lightblue;
-        padding: 6px;
-    }
+table.summary-table th {
+  background: lightblue;
+  padding: 6px;
+}
 
-    table.summary-table td {
-        background: #E0E0E0;
-        padding: 6px;
-    }
+table.summary-table td {
+  background: #E0E0E0;
+  padding: 6px;
+}
 
-    pre.title {
-        font-family: inherit;
-        font-size: 24px;
-        line-height: 28px;
-        letter-spacing: -1px;
-        color: #333;
-    }
+pre.title {
+  font-family: inherit;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: -1px;
+  color: #333;
+}
 
-    pre.narrative {
-        font-family: inherit;
-        font-size: 18px;
-        font-style: italic;
-        line-height: 23px;
-        letter-spacing: -1px;
-        color: #333;
-    }
+pre.narrative {
+  font-family: inherit;
+  font-size: 18px;
+  font-style: italic;
+  line-height: 23px;
+  letter-spacing: -1px;
+  color: #333;
+}
 
-    .feature-description {
-        font-size: large;
-        background: lightblue;
-        padding: 12px;
-    }
+.feature-description {
+  font-size: large;
+  background: lightblue;
+  padding: 12px;
+}
 
-    .feature-toc-error {
-        color: #F89A4F;
-    }
+.feature-toc-error {
+  color: #F89A4F;
+}
 
-    .feature-toc-failure {
-        color: #FF8080;
-    }
+.feature-toc-failure {
+  color: #FF8080;
+}
 
-    .feature-toc-ignored {
-        color: lightgray;
-    }
+.feature-toc-ignored {
+  color: lightgray;
+}
 
-    .feature-toc-pass {
-        color: green;
-    }
+.feature-toc-pass {
+  color: green;
+}
 
-    .feature-description.error {
-        background: #F89A4F;
-    }
+.feature-description.error {
+  background: #F89A4F;
+}
 
-    .feature-description.failure {
-        background: #FF8080;
-    }
+.feature-description.failure {
+  background: #FF8080;
+}
 
-    .feature-description.ignored {
-        background: lightgray;
-    }
+.feature-description.ignored {
+  background: lightgray;
+}
 
-    .feature-description.ignored .reason {
-        color: black;
-        font-style: italic;
-        font-size: small;
-    }
+.feature-description.ignored .reason {
+  color: black;
+  font-style: italic;
+  font-size: small;
+}
 
-    div.extra-info {
-        font-size: small;
-    }
+div.extra-info {
+  font-size: small;
+}
 
-    div.spec-headers {
-        margin: 4px;
-        font-style: italic;
-    }
+div.spec-headers {
+  margin: 4px;
+  font-style: italic;
+}
 
-    div.spec-header {
-    }
+div.spec-header {
+}
 
-    div.issues {
-        margin-top: 6px;
-        padding: 10px 5px 5px 5px;
-        background-color: lemonchiffon;
-        color: black;
-        font-weight: 500;
-        font-size: small;
-        max-width: 50%;
-    }
+div.issues {
+  margin-top: 6px;
+  padding: 10px 5px 5px 5px;
+  background-color: lemonchiffon;
+  color: black;
+  font-weight: 500;
+  font-size: small;
+  max-width: 50%;
+}
 
-    div.pending-feature {
-        background-color: dodgerblue;
-        color: white;
-        margin-top: 6px;
-        padding: 5px;
-        text-align: center;
-        font-size: small;
-        max-width: 120px;
-    }
+div.pending-feature {
+  background-color: dodgerblue;
+  color: white;
+  margin-top: 6px;
+  padding: 5px;
+  text-align: center;
+  font-size: small;
+  max-width: 120px;
+}
 
-    div.problem-description {
-        padding: 10px;
-        background: pink;
-        border-radius: 10px;
-    }
+div.problem-description {
+  padding: 10px;
+  background: pink;
+  border-radius: 10px;
+}
 
-    div.problem-header {
-        font-weight: bold;
-        color: red;
-    }
+div.problem-header {
+  font-weight: bold;
+  color: red;
+}
 
-    div.problem-list {
+div.problem-list {
 
-    }
+}
 
-    table.ex-table th {
-        background: lightblue;
-        padding: 5px;
-    }
+table.ex-table th {
+  background: lightblue;
+  padding: 5px;
+}
 
-    table.ex-table td {
-        background: #E0E0E0;
-        padding: 2px 5px 2px 5px;
-    }
+table.ex-table td {
+  background: #E0E0E0;
+  padding: 2px 5px 2px 5px;
+}
 
-    table td {
-        min-width: 50px;
-    }
+table td {
+  min-width: 50px;
+}
 
-    col.block-kind-col {
-        width: 70px;
-    }
+col.block-kind-col {
+  width: 70px;
+}
 
-    span.spec-header {
-        font-weight: bold;
-    }
+span.spec-header {
+  font-weight: bold;
+}
 
-    div.spec-text {
-        /*color: green;*/
-    }
+div.spec-text {
+  /*color: green;*/
+}
 
-    div.spec-status {
-        font-style: italic;
-    }
+div.spec-status {
+  font-style: italic;
+}
 
-    .ignored {
-        color: gray;
-    }
+.ignored {
+  color: gray;
+}
 
-    td.ex-result {
-        text-align: center;
-        background: white !important;
-    }
+td.ex-result {
+  text-align: center;
+  background: white !important;
+}
 
-    .ex-pass {
-        color: darkgreen;
-    }
+.ex-pass {
+  color: darkgreen;
+}
 
-    .ex-fail {
-        color: red;
-        font-weight: bold;
-    }
+.ex-fail {
+  color: red;
+  font-weight: bold;
+}
 
-    div.block-kind {
-        margin: 2px;
-        font-style: italic;
-    }
+div.block-kind {
+  margin: 2px;
+  font-style: italic;
+}
 
-    div.block-text {
+div.block-text {
 
-    }
+}
 
-    pre.block-source {
-        background-color: whitesmoke;
-        padding: 10px;
-    }
+pre.block-source {
+  background-color: whitesmoke;
+  padding: 10px;
+}
 
-    pre.block-source.error {
-        background-color: pink;
-        color: red;
-        font-weight: bold;
-    }
+pre.block-source.error {
+  background-color: pink;
+  color: red;
+  font-weight: bold;
+}
 
-    pre.block-source.pre-error {
+pre.block-source.pre-error {
 
-    }
+}
 
-    pre.block-source.before-error {
-        margin-bottom: -14px;
-    }
+pre.block-source.before-error {
+  margin-bottom: -14px;
+}
 
-    pre.block-source.after-error {
-        color: gray;
-        margin-top: -14px;
-    }
+pre.block-source.after-error {
+  color: gray;
+  margin-top: -14px;
+}
 
-    pre.block-source.post-error {
-        color: gray;
-    }
+pre.block-source.post-error {
+  color: gray;
+}
 
-    div.footer {
-        text-align: center;
-        font-size: small;
-    }
-    </style>
+div.footer {
+  text-align: center;
+  font-size: small;
+}
+</style>
 </head>
 <body>
 <h2>Report for metro.model.MetroLineSpec</h2>
 <hr></hr>
 <div class='back-link'>
-    <a href='index.html'>&lt;&lt; Back</a>
+<a href='index.html'>&lt;&lt; Back</a>
 </div>
 <div class='summary-report'>
-    <h3>Summary:</h3>
-    <div class='date-test-ran'>Created on Sun Jan 09 22:16:29 EET 2022 by jegors</div>
-    <table class='summary-table'>
-        <thead>
-        <tr>
-            <th>Executed features</th>
-            <th>Passed</th>
-            <th>Failures</th>
-            <th>Errors</th>
-            <th>Skipped</th>
-            <th>Success rate</th>
-            <th>Time</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>2</td>
-            <td>2</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>100.0%</td>
-            <td>0.026 seconds</td>
-        </tr>
-        </tbody>
-    </table>
+<h3>Summary:</h3>
+<div class='date-test-ran'>Created on Sun Jan 09 23:08:37 EET 2022 by jegors</div>
+<table class='summary-table'>
+<thead>
+<tr>
+<th>Executed features</th>
+<th>Passed</th>
+<th>Failures</th>
+<th>Errors</th>
+<th>Skipped</th>
+<th>Success rate</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100.0%</td>
+<td>0.035 seconds</td>
+</tr>
+</tbody>
+</table>
 </div>
 <pre class='title'>Model of Metro Line</pre>
 <h3>Features:</h3>
 <table class='features-table'>
-    <colgroup>
-        <col class='block-kind-col'></col>
-        <col class='block-text-col'></col>
-    </colgroup>
-    <tbody>
-    <ul id='toc'>
-        <li>
-            <a class='feature-toc-pass' href='#-1371649833'>should append a station to the empty line</a>
-        </li>
-        <li>
-            <a class='feature-toc-pass' href='#1490955364'>should get the name of the metro line</a>
-        </li>
-    </ul>
-    <tr>
-        <td colspan='10'>
-            <div class='feature-description' id='-1371649833'>
-                <span>should append a station to the empty line</span>
-                <span style='float: right; font-size: 60%;'>
+<colgroup>
+<col class='block-kind-col'></col>
+<col class='block-text-col'></col>
+</colgroup>
+<tbody>
+<ul id='toc'>
+<li>
+<a href='#-1371649833' class='feature-toc-pass'>should append a station to the empty line</a>
+</li>
+<li>
+<a href='#1490955364' class='feature-toc-pass'>should get the name of the metro line</a>
+</li>
+</ul>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='-1371649833'>
+<span>should append a station to the empty line</span>
+<span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div class='block-kind'>Given:</div>
-        </td>
-        <td>
-            <div class='block-text'>the metro line created with no stations</div>
-        </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>
-            <pre class='block-source'>def line = new MetroLine(BAKERLOO)</pre>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div class='block-kind'>When:</div>
-        </td>
-        <td>
-            <div class='block-text'>we append a station to the empty line</div>
-        </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>
-            <pre class='block-source'>line.append(WATERLOO)</pre>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div class='block-kind'>And:</div>
-        </td>
-        <td>
-            <div class='block-text'>request the metro station by it's name</div>
-        </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>
-            <pre class='block-source'>def actual = line.getStation(WATERLOO)</pre>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div class='block-kind'>Then:</div>
-        </td>
-        <td>
-            <div class='block-text'>there is only one station on the line</div>
-        </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>
-            <pre class='block-source'>line.stations().size() == 1</pre>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div class='block-kind'>And:</div>
-        </td>
-        <td>
-            <div class='block-text'>we got the metro station</div>
-        </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>
-            <pre class='block-source'>actual.isPresent()</pre>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div class='block-kind'>And:</div>
-        </td>
-        <td>
-            <div class='block-text'>the actual station equals to the expected</div>
-        </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>
-            <pre class='block-source'>actual.get() == expected</pre>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div class='block-kind'>Where:</div>
-        </td>
-        <td>
-            <div class='block-text'>expected station has correct station id</div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div class='block-kind'>Examples:</div>
-        </td>
-        <td>
-            <div class='spec-examples'>
-                <table class='ex-table'>
-                    <thead>
-                    <tr>
-                        <th class='ex-header'>expected</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class='ex-pass'>
-                        <td class='ex-value'>MetroStation[id=StationId[line=Bakerloo, name=Waterloo], time=1, next=[],
-                            prev=[], transfer=[]]
-                        </td>
-                        <td class='ex-result'>OK</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </td>
-        <td>
-            <div class='spec-status'>1/1 passed</div>
-        </td>
-    </tr>
-    <tr>
-        <td colspan='10'>
-            <div class='feature-description' id='1490955364'>
-                <span>should get the name of the metro line</span>
-                <span style='float: right; font-size: 60%;'>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>the metro line created with no stations</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def line = new MetroLine(BAKERLOO)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we append a station to the empty line</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>line.append(WATERLOO)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>request the metro station by it's name</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def actual = line.getStation(WATERLOO)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>there is only one station on the line</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>line.stations().size() == 1</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>we got the metro station</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>actual.isPresent()</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the actual station equals to the expected</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>actual.get() == expected</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Where:</div>
+</td>
+<td>
+<div class='block-text'>expected station has correct station id</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>expected</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>MetroStation[id=StationId[line=Bakerloo, name=Waterloo], time=1, next=[], prev=[], transfer=[]]</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div class='spec-status'>1/1 passed</div>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='1490955364'>
+<span>should get the name of the metro line</span>
+<span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div class='block-kind'>Given:</div>
-        </td>
-        <td>
-            <div class='block-text'>the metro line created</div>
-        </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>
-            <pre class='block-source'>def line = new MetroLine(name)</pre>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div class='block-kind'>Expect:</div>
-        </td>
-        <td>
-            <div class='block-text'>we get the correct metro line name</div>
-        </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>
-            <pre class='block-source'>line.name() == name</pre>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div class='block-kind'>Examples:</div>
-        </td>
-        <td>
-            <div class='spec-examples'>
-                <table class='ex-table'>
-                    <thead>
-                    <tr>
-                        <th class='ex-header'>name</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class='ex-pass'>
-                        <td class='ex-value'>Bakerloo</td>
-                        <td class='ex-result'>OK</td>
-                    </tr>
-                    <tr class='ex-pass'>
-                        <td class='ex-value'>Circle</td>
-                        <td class='ex-result'>OK</td>
-                    </tr>
-                    <tr class='ex-pass'>
-                        <td class='ex-value'>Central</td>
-                        <td class='ex-result'>OK</td>
-                    </tr>
-                    <tr class='ex-pass'>
-                        <td class='ex-value'>Hammersmith &amp; City</td>
-                        <td class='ex-result'>OK</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </td>
-        <td>
-            <div class='spec-status'>4/4 passed</div>
-        </td>
-    </tr>
-    </tbody>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>the metro line created</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def line = new MetroLine(name)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Expect:</div>
+</td>
+<td>
+<div class='block-text'>we get the correct metro line name</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>line.name() == name</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>name</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>Bakerloo</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>Circle</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>Central</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>Hammersmith &amp; City</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div class='spec-status'>4/4 passed</div>
+</td>
+</tr>
+</tbody>
 </table>
 <hr></hr>
-<div class='footer'>Generated by <a href='https://github.com/renatoathaydes/spock-reports'>Athaydes Spock Reports</a>
-</div>
+<div class='footer'>Generated by <a href='https://github.com/renatoathaydes/spock-reports'>Athaydes Spock Reports</a></div>
 </body>
 </html>

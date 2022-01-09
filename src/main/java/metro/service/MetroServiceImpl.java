@@ -74,7 +74,7 @@ public class MetroServiceImpl implements MetroService {
             return edges;
         };
         final var schema = repository.stream().collect(toUnmodifiableMap(identity(), getEdges));
-        return new Graph<>(schema);
+        return Graph.of(schema);
     }
 
 }
