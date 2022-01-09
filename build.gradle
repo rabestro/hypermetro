@@ -1,19 +1,56 @@
 plugins {
     id 'groovy'
-    id 'java'
+    id 'application'
 }
 
 group 'lv.id.jc'
 version '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
+application {
+    mainModule = 'hypermetro.main'
+    mainClass = 'metro.Main'
+    applicationDefaultJvmArgs = [
+            '-Djava.util.logging.config.file=logging.properties'
+    ]
+}
+
+run {
+    standardInput = System.in
+}
+
+// ./gradlew run -q --console=plain
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all:3.0.5'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+//    implementation 'org.codehaus.groovy:groovy-all:3.0.9'
+
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation group: 'org.springframework', name: 'spring-context', version: '5.3.12'
+
+    // Spock Framework
+
+    testImplementation platform('org.codehaus.groovy:groovy-bom:3.0.9')
+    testImplementation platform('org.spockframework:spock-bom:2.0-groovy-3.0')
+
+    testImplementation 'org.spockframework:spock-core'
+    testImplementation 'io.github.joke:spock-mockable:1.4.4'
+
+    testRuntimeClasspath("com.athaydes:spock-reports:2.1.1-groovy-3.0") {
+        transitive = false // this avoids affecting your version of Groovy/Spock
+    }
+
+    testImplementation 'org.slf4j:slf4j-api:1.7.32'
+    testRuntimeClasspath 'org.slf4j:slf4j-simple:1.7.32'
 }
 
 test {
