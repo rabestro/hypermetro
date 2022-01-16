@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Thu Jan 13 13:11:18 EET 2022 by jegors</div>
+<div class='date-test-ran'>Created on Mon Jan 17 01:11:08 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -270,9 +270,9 @@ div.footer {
 <td>3</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
+    <td>1</td>
 <td>100.0%</td>
-<td>0.054 seconds</td>
+    <td>0.140 seconds</td>
 </tr>
 </tbody>
 </table>
@@ -304,6 +304,9 @@ div.footer {
 <li>
 <a href='#-1786751356' class='feature-toc-pass'>should print error messages</a>
 </li>
+    <li>
+        <a class='feature-toc-pass' href='#-741722183'>should reject an empty command</a>
+    </li>
 </ul>
 <tr>
 <td colspan='10'>
@@ -440,17 +443,60 @@ div.footer {
 <td class='ex-result'>OK</td>
 </tr>
 <tr class='ex-pass'>
-<td class='ex-value'>No such metro station</td>
-<td class='ex-value'>java.util.NoSuchElementException: No such metro station</td>
-<td class='ex-result'>OK</td>
+    <td class='ex-value'>No such metro station</td>
+    <td class='ex-value'>java.util.NoSuchElementException: No such metro station</td>
+    <td class='ex-result'>OK</td>
 </tr>
 </tbody>
 </table>
 </div>
 </td>
-<td>
-<div class='spec-status'>3/3 passed</div>
-</td>
+    <td>
+        <div class='spec-status'>3/3 passed</div>
+    </td>
+</tr>
+<tr>
+    <td colspan='10'>
+        <div class='feature-description ignored' id='-741722183'>
+            <span>should reject an empty command</span>
+            <span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+            <div class='pending-feature'>Pending Feature</div>
+        </div>
+    </td>
+</tr>
+<tr class='ignored'>
+    <td>
+        <div class='block-kind'>Given:</div>
+    </td>
+    <td>
+        <pre class='block-source'>def request = ''</pre>
+    </td>
+</tr>
+<tr class='ignored'>
+    <td>
+        <div class='block-kind'>When:</div>
+    </td>
+    <td>
+        <pre class='block-source'>def result = broker.apply(request)</pre>
+    </td>
+</tr>
+<tr class='ignored'>
+    <td>
+        <div class='block-kind'>Then:</div>
+    </td>
+    <td>
+        <pre class='block-source'>0 * commandOne.apply(_)</pre>
+    </td>
+</tr>
+<tr class='ignored'>
+    <td>
+        <div class='block-kind'>And:</div>
+    </td>
+    <td>
+        <pre class='block-source'>result =~ /(?i)invalid command/</pre>
+    </td>
 </tr>
 </tbody>
 </table>

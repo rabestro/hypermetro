@@ -42,21 +42,21 @@ public class MapLoader {
     }
 
     public MetroMap load(final String fileName) throws IOException {
-        LOGGER.log(INFO, "Loading Metro from file: " + fileName);
+        LOGGER.log(INFO, "Loading Metro from file: {0}", fileName);
         final var reader = Files.newBufferedReader(Paths.get(fileName));
         final var json = JsonParser.parseReader(reader);
         final var lines = json.getAsJsonObject()
                 .entrySet().stream()
                 .map(this::parseMetroLine)
                 .collect(toUnmodifiableMap(MetroLine::name, identity()));
-        LOGGER.log(INFO, "Loaded metro lines: " + lines.keySet());
+        LOGGER.log(INFO, "Loaded metro lines: {0}", lines.keySet());
         return new MetroMap(lines);
     }
 
     private MetroLine parseMetroLine(final Map.Entry<String, JsonElement> jsonLine) {
         final var lineName = jsonLine.getKey();
         final var metroLine = new MetroLine(lineName);
-        LOGGER.log(DEBUG, "Import metro line: " + lineName);
+        LOGGER.log(DEBUG, "Import metro line: {0}", lineName);
 
         final var jsonStations = jsonLine.getValue().getAsJsonArray();
         jsonStations.forEach(station -> {
@@ -69,7 +69,7 @@ public class MapLoader {
 
     private MetroStation parseMetroStation(final String line, final JsonObject jsonStation) {
         final var name = jsonStation.get("name").getAsString();
-        LOGGER.log(TRACE, "Create station '" + name + "' (" + line + ")");
+        LOGGER.log(TRACE, "Create station {0} ({1})", name, line);
         final var time = getTime(jsonStation);
         final var id = new StationId(line, name);
         final var prevStations = parseStations(line, jsonStation.get("prev"));

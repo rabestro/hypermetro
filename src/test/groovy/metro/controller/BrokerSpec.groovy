@@ -55,4 +55,19 @@ class BrokerSpec extends Specification {
         'No such metro line'           | new NoSuchElementException(message)
         'No such metro station'        | new NoSuchElementException(message)
     }
+
+    @PendingFeature
+    def 'should reject an empty command'() {
+        given:
+        def request = ''
+
+        when:
+        def result = broker.apply(request)
+
+        then:
+        0 * commandOne.apply(_)
+
+        and:
+        result =~ /(?i)invalid command/
+    }
 }
