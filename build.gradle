@@ -1,6 +1,8 @@
 plugins {
     id 'groovy'
     id 'application'
+    id 'jacoco'
+    id "org.sonarqube" version "3.3"
 }
 
 group 'lv.id.jc'
@@ -53,4 +55,24 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
+
+jacocoTestReport {
+    dependsOn test
+
+    reports {
+        xml.required = true
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "rabestro_hypermetro"
+        property "sonar.organization", "rabestro"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
+
