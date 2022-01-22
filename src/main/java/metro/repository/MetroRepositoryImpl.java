@@ -4,11 +4,13 @@ import metro.model.MetroLine;
 import metro.model.MetroMap;
 import metro.model.MetroStation;
 import metro.model.StationId;
+import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+@Repository
 public class MetroRepositoryImpl implements MetroRepository {
     private final MapLoader mapLoader;
 
