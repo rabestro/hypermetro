@@ -244,14 +244,14 @@ div.footer {
 </style>
 </head>
 <body>
-<h2>Report for metro.command.ConnectSpec</h2>
+<h2>Report for metro.repository.MapLoaderSpec</h2>
 <hr></hr>
 <div class='back-link'>
 <a href='index.html'>&lt;&lt; Back</a>
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Mon Jan 17 01:11:07 EET 2022 by jegors</div>
+<div class='date-test-ran'>Created on Sat Jan 22 16:15:38 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -266,26 +266,16 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-<td>2</td>
-<td>2</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
+<td>0</td>
+<td>1</td>
 <td>100.0%</td>
-    <td>0.050 seconds</td>
+<td>0.004 seconds</td>
 </tr>
 </tbody>
 </table>
-</div>
-<pre class='title'>Command: /connect</pre>
-<pre class='narrative'>Connect the stations using the command /connect "[line 1]" "[station 1]" "[line 2]" "[station 2]"</pre>
-<div class='issues'>
-<div>Issues:</div>
-<ul>
-<li>
-<a href='https://hyperskill.org/projects/120/stages/650/implement'>implement</a>
-</li>
-</ul>
 </div>
 <h3>Features:</h3>
 <table class='features-table'>
@@ -296,115 +286,36 @@ div.footer {
 <tbody>
 <ul id='toc'>
 <li>
-<a href='#-1477288963' class='feature-toc-pass'>should execute connect command</a>
-</li>
-<li>
-<a href='#-319673941' class='feature-toc-pass'>should throw an exception for incorrect number of parameters</a>
+<a href='#1868329909' class='feature-toc-ignored'>should parse StationId</a>
 </li>
 </ul>
 <tr>
 <td colspan='10'>
-<div class='feature-description' id='-1477288963'>
-<span>should execute connect command</span>
+<div class='feature-description ignored' id='1868329909'>
+<span>should parse StationId</span>
 <span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
+<div></div>
+<span class='reason'>can't mock final classes</span>
 </div>
 </td>
 </tr>
-<tr>
-<td>
-<div class='block-kind'>Given:</div>
-</td>
-<td>
-<pre class='block-source'>def parameters = [SOURCE_LINE, SOURCE_STATION, TARGET_LINE, TARGET_STATION]</pre>
-</td>
-</tr>
-<tr>
+<tr class='ignored'>
 <td>
 <div class='block-kind'>When:</div>
 </td>
 <td>
-<pre class='block-source'>def result = command.apply(parameters)</pre>
+<pre class='block-source'>metroLoader.parseStationId(jsonObject)</pre>
 </td>
 </tr>
-<tr>
+<tr class='ignored'>
 <td>
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<pre class='block-source'>1 * service.connect(SOURCE, TARGET)</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<pre class='block-source'>result.contains 'successfully'</pre>
-</td>
-</tr>
-<tr>
-<td colspan='10'>
-<div class='feature-description' id='-319673941'>
-<span>should throw an exception for incorrect number of parameters</span>
-<span style='float: right; font-size: 60%;'>
-<a href='#toc'>Return</a>
-</span>
-</div>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>When:</div>
-</td>
-<td>
-<pre class='block-source'>command.apply(incorrectParameters)</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Then:</div>
-</td>
-<td>
-<pre class='block-source'>thrown IllegalArgumentException</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Examples:</div>
-</td>
-<td>
-<div class='spec-examples'>
-<table class='ex-table'>
-<thead>
-<tr>
-<th class='ex-header'>incorrectParameters</th>
-</tr>
-</thead>
-<tbody>
-<tr class='ex-pass'>
-<td class='ex-value'>[]</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>[Bakerloo]</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>[A, B, C]</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>[A, B, C, D, E]</td>
-<td class='ex-result'>OK</td>
-</tr>
-</tbody>
-</table>
-</div>
-</td>
-<td>
-<div class='spec-status'>4/4 passed</div>
+<pre class='block-source'>2 * jsonObject.get(_) &gt;&gt; jsonElement
+2 * jsonElement.getAsString()</pre>
 </td>
 </tr>
 </tbody>
