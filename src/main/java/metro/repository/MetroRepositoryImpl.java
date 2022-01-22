@@ -16,6 +16,8 @@ public class MetroRepositoryImpl implements MetroRepository {
 
     private MetroMap metroMap;
 
+    private String name;
+
     public MetroRepositoryImpl(MapLoader mapLoader) {
         this.mapLoader = mapLoader;
     }
@@ -38,6 +40,12 @@ public class MetroRepositoryImpl implements MetroRepository {
     @Override
     public void load(final String fileName) throws IOException {
         metroMap = mapLoader.load(fileName);
+        name = fileName.replaceFirst("(^[^.]+).*", "$1");
+    }
+
+    @Override
+    public String metroName() {
+        return name;
     }
 
 }

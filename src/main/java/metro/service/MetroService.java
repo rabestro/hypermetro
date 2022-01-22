@@ -56,9 +56,8 @@ public interface MetroService {
     /**
      * Creates an abstract Graph representing the metro schema
      *
-     * @param transferTime time to transfer between metro lines
      * @return the graph with nodes as metro station
      */
-    Graph<StationId> getMetroGraph(int transferTime);
+    Graph<StationId> getMetroGraph();
 
 }

@@ -1,5 +1,7 @@
 package metro.algorithm;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,6 +21,7 @@ import static java.util.stream.Stream.iterate;
  * @author Jegors Čemisovs
  * @since 1.0
  */
+@Component("shortestAlgorithm")
 public class BreadthFirstSearch<T> implements SearchAlgorithm<T> {
 
     @Override
