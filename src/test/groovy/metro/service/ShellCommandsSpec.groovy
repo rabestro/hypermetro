@@ -1,5 +1,6 @@
 package metro.service
 
+import metro.shell.Commands
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -7,7 +8,7 @@ class ShellCommandsSpec extends Specification {
     def metroService = Mock MetroService
 
     @Subject
-    def commands = new ShellCommands(metroService)
+    def commands = new Commands(metroService)
 
     def "Output"() {
     }
