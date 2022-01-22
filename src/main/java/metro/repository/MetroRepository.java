@@ -17,4 +17,5 @@ public interface MetroRepository {
 
     void load(String fileName) throws IOException;
 
+    String metroName();
 }
