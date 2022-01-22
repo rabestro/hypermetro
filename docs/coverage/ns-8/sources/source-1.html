@@ -58,10 +58,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    61.5%
+    66.7%
   </span>
   <span class="absValue">
-    (16/26)
+    (20/30)
   </span>
 </td>
 </tr>
@@ -116,26 +116,26 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">41</i>&nbsp;    public void addHead(final String lineName, final String stationName) {
 <b class="fc"><i class="no-highlight">42</i>&nbsp;        LOG.log(DEBUG, &quot;add-head station [{1}] to line [{0}]&quot;, lineName, stationName);</b>
 <b class="fc"><i class="no-highlight">43</i>&nbsp;        getMetroLine(lineName).addHead(stationName);</b>
-<i class="no-highlight">44</i>&nbsp;    }
+<b class="fc"><i class="no-highlight">44</i>&nbsp;    }</b>
 <i class="no-highlight">45</i>&nbsp;
 <i class="no-highlight">46</i>&nbsp;    @Override
 <i class="no-highlight">47</i>&nbsp;    public void append(final String lineName, final String stationName) {
 <b class="fc"><i class="no-highlight">48</i>&nbsp;        LOG.log(DEBUG, &quot;append station [{1}] to line [{0}]&quot;, lineName, stationName);</b>
 <b class="fc"><i class="no-highlight">49</i>&nbsp;        getMetroLine(lineName).append(stationName);</b>
-<i class="no-highlight">50</i>&nbsp;    }
+<b class="fc"><i class="no-highlight">50</i>&nbsp;    }</b>
 <i class="no-highlight">51</i>&nbsp;
 <i class="no-highlight">52</i>&nbsp;    @Override
 <i class="no-highlight">53</i>&nbsp;    public void remove(final StationId target) {
 <b class="fc"><i class="no-highlight">54</i>&nbsp;        LOG.log(DEBUG, &quot;remove station [{0}]&quot;, target);</b>
 <b class="fc"><i class="no-highlight">55</i>&nbsp;        getMetroLine(target.line()).remove(getMetroStation(target));</b>
-<i class="no-highlight">56</i>&nbsp;    }
+<b class="fc"><i class="no-highlight">56</i>&nbsp;    }</b>
 <i class="no-highlight">57</i>&nbsp;
 <i class="no-highlight">58</i>&nbsp;    @Override
 <i class="no-highlight">59</i>&nbsp;    public void connect(final StationId source, final StationId target) {
 <b class="fc"><i class="no-highlight">60</i>&nbsp;        LOG.log(DEBUG, &quot;connect station [{0}] to [{1}]&quot;, source, target);</b>
 <b class="fc"><i class="no-highlight">61</i>&nbsp;        getMetroStation(source).transfer().add(target);</b>
 <b class="fc"><i class="no-highlight">62</i>&nbsp;        getMetroStation(target).transfer().add(source);</b>
-<i class="no-highlight">63</i>&nbsp;    }
+<b class="fc"><i class="no-highlight">63</i>&nbsp;    }</b>
 <i class="no-highlight">64</i>&nbsp;
 <i class="no-highlight">65</i>&nbsp;    @Override
 <i class="no-highlight">66</i>&nbsp;    public Graph&lt;StationId&gt; getMetroGraph(final int transferTime) {
@@ -179,7 +179,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-01-09 23:09</div>
+    <div style="float:right;">generated on 2022-01-17 01:30</div>
 </div>
 </body>
 </html>
