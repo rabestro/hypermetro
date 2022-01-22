@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "application.version",
+      "type": "java.lang.String",
+      "description": "Description for application.version."
+    },
+    {
+      "name": "application.title",
+      "type": "java.lang.String",
+      "description": "Description for application.title."
+    },
+    {
+      "name": "spring.shell.interactive.enabled",
+      "type": "java.lang.String",
+      "description": "Description for spring.shell.interactive.enabled."
+    }
+  ]
+}
