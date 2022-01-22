@@ -6,6 +6,7 @@ import metro.model.MetroLine;
 import metro.model.MetroStation;
 import metro.model.StationId;
 import metro.repository.MetroRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,7 @@ import static java.lang.System.Logger.Level.DEBUG;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
+@Service
 @AllArgsConstructor
 public class MetroServiceImpl implements MetroService {
     private static final System.Logger LOG = System.getLogger("MetroService");
