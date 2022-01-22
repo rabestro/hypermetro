@@ -15,17 +15,22 @@ java {
 }
 
 application {
-    mainModule = 'hypermetro.main'
-    mainClass = 'metro.Main'
+//    mainModule = 'hypermetro.main'
+    mainClass = 'metro.HyperMetro'
     applicationDefaultJvmArgs = ['-Djava.util.logging.config.file=logging.properties']
 }
 
 run {
-    standardInput = System.in
+//    standardInput = System.in
     args("london.json")
 }
 
 // ./gradlew run -q --console=plain
+
+bootRun {
+    standardInput = System.in
+    args("london.json")
+}
 
 repositories {
     mavenCentral()
@@ -37,6 +42,7 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'org.springframework.shell:spring-shell-starter:2.0.1.RELEASE'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
     // Spock Framework
 
