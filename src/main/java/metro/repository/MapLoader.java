@@ -7,6 +7,7 @@ import metro.model.MetroLine;
 import metro.model.MetroMap;
 import metro.model.MetroStation;
 import metro.model.StationId;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,6 +20,7 @@ import static java.lang.System.Logger.Level.*;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
+@Service
 public class MapLoader {
     private static final System.Logger LOGGER = System.getLogger("HyperMetro");
 
