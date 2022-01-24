@@ -16,7 +16,6 @@ the user through the command line interface can execute the following commands:
 - output line
 - route line1 station1 line2 station2
 - fastest-route line1 station1 line2 station2
-- shortest-route line1 station1 line2 station2
 
 ## Used Technologies
 
