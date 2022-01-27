@@ -5,6 +5,10 @@ application:
 hypermetro:
   file: london.json
   time: 5
-  transfer:
-    time: 5
 
+shell:
+  out:
+    info: CYAN
+    success: GREEN
+    warning: YELLOW
+    error: RED

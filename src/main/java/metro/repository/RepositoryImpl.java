@@ -56,20 +56,20 @@ public class RepositoryImpl implements RepositoryMetro, InitializingBean {
     }
 
     @Override
-    public void append(String line, String station) {
+    public void append(String line, String station, int time) {
         var metroLine = getLine(line);
         var prev = new HashSet<String>();
         if (metroLine.isEmpty()) {
-            metroLine.add(new Station(station, 0, new HashSet<>(), prev, new HashSet<>()));
+            metroLine.add(new Station(station, time, new HashSet<>(), prev, new HashSet<>()));
         } else {
             prev.add(metroLine.getLast().name());
-            metroLine.addFirst(new Station(station, 0, metroLine.getLast().next(), prev, new HashSet<>()));
+            metroLine.addFirst(new Station(station, time, metroLine.getLast().next(), prev, new HashSet<>()));
         }
     }
 
     @Override
     public void remove(String line, String station) {
-
+        throw new UnsupportedOperationException("This operation has not yet been implemented");
     }
 
     @Override
@@ -97,16 +97,19 @@ public class RepositoryImpl implements RepositoryMetro, InitializingBean {
             for (var station : entry.getValue()) {
                 var vertex = new StationId(line, station.name());
                 var edges = new HashMap<StationId, Number>();
-
                 station.transfer().forEach(target -> edges.put(target, transferTime));
                 station.next().forEach(target -> edges.put(new StationId(line, target), station.time()));
                 station.prev().forEach(target ->
                         edges.put(new StationId(line, target), getStation(line, target).time()));
-
                 schema.put(vertex, edges);
             }
         }
         return Graph.of(schema);
+    }
+
+    @Override
+    public String getMetroName() {
+        return fileName.replaceFirst(".*(\\w+)\\.jso?n", "$1");
     }
 
 }

@@ -39,7 +39,7 @@ public interface RepositoryMetro {
      * @param station - the name of new metro station
      * @throws java.util.NoSuchElementException if there is no such metro line
      */
-    void append(String line, String station);
+    void append(String line, String station, int time);
 
     /**
      * Removes a station from the metro map.
@@ -66,4 +66,6 @@ public interface RepositoryMetro {
      * @return a direct weighted graph with StationId as vertexes
      */
     Graph<StationId> getGraph();
+
+    String getMetroName();
 }

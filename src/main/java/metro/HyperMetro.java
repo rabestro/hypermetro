@@ -9,7 +9,7 @@ import static java.lang.System.Logger.Level.INFO;
 
 @SpringBootApplication
 public class HyperMetro {
-    private static final Pattern JSON_FILE_NAME = Pattern.compile("\\w+\\.jso?n", Pattern.CASE_INSENSITIVE);
+    private static final Pattern JSON_FILE_NAME = Pattern.compile(".*\\w+\\.jso?n", Pattern.CASE_INSENSITIVE);
     private static final System.Logger LOGGER = System.getLogger(HyperMetro.class.getName());
 
     public static void main(String[] args) {
