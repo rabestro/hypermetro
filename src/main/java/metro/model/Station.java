@@ -1,4 +1,4 @@
-package metro.repository;
+package metro.model;
 
 import java.util.Set;
 

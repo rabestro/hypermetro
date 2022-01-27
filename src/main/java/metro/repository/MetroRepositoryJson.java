@@ -3,15 +3,22 @@ package metro.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import metro.algorithm.Graph;
+import metro.model.Station;
+import metro.model.StationId;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
-import java.util.*;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Repository
-public class RepositoryImpl implements RepositoryMetro, InitializingBean {
+public class MetroRepositoryJson implements MetroRepository, InitializingBean {
 
     private static final TypeReference<Map<String, Deque<Station>>> SCHEMA = new TypeReference<>() {
     };
@@ -32,11 +39,6 @@ public class RepositoryImpl implements RepositoryMetro, InitializingBean {
     @Override
     public Deque<Station> findLine(String line) {
         return metroMap.get(line);
-    }
-
-    @Override
-    public Optional<Station> findStation(StationId stationId) {
-        return Optional.empty();
     }
 
     @Override
@@ -109,7 +111,7 @@ public class RepositoryImpl implements RepositoryMetro, InitializingBean {
 
     @Override
     public String getMetroName() {
-        return fileName.replaceFirst(".*(\\w+)\\.jso?n", "$1");
+        return fileName.replaceFirst("(.*\\.)?(\\w+)\\.jso?n", "$2");
     }
 
 }

@@ -215,5 +215,499 @@
     },
     "title": "",
     "narrative": ""
+  },
+  "metro.algorithm.BreadthFirstSearchSpec": {
+    "executedFeatures": [
+      "should find a route for complex graph",
+      "should find a route for simple graph",
+      "should return an empty path if can't find a route",
+      "should thrown NPE path for an empty graph"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 4,
+      "totalFeatures": 4,
+      "passed": 4,
+      "successRate": 1.0,
+      "time": 123
+    },
+    "title": "Breadth First Search Algorithm",
+    "narrative": "Breadth First Search algorithm for finding the shortest paths between nodes in a graph"
+  },
+  "metro.algorithm.DijkstrasAlgorithmSpec": {
+    "executedFeatures": [
+      "should find a route for a complex graph",
+      "should find a route for a medium graph",
+      "should find a route for a simple graph",
+      "should return an empty path if can't find a route",
+      "should thrown NPE for an empty graph"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 5,
+      "totalFeatures": 5,
+      "passed": 5,
+      "successRate": 1.0,
+      "time": 68
+    },
+    "title": "Dijkstra's Algorithm",
+    "narrative": "Dijkstra's algorithm is an algorithm for finding the fastest paths between nodes in a graph"
+  },
+  "metro.algorithm.GraphSpec": {
+    "executedFeatures": [
+      "should be zero distance for an empty path",
+      "should be zero distance for any one node path",
+      "should calculate distance for a path",
+      "should return edges for a given node",
+      "should throw NPE for incorrect path"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 5,
+      "totalFeatures": 5,
+      "passed": 5,
+      "successRate": 1.0,
+      "time": 144
+    },
+    "title": "Generic Graph",
+    "narrative": "A simple implementation of Graph structure"
+  },
+  "metro.repository.MetroRepositoryJsonSpec": {
+    "executedFeatures": [
+      "should find metro line by name"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 0,
+      "totalFeatures": 1,
+      "passed": 0,
+      "successRate": 1.0,
+      "time": 35
+    },
+    "title": "",
+    "narrative": ""
+  },
+  "metro.shell.MetroCommandsSpec": {
+    "executedFeatures": [
+      "should execute add-head command"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0,
+      "totalRuns": 1,
+      "totalFeatures": 1,
+      "passed": 0,
+      "successRate": 0.0,
+      "time": 58
+    },
+    "title": "",
+    "narrative": ""
+  },
+  "metro.shell.PromptSpec": {
+    "executedFeatures": [
+      "should generate a prompt with metro name"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 1,
+      "totalFeatures": 1,
+      "passed": 1,
+      "successRate": 1.0,
+      "time": 47
+    },
+    "title": "",
+    "narrative": ""
+  },
+  "metro.repository.MetroRepositoryJsonSpec": {
+    "executedFeatures": [
+      "should find metro line by name"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0,
+      "totalRuns": 1,
+      "totalFeatures": 1,
+      "passed": 0,
+      "successRate": 0.0,
+      "time": 346
+    },
+    "title": "",
+    "narrative": ""
+  },
+  "metro.shell.MetroCommandsSpec": {
+    "executedFeatures": [
+      "should execute add-head command"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0,
+      "totalRuns": 1,
+      "totalFeatures": 1,
+      "passed": 0,
+      "successRate": 0.0,
+      "time": 26
+    },
+    "title": "",
+    "narrative": ""
+  },
+  "metro.algorithm.BreadthFirstSearchSpec": {
+    "executedFeatures": [
+      "should find a route for complex graph",
+      "should find a route for simple graph",
+      "should return an empty path if can't find a route",
+      "should thrown NPE path for an empty graph"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 4,
+      "totalFeatures": 4,
+      "passed": 4,
+      "successRate": 1.0,
+      "time": 61
+    },
+    "title": "Breadth First Search Algorithm",
+    "narrative": "Breadth First Search algorithm for finding the shortest paths between nodes in a graph"
+  },
+  "metro.algorithm.DijkstrasAlgorithmSpec": {
+    "executedFeatures": [
+      "should find a route for a complex graph",
+      "should find a route for a medium graph",
+      "should find a route for a simple graph",
+      "should return an empty path if can't find a route",
+      "should thrown NPE for an empty graph"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 5,
+      "totalFeatures": 5,
+      "passed": 5,
+      "successRate": 1.0,
+      "time": 64
+    },
+    "title": "Dijkstra's Algorithm",
+    "narrative": "Dijkstra's algorithm is an algorithm for finding the fastest paths between nodes in a graph"
+  },
+  "metro.algorithm.GraphSpec": {
+    "executedFeatures": [
+      "should be zero distance for an empty path",
+      "should be zero distance for any one node path",
+      "should calculate distance for a path",
+      "should return edges for a given node",
+      "should throw NPE for incorrect path"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 5,
+      "totalFeatures": 5,
+      "passed": 5,
+      "successRate": 1.0,
+      "time": 145
+    },
+    "title": "Generic Graph",
+    "narrative": "A simple implementation of Graph structure"
+  },
+  "metro.shell.PromptSpec": {
+    "executedFeatures": [
+      "should generate a prompt with metro name"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 1,
+      "totalFeatures": 1,
+      "passed": 1,
+      "successRate": 1.0,
+      "time": 30
+    },
+    "title": "",
+    "narrative": ""
+  },
+  "metro.repository.MetroRepositoryJsonSpec": {
+    "executedFeatures": [
+      "should find metro line by name"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 1,
+      "totalFeatures": 1,
+      "passed": 1,
+      "successRate": 1.0,
+      "time": 368
+    },
+    "title": "",
+    "narrative": ""
+  },
+  "metro.algorithm.BreadthFirstSearchSpec": {
+    "executedFeatures": [
+      "should find a route for complex graph",
+      "should find a route for simple graph",
+      "should return an empty path if can't find a route",
+      "should thrown NPE path for an empty graph"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 4,
+      "totalFeatures": 4,
+      "passed": 4,
+      "successRate": 1.0,
+      "time": 103
+    },
+    "title": "Breadth First Search Algorithm",
+    "narrative": "Breadth First Search algorithm for finding the shortest paths between nodes in a graph"
+  },
+  "metro.algorithm.DijkstrasAlgorithmSpec": {
+    "executedFeatures": [
+      "should find a route for a complex graph",
+      "should find a route for a medium graph",
+      "should find a route for a simple graph",
+      "should return an empty path if can't find a route",
+      "should thrown NPE for an empty graph"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 5,
+      "totalFeatures": 5,
+      "passed": 5,
+      "successRate": 1.0,
+      "time": 51
+    },
+    "title": "Dijkstra's Algorithm",
+    "narrative": "Dijkstra's algorithm is an algorithm for finding the fastest paths between nodes in a graph"
+  },
+  "metro.algorithm.GraphSpec": {
+    "executedFeatures": [
+      "should be zero distance for an empty path",
+      "should be zero distance for any one node path",
+      "should calculate distance for a path",
+      "should return edges for a given node",
+      "should throw NPE for incorrect path"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 5,
+      "totalFeatures": 5,
+      "passed": 5,
+      "successRate": 1.0,
+      "time": 154
+    },
+    "title": "Generic Graph",
+    "narrative": "A simple implementation of Graph structure"
+  },
+  "metro.repository.MetroRepositoryJsonSpec": {
+    "executedFeatures": [
+      "should find metro line by name"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 1,
+      "totalFeatures": 1,
+      "passed": 1,
+      "successRate": 1.0,
+      "time": 332
+    },
+    "title": "",
+    "narrative": ""
+  },
+  "metro.shell.MetroCommandsSpec": {
+    "executedFeatures": [
+      "should execute add-head command"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0,
+      "totalRuns": 1,
+      "totalFeatures": 1,
+      "passed": 0,
+      "successRate": 0.0,
+      "time": 46
+    },
+    "title": "",
+    "narrative": ""
+  },
+  "metro.shell.PromptSpec": {
+    "executedFeatures": [
+      "should generate a prompt with metro name"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 1,
+      "totalFeatures": 1,
+      "passed": 1,
+      "successRate": 1.0,
+      "time": 35
+    },
+    "title": "",
+    "narrative": ""
+  },
+  "metro.shell.MetroCommandsSpec": {
+    "executedFeatures": [],
+    "ignoredFeatures": [
+      "should execute add-head command"
+    ],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "totalRuns": 0,
+      "totalFeatures": 1,
+      "passed": 0,
+      "successRate": 1.0,
+      "time": 5
+    },
+    "title": "",
+    "narrative": ""
+  },
+  "metro.algorithm.BreadthFirstSearchSpec": {
+    "executedFeatures": [
+      "should find a route for complex graph",
+      "should find a route for simple graph",
+      "should return an empty path if can't find a route",
+      "should thrown NPE path for an empty graph"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 4,
+      "totalFeatures": 4,
+      "passed": 4,
+      "successRate": 1.0,
+      "time": 76
+    },
+    "title": "Breadth First Search Algorithm",
+    "narrative": "Breadth First Search algorithm for finding the shortest paths between nodes in a graph"
+  },
+  "metro.algorithm.DijkstrasAlgorithmSpec": {
+    "executedFeatures": [
+      "should find a route for a complex graph",
+      "should find a route for a medium graph",
+      "should find a route for a simple graph",
+      "should return an empty path if can't find a route",
+      "should thrown NPE for an empty graph"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 5,
+      "totalFeatures": 5,
+      "passed": 5,
+      "successRate": 1.0,
+      "time": 87
+    },
+    "title": "Dijkstra's Algorithm",
+    "narrative": "Dijkstra's algorithm is an algorithm for finding the fastest paths between nodes in a graph"
+  },
+  "metro.algorithm.GraphSpec": {
+    "executedFeatures": [
+      "should be zero distance for an empty path",
+      "should be zero distance for any one node path",
+      "should calculate distance for a path",
+      "should return edges for a given node",
+      "should throw NPE for incorrect path"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 5,
+      "totalFeatures": 5,
+      "passed": 5,
+      "successRate": 1.0,
+      "time": 147
+    },
+    "title": "Generic Graph",
+    "narrative": "A simple implementation of Graph structure"
+  },
+  "metro.repository.MetroRepositoryJsonSpec": {
+    "executedFeatures": [
+      "should find metro line by name"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 1,
+      "totalFeatures": 1,
+      "passed": 1,
+      "successRate": 1.0,
+      "time": 291
+    },
+    "title": "",
+    "narrative": ""
+  },
+  "metro.shell.PromptSpec": {
+    "executedFeatures": [
+      "should generate a prompt with metro name"
+    ],
+    "ignoredFeatures": [],
+    "stats": {
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "totalRuns": 1,
+      "totalFeatures": 1,
+      "passed": 1,
+      "successRate": 1.0,
+      "time": 36
+    },
+    "title": "",
+    "narrative": ""
   }
 }

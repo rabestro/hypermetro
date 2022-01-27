@@ -244,14 +244,14 @@ div.footer {
 </style>
 </head>
 <body>
-<h2>Report for metro.model.MetroStationSpec</h2>
+<h2>Report for metro.shell.MetroCommandsSpec</h2>
 <hr></hr>
 <div class='back-link'>
 <a href='index.html'>&lt;&lt; Back</a>
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Sat Jan 22 16:15:38 EET 2022 by jegors</div>
+    <div class='date-test-ran'>Created on Thu Jan 27 19:32:36 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -266,18 +266,17 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-<td>1</td>
-<td>1</td>
+    <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
+    <td>1</td>
 <td>100.0%</td>
-<td>0.008 seconds</td>
+    <td>0.005 seconds</td>
 </tr>
 </tbody>
 </table>
 </div>
-<pre class='title'>Model of Metro Station</pre>
 <h3>Features:</h3>
 <table class='features-table'>
 <colgroup>
@@ -287,77 +286,75 @@ div.footer {
 <tbody>
 <ul id='toc'>
 <li>
-<a href='#1710360554' class='feature-toc-pass'>should create a metro station with id and time</a>
+    <a class='feature-toc-ignored' href='#791096783'>should execute add-head command</a>
 </li>
 </ul>
 <tr>
 <td colspan='10'>
-<div class='feature-description' id='1710360554'>
-<span>should create a metro station with id and time</span>
-<span style='float: right; font-size: 60%;'>
+    <div class='feature-description ignored' id='791096783'>
+        <span>should execute add-head command</span>
+        <span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
-</div>
+    </div>
 </td>
 </tr>
-<tr>
-<td>
-<div class='block-kind'>Given:</div>
-</td>
-<td>
-<div class='block-text'>station id</div>
-</td>
+<tr class='ignored'>
+    <td>
+        <div class='block-kind'>Given:</div>
+    </td>
+    <td>
+        <div class='block-text'>Metro line, station and transfer time to the next station</div>
+    </td>
 </tr>
 <tr>
-<td></td>
+    <td></td>
 <td>
-<pre class='block-source'>def id = new StationId('Bakerloo', 'Waterloo')</pre>
+<pre class='block-source'>def metroLine = 'Bakerloo'
+def metroStation = 'Waterloo'
+def transferTime = 5</pre>
 </td>
 </tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>time to the next station</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>def nextStationTime = 15</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>When:</div>
-</td>
-<td>
-<div class='block-text'>we create a metro station</div>
-</td>
+<tr class='ignored'>
+    <td>
+        <div class='block-kind'>When:</div>
+    </td>
+    <td>
+        <div class='block-text'>we execute the command with these parameters</div>
+    </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>def station = new MetroStation(id, nextStationTime)</pre>
+    <pre class='block-source'>def output = commands.addHead(metroLine, metroStation, transferTime)</pre>
 </td>
 </tr>
-<tr>
-<td>
-<div class='block-kind'>Then:</div>
-</td>
-<td>
-<div class='block-text'>all connections are empty</div>
-</td>
+<tr class='ignored'>
+    <td>
+        <div class='block-kind'>Then:</div>
+    </td>
+    <td>
+        <div class='block-text'>the metro repository is called with the parameters</div>
+    </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>with(station) {
-    it.next().isEmpty()
-    it.prev().isEmpty()
-    it.transfer().isEmpty()
-}</pre>
+    <pre class='block-source'>1 * repository.addHead(metroLine, metroStation, transferTime)</pre>
+</td>
+</tr>
+<tr class='ignored'>
+    <td>
+        <div class='block-kind'>And:</div>
+    </td>
+    <td>
+        <div class='block-text'>execution of the command is successful</div>
+    </td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>output.contains 'successfully'</pre>
 </td>
 </tr>
 </tbody>

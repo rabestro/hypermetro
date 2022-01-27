@@ -244,14 +244,14 @@ div.footer {
 </style>
 </head>
 <body>
-<h2>Report for metro.model.MetroLineSpec</h2>
+<h2>Report for metro.repository.MetroRepositoryJsonSpec</h2>
 <hr></hr>
 <div class='back-link'>
 <a href='index.html'>&lt;&lt; Back</a>
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Sat Jan 22 16:15:38 EET 2022 by jegors</div>
+    <div class='date-test-ran'>Created on Thu Jan 27 19:32:37 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -266,18 +266,17 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-<td>2</td>
-<td>2</td>
+<td>1</td>
+<td>1</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.081 seconds</td>
+    <td>0.291 seconds</td>
 </tr>
 </tbody>
 </table>
 </div>
-<pre class='title'>Model of Metro Line</pre>
 <h3>Features:</h3>
 <table class='features-table'>
 <colgroup>
@@ -287,20 +286,17 @@ div.footer {
 <tbody>
 <ul id='toc'>
 <li>
-<a href='#-1371649833' class='feature-toc-pass'>should append a station to the empty line</a>
-</li>
-<li>
-<a href='#1490955364' class='feature-toc-pass'>should get the name of the metro line</a>
+    <a class='feature-toc-pass' href='#1187995273'>should find metro line by name</a>
 </li>
 </ul>
 <tr>
 <td colspan='10'>
-<div class='feature-description' id='-1371649833'>
-<span>should append a station to the empty line</span>
-<span style='float: right; font-size: 60%;'>
+    <div class='feature-description' id='1187995273'>
+        <span>should find metro line by name</span>
+        <span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
-</div>
+    </div>
 </td>
 </tr>
 <tr>
@@ -308,192 +304,98 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-<div class='block-text'>the metro line created with no stations</div>
+    <div class='block-text'>the repository with given metro map</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>def line = new MetroLine(BAKERLOO)</pre>
+    <pre class='block-source'>repository.metroMap = [one: [stationOne, stationTwo] as Deque, two:[] as Deque]</pre>
 </td>
 </tr>
 <tr>
-<td>
-<div class='block-kind'>When:</div>
-</td>
-<td>
-<div class='block-text'>we append a station to the empty line</div>
-</td>
+    <td>
+        <div class='block-kind'>When:</div>
+    </td>
+    <td>
+        <div class='block-text'>we request the repository for existing line</div>
+    </td>
 </tr>
 <tr>
-<td></td>
-<td>
-<pre class='block-source'>line.append(WATERLOO)</pre>
-</td>
+    <td></td>
+    <td>
+        <pre class='block-source'>def line = repository.findLine('one')</pre>
+    </td>
 </tr>
 <tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>request the metro station by it's name</div>
-</td>
+    <td>
+        <div class='block-kind'>Then:</div>
+    </td>
+    <td>
+        <div class='block-text'>it returns expected metro line</div>
+    </td>
 </tr>
 <tr>
-<td></td>
-<td>
-<pre class='block-source'>def actual = line.getStation(WATERLOO)</pre>
-</td>
+    <td></td>
+    <td>
+        <pre class='block-source'>line == [stationOne, stationTwo]</pre>
+    </td>
 </tr>
 <tr>
-<td>
-<div class='block-kind'>Then:</div>
-</td>
-<td>
-<div class='block-text'>there is only one station on the line</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>line.stations().size() == 1</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>we got the metro station</div>
-</td>
+    <td>
+        <div class='block-kind'>When:</div>
+    </td>
+    <td>
+        <div class='block-text'>we request for an empty line</div>
+    </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>actual.isPresent()</pre>
+    <pre class='block-source'>line = repository.findLine('two')</pre>
 </td>
 </tr>
 <tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>the actual station equals to the expected</div>
-</td>
+    <td>
+        <div class='block-kind'>Then:</div>
+    </td>
+    <td>
+        <div class='block-text'>we get an empty metro line</div>
+    </td>
 </tr>
 <tr>
-<td></td>
-<td>
-<pre class='block-source'>actual.get() == expected</pre>
-</td>
+    <td></td>
+    <td>
+        <pre class='block-source'>line == []</pre>
+    </td>
 </tr>
 <tr>
-<td>
-<div class='block-kind'>Where:</div>
-</td>
-<td>
-<div class='block-text'>expected station has correct station id</div>
-</td>
+    <td>
+        <div class='block-kind'>When:</div>
+    </td>
+    <td>
+        <div class='block-text'>we request a non existing line</div>
+    </td>
 </tr>
 <tr>
-<td>
-<div class='block-kind'>Examples:</div>
-</td>
-<td>
-<div class='spec-examples'>
-<table class='ex-table'>
-<thead>
-<tr>
-<th class='ex-header'>expected</th>
-</tr>
-</thead>
-<tbody>
-<tr class='ex-pass'>
-<td class='ex-value'>MetroStation[id=StationId[line=Bakerloo, name=Waterloo], time=1, next=[], prev=[], transfer=[]]</td>
-<td class='ex-result'>OK</td>
-</tr>
-</tbody>
-</table>
-</div>
-</td>
-<td>
-<div class='spec-status'>1/1 passed</div>
-</td>
+    <td></td>
+    <td>
+        <pre class='block-source'>line = repository.findLine('unknown')</pre>
+    </td>
 </tr>
 <tr>
-<td colspan='10'>
-<div class='feature-description' id='1490955364'>
-<span>should get the name of the metro line</span>
-<span style='float: right; font-size: 60%;'>
-<a href='#toc'>Return</a>
-</span>
-</div>
-</td>
+    <td>
+        <div class='block-kind'>Then:</div>
+    </td>
+    <td>
+        <div class='block-text'>we got a null</div>
+    </td>
 </tr>
 <tr>
-<td>
-<div class='block-kind'>Given:</div>
-</td>
-<td>
-<div class='block-text'>the metro line created</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>def line = new MetroLine(name)</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Expect:</div>
-</td>
-<td>
-<div class='block-text'>we get the correct metro line name</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>line.name() == name</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Examples:</div>
-</td>
-<td>
-<div class='spec-examples'>
-<table class='ex-table'>
-<thead>
-<tr>
-<th class='ex-header'>name</th>
-</tr>
-</thead>
-<tbody>
-<tr class='ex-pass'>
-<td class='ex-value'>Bakerloo</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>Circle</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>Central</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>Hammersmith &amp; City</td>
-<td class='ex-result'>OK</td>
-</tr>
-</tbody>
-</table>
-</div>
-</td>
-<td>
-<div class='spec-status'>4/4 passed</div>
-</td>
+    <td></td>
+    <td>
+        <pre class='block-source'>line == null</pre>
+    </td>
 </tr>
 </tbody>
 </table>

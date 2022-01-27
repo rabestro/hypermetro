@@ -1,8 +1,8 @@
 package metro.shell;
 
 import metro.algorithm.SearchAlgorithm;
-import metro.repository.RepositoryMetro;
-import metro.repository.StationId;
+import metro.model.StationId;
+import metro.repository.MetroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.shell.standard.ShellComponent;
@@ -17,7 +17,7 @@ import static java.lang.System.Logger.Level.TRACE;
 public class MetroCommands {
     private static final System.Logger LOGGER = System.getLogger(MetroCommands.class.getName());
 
-    private RepositoryMetro repository;
+    private MetroRepository repository;
 
     private SearchAlgorithm<StationId> shortest;
 
@@ -96,7 +96,7 @@ public class MetroCommands {
     }
 
     @Autowired
-    public void setRepository(RepositoryMetro repository) {
+    public void setRepository(MetroRepository repository) {
         this.repository = repository;
     }
 
