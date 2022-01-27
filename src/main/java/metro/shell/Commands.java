@@ -22,27 +22,7 @@ public record Commands(
         return printer().printLine(metroService.getMetroLine(metroLine));
     }
 
-    @ShellMethod("Adds a new station at the beginning of the metro line")
-    public String addHead(String line, String station) {
-        metroService.addHead(line, station);
-        return "Metro station successfully added";
-    }
-
-    @ShellMethod("Adds a new station at the end of the line")
-    public String append(String line, String station) {
-        metroService.append(line, station);
-        return "Metro station successfully added";
-    }
-
-    @ShellMethod("Connects two metro stations")
-    public String connect(String sourceLine, String sourceStation, String targetLine, String targetStation) {
-        var source = new StationId(sourceLine, sourceStation);
-        var target = new StationId(targetLine, targetStation);
-        metroService.connect(source, target);
-        return "Metro stations successfully connected";
-    }
-
-    @ShellMethod("Removes a metro station")
+    @ShellMethod("Removes a station from the metro map")
     public String remove(String line, String station) {
         var source = new StationId(line, station);
         metroService.remove(source);
