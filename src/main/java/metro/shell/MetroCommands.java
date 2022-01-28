@@ -5,6 +5,7 @@ import metro.model.StationId;
 import metro.repository.MetroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -30,6 +31,9 @@ public class MetroCommands {
     private SearchAlgorithm<StationId> shortest;
 
     private SearchAlgorithm<StationId> fastest;
+
+    @Value("${hypermetro.terminal.width:120}")
+    private int terminalWidth;
 
     @ShellMethod("Adds a new station at the beginning of the metro line")
     public String addHead(
@@ -111,14 +115,12 @@ public class MetroCommands {
                 join(lineSeparator(), station.prev()),
                 station.transfer().stream().map(StationId::line).collect(joining(lineSeparator()))
         });
-
         var table = Stream.concat(header, stations).toArray(Object[][]::new);
-        var model = new ArrayTableModel(table);
 
-        return new TableBuilder(model)
+        return new TableBuilder(new ArrayTableModel(table))
                 .addFullBorder(BorderStyle.fancy_light)
                 .build()
-                .render(160);
+                .render(terminalWidth);
     }
 
     public String printRoute(List<StationId> route) {
