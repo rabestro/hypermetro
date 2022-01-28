@@ -1,0 +1,14 @@
+application:
+  version: 2.0.0
+  title: HyperMetro
+
+hypermetro:
+  file: london.json
+  time: 5
+
+shell:
+  out:
+    info: CYAN
+    success: GREEN
+    warning: YELLOW
+    error: RED

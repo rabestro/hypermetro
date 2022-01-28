@@ -14,7 +14,7 @@ class PromptSpec extends Specification {
         def output = prompt.prompt
 
         then: 'the prompt provider asks the repository for the metro name'
-        1 * repository.metroName() >> 'london'
+        1 * repository.metroName >> 'london'
 
         and: 'the prompt contains the name of metro'
         output.contains 'london'
