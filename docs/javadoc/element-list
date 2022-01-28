@@ -1,10 +1,5 @@
-module:hypermetro.main
 metro
 metro.algorithm
-metro.command
-metro.config
-metro.controller
 metro.model
 metro.repository
-metro.service
-metro.ui
+metro.shell
