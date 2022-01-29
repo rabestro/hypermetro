@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Fri Jan 28 14:38:02 EET 2022 by jegors</div>
+<div class='date-test-ran'>Created on Sat Jan 29 21:52:55 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -272,7 +272,7 @@ div.footer {
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-    <td>0.395 seconds</td>
+<td>0.425 seconds</td>
 </tr>
 </tbody>
 </table>
@@ -286,17 +286,17 @@ div.footer {
 <tbody>
 <ul id='toc'>
 <li>
-    <a class='feature-toc-pass' href='#1187995273'>should find metro line by name</a>
+<a href='#1187995273' class='feature-toc-pass'>should find metro line by name</a>
 </li>
 </ul>
 <tr>
 <td colspan='10'>
-    <div class='feature-description' id='1187995273'>
-        <span>should find metro line by name</span>
-        <span style='float: right; font-size: 60%;'>
+<div class='feature-description' id='1187995273'>
+<span>should find metro line by name</span>
+<span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
-    </div>
+</div>
 </td>
 </tr>
 <tr>
@@ -304,98 +304,98 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-    <div class='block-text'>the repository with given metro map</div>
+<div class='block-text'>the repository with given metro map</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-    <pre class='block-source'>repository.metroMap = [one: [stationOne, stationTwo] as Deque, two: [] as Deque]</pre>
+<pre class='block-source'>repository.metroMap = [one: [stationOne, stationTwo] as Deque, two: [] as Deque]</pre>
 </td>
 </tr>
 <tr>
-    <td>
-        <div class='block-kind'>When:</div>
-    </td>
-    <td>
-        <div class='block-text'>we request the repository for existing line</div>
-    </td>
-</tr>
-<tr>
-    <td></td>
-    <td>
-        <pre class='block-source'>def line = repository.findLine('one')</pre>
-    </td>
-</tr>
-<tr>
-    <td>
-        <div class='block-kind'>Then:</div>
-    </td>
-    <td>
-        <div class='block-text'>it returns expected metro line</div>
-    </td>
-</tr>
-<tr>
-    <td></td>
-    <td>
-        <pre class='block-source'>line == [stationOne, stationTwo]</pre>
-    </td>
-</tr>
-<tr>
-    <td>
-        <div class='block-kind'>When:</div>
-    </td>
-    <td>
-        <div class='block-text'>we request for an empty line</div>
-    </td>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we request the repository for existing line</div>
+</td>
 </tr>
 <tr>
 <td></td>
 <td>
-    <pre class='block-source'>line = repository.findLine('two')</pre>
+<pre class='block-source'>def line = repository.findLine('one')</pre>
 </td>
 </tr>
 <tr>
-    <td>
-        <div class='block-kind'>Then:</div>
-    </td>
-    <td>
-        <div class='block-text'>we get an empty metro line</div>
-    </td>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>it returns expected metro line</div>
+</td>
 </tr>
 <tr>
-    <td></td>
-    <td>
-        <pre class='block-source'>line == []</pre>
-    </td>
+<td></td>
+<td>
+<pre class='block-source'>line == [stationOne, stationTwo]</pre>
+</td>
 </tr>
 <tr>
-    <td>
-        <div class='block-kind'>When:</div>
-    </td>
-    <td>
-        <div class='block-text'>we request a non existing line</div>
-    </td>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we request for an empty line</div>
+</td>
 </tr>
 <tr>
-    <td></td>
-    <td>
-        <pre class='block-source'>line = repository.findLine('unknown')</pre>
-    </td>
+<td></td>
+<td>
+<pre class='block-source'>line = repository.findLine('two')</pre>
+</td>
 </tr>
 <tr>
-    <td>
-        <div class='block-kind'>Then:</div>
-    </td>
-    <td>
-        <div class='block-text'>we got a null</div>
-    </td>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>we get an empty metro line</div>
+</td>
 </tr>
 <tr>
-    <td></td>
-    <td>
-        <pre class='block-source'>line == null</pre>
-    </td>
+<td></td>
+<td>
+<pre class='block-source'>line == []</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we request a non existing line</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>line = repository.findLine('unknown')</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>we got a null</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>line == null</pre>
+</td>
 </tr>
 </tbody>
 </table>

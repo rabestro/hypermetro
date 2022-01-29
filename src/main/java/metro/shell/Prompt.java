@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public record Prompt(MetroRepository repository) implements PromptProvider {
+
     @Override
     public AttributedString getPrompt() {
         return new AttributedString(repository().getMetroName() + ":>",

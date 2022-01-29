@@ -9,7 +9,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,7 +20,7 @@ import java.util.Objects;
 @Repository
 public class MetroRepositoryJson implements MetroRepository, InitializingBean {
 
-    private static final TypeReference<Map<String, Deque<Station>>> SCHEMA = new TypeReference<>() {
+    private static final TypeReference<Map<String, Deque<Station>>> SCHEMA_TYPE = new TypeReference<>() {
     };
 
     private Map<String, Deque<Station>> metroMap;
@@ -28,12 +28,12 @@ public class MetroRepositoryJson implements MetroRepository, InitializingBean {
     @Value("${hypermetro.time:5}")
     private int transferTime;
 
-    @Value("${hypermetro.file:default.json}")
-    private String fileName;
+    @Value("#{T(java.nio.file.Path).of(systemProperties['hypermetro.file'])}")
+    private Path schema;
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        metroMap = new JsonMapper().readValue(new File(fileName), SCHEMA);
+        metroMap = new JsonMapper().readValue(schema.toFile(), SCHEMA_TYPE);
     }
 
     @Override
@@ -111,7 +111,8 @@ public class MetroRepositoryJson implements MetroRepository, InitializingBean {
 
     @Override
     public String getMetroName() {
-        return fileName.replaceFirst("(.*\\.)?(\\w+)\\.jso?n", "$2");
+        var fileName = schema.getFileName().toString();
+        return fileName.substring(0, fileName.lastIndexOf('.'));
     }
 
 }
