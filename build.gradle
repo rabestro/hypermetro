@@ -55,8 +55,8 @@ dependencies {
     testImplementation 'io.github.joke:spock-mockable:1.4.4'
 
     testRuntimeClasspath("com.athaydes:spock-reports:2.1.1-groovy-3.0")
-    testImplementation 'org.slf4j:slf4j-api:1.7.33'
-    testRuntimeClasspath 'org.slf4j:slf4j-simple:1.7.33'
+//    testImplementation 'org.slf4j:slf4j-api:1.7.33'
+//    testRuntimeClasspath 'org.slf4j:slf4j-simple:1.7.33'
 }
 
 test {

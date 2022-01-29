@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Fri Jan 28 14:38:02 EET 2022 by jegors</div>
+<div class='date-test-ran'>Created on Sat Jan 29 21:52:55 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -266,13 +266,13 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-    <td>0</td>
+<td>1</td>
+<td>1</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
-    <td>1</td>
 <td>100.0%</td>
-    <td>0.003 seconds</td>
+<td>0.047 seconds</td>
 </tr>
 </tbody>
 </table>
@@ -286,70 +286,70 @@ div.footer {
 <tbody>
 <ul id='toc'>
 <li>
-    <a class='feature-toc-ignored' href='#791096783'>should execute add-head command</a>
+<a href='#791096783' class='feature-toc-pass'>should execute add-head command</a>
 </li>
 </ul>
 <tr>
 <td colspan='10'>
-    <div class='feature-description ignored' id='791096783'>
-        <span>should execute add-head command</span>
-        <span style='float: right; font-size: 60%;'>
+<div class='feature-description' id='791096783'>
+<span>should execute add-head command</span>
+<span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
-    </div>
+</div>
 </td>
 </tr>
-<tr class='ignored'>
-    <td>
-        <div class='block-kind'>Given:</div>
-    </td>
-    <td>
-        <div class='block-text'>Metro line, station and transfer time to the next station</div>
-    </td>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>Metro line, station and transfer time to the next station</div>
+</td>
 </tr>
 <tr>
-    <td></td>
+<td></td>
 <td>
 <pre class='block-source'>def metroLine = 'Bakerloo'
 def metroStation = 'Waterloo'
 def transferTime = 5</pre>
 </td>
 </tr>
-<tr class='ignored'>
-    <td>
-        <div class='block-kind'>When:</div>
-    </td>
-    <td>
-        <div class='block-text'>we execute the command with these parameters</div>
-    </td>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we execute the command with these parameters</div>
+</td>
 </tr>
 <tr>
 <td></td>
 <td>
-    <pre class='block-source'>def output = commands.addHead(metroLine, metroStation, transferTime)</pre>
+<pre class='block-source'>def output = commands.addHead(metroLine, metroStation, transferTime)</pre>
 </td>
 </tr>
-<tr class='ignored'>
-    <td>
-        <div class='block-kind'>Then:</div>
-    </td>
-    <td>
-        <div class='block-text'>the metro repository is called with the parameters</div>
-    </td>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the metro repository is called with the parameters</div>
+</td>
 </tr>
 <tr>
 <td></td>
 <td>
-    <pre class='block-source'>1 * repository.addHead(metroLine, metroStation, transferTime)</pre>
+<pre class='block-source'>1 * repository.addHead(metroLine, metroStation, transferTime)</pre>
 </td>
 </tr>
-<tr class='ignored'>
-    <td>
-        <div class='block-kind'>And:</div>
-    </td>
-    <td>
-        <div class='block-text'>execution of the command is successful</div>
-    </td>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>execution of the command is successful</div>
+</td>
 </tr>
 <tr>
 <td></td>

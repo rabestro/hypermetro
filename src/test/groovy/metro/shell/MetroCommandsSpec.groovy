@@ -19,7 +19,6 @@ class MetroCommandsSpec extends Specification {
     void cleanup() {
     }
 
-    @Ignore
     def "should execute add-head command"() {
         given: 'Metro line, station and transfer time to the next station'
         def metroLine = 'Bakerloo'
