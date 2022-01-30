@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > ParameterParser</title>
+  <title>Coverage Report > Prompt</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/highlight-idea.css";
@@ -17,10 +17,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">metro.controller</a>
+    <a href="../index.html">metro.shell</a>
 </div>
 
-<h1>Coverage Summary for Class: ParameterParser (metro.controller)</h1>
+<h1>Coverage Summary for Class: Prompt (metro.shell)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -39,7 +39,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">ParameterParser</td>
+  <td class="name">Prompt</td>
 <td class="coverageStat">
   <span class="percent">
     100%
@@ -53,7 +53,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (4/4)
+    (3/3)
   </span>
 </td>
 <td class="coverageStat">
@@ -61,7 +61,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (11/11)
+    (4/4)
   </span>
 </td>
 </tr>
@@ -73,45 +73,23 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package metro.controller;
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package metro.shell;
 <i class="no-highlight">2</i>&nbsp;
-<i class="no-highlight">3</i>&nbsp;import java.util.List;
-<i class="no-highlight">4</i>&nbsp;import java.util.Objects;
-<i class="no-highlight">5</i>&nbsp;import java.util.regex.MatchResult;
-<i class="no-highlight">6</i>&nbsp;import java.util.regex.Pattern;
-<i class="no-highlight">7</i>&nbsp;
-<i class="no-highlight">8</i>&nbsp;/**
-<i class="no-highlight">9</i>&nbsp; * Parse and prepare a command parameters
-<i class="no-highlight">10</i>&nbsp; * &lt;p&gt;
-<i class="no-highlight">11</i>&nbsp; * Note that if the name of the line or station consists of several words,
-<i class="no-highlight">12</i>&nbsp; * the user should write it in quotation marks (after, they should be excluded from the name).
-<i class="no-highlight">13</i>&nbsp; * If the name of a station consists of one word it should be parseable with or without quotes.
-<i class="no-highlight">14</i>&nbsp; */
-<b class="fc"><i class="no-highlight">15</i>&nbsp;class ParameterParser {</b>
-<i class="no-highlight">16</i>&nbsp;    private static final String WITHOUT_QUOTES = &quot;(\\w+)&quot;;
-<i class="no-highlight">17</i>&nbsp;    private static final int WITHOUT_GROUP = 1;
-<i class="no-highlight">18</i>&nbsp;    private static final String WITH_QUOTES = &quot;\&quot;([^\&quot;]+)\&quot;&quot;;
-<i class="no-highlight">19</i>&nbsp;    private static final int WITH_GROUP = 2;
-<i class="no-highlight">20</i>&nbsp;
-<b class="fc"><i class="no-highlight">21</i>&nbsp;    private static final Pattern PARAMETERS_PATTERN =</b>
-<b class="fc"><i class="no-highlight">22</i>&nbsp;            Pattern.compile(WITHOUT_QUOTES + &quot;|&quot; + WITH_QUOTES);</b>
-<i class="no-highlight">23</i>&nbsp;
-<i class="no-highlight">24</i>&nbsp;    private String extractParameter(final MatchResult result) {
-<b class="fc"><i class="no-highlight">25</i>&nbsp;        return Objects.requireNonNullElse(result.group(WITHOUT_GROUP), result.group(WITH_GROUP));</b>
-<i class="no-highlight">26</i>&nbsp;    }
-<i class="no-highlight">27</i>&nbsp;
-<i class="no-highlight">28</i>&nbsp;    public List&lt;String&gt; parse(final String parameters) {
-<b class="fc"><i class="no-highlight">29</i>&nbsp;        if (parameters == null) {</b>
-<b class="fc"><i class="no-highlight">30</i>&nbsp;            return List.of();</b>
-<i class="no-highlight">31</i>&nbsp;        }
-<b class="fc"><i class="no-highlight">32</i>&nbsp;        return PARAMETERS_PATTERN</b>
-<b class="fc"><i class="no-highlight">33</i>&nbsp;                .matcher(parameters)</b>
-<b class="fc"><i class="no-highlight">34</i>&nbsp;                .results()</b>
-<b class="fc"><i class="no-highlight">35</i>&nbsp;                .map(this::extractParameter)</b>
-<b class="fc"><i class="no-highlight">36</i>&nbsp;                .toList();</b>
-<i class="no-highlight">37</i>&nbsp;    }
-<i class="no-highlight">38</i>&nbsp;
-<i class="no-highlight">39</i>&nbsp;}
+<i class="no-highlight">3</i>&nbsp;import metro.repository.MetroRepository;
+<i class="no-highlight">4</i>&nbsp;import org.jline.utils.AttributedString;
+<i class="no-highlight">5</i>&nbsp;import org.jline.utils.AttributedStyle;
+<i class="no-highlight">6</i>&nbsp;import org.springframework.shell.jline.PromptProvider;
+<i class="no-highlight">7</i>&nbsp;import org.springframework.stereotype.Component;
+<i class="no-highlight">8</i>&nbsp;
+<b class="fc"><i class="no-highlight">9</i>&nbsp;@Component</b>
+<b class="fc"><i class="no-highlight">10</i>&nbsp;public record Prompt(MetroRepository repository) implements PromptProvider {</b>
+<i class="no-highlight">11</i>&nbsp;
+<i class="no-highlight">12</i>&nbsp;    @Override
+<i class="no-highlight">13</i>&nbsp;    public AttributedString getPrompt() {
+<b class="fc"><i class="no-highlight">14</i>&nbsp;        return new AttributedString(repository().getMetroName() + &quot;:&gt;&quot;,</b>
+<b class="fc"><i class="no-highlight">15</i>&nbsp;                AttributedStyle.DEFAULT.foreground(AttributedStyle.YELLOW));</b>
+<i class="no-highlight">16</i>&nbsp;    }
+<i class="no-highlight">17</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -138,7 +116,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-01-17 01:30</div>
+    <div style="float:right;">generated on 2022-01-30 04:06</div>
 </div>
 </body>
 </html>

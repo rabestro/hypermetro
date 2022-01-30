@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > Broker</title>
+  <title>Coverage Report > MetroCommands</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/highlight-idea.css";
@@ -17,10 +17,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">metro.controller</a>
+    <a href="../index.html">metro.shell</a>
 </div>
 
-<h1>Coverage Summary for Class: Broker (metro.controller)</h1>
+<h1>Coverage Summary for Class: MetroCommands (metro.shell)</h1>
 
 <table class="coverageStats">
 
@@ -36,43 +36,43 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">Broker</td>
+  <td class="name">MetroCommands</td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    25%
   </span>
   <span class="absValue">
-    (5/5)
+    (4/16)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    10.4%
   </span>
   <span class="absValue">
-    (18/18)
+    (7/67)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">Broker$apply</td>
+    <td class="name">MetroCommands$addHead</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    25%
   </span>
   <span class="absValue">
-    (5/5)
+    (4/16)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    10.4%
   </span>
   <span class="absValue">
-    (18/18)
+    (7/67)
   </span>
 </td>
 </tr>
@@ -83,53 +83,196 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package metro.controller;
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package metro.shell;
 <i class="no-highlight">2</i>&nbsp;
-<i class="no-highlight">3</i>&nbsp;import lombok.AllArgsConstructor;
-<i class="no-highlight">4</i>&nbsp;import metro.command.Command;
-<i class="no-highlight">5</i>&nbsp;
-<i class="no-highlight">6</i>&nbsp;import java.util.Map;
-<i class="no-highlight">7</i>&nbsp;import java.util.NoSuchElementException;
-<i class="no-highlight">8</i>&nbsp;import java.util.function.UnaryOperator;
-<i class="no-highlight">9</i>&nbsp;import java.util.regex.Matcher;
-<i class="no-highlight">10</i>&nbsp;import java.util.regex.Pattern;
-<i class="no-highlight">11</i>&nbsp;
-<i class="no-highlight">12</i>&nbsp;import static java.lang.System.Logger.Level.DEBUG;
-<i class="no-highlight">13</i>&nbsp;import static java.lang.System.Logger.Level.WARNING;
-<i class="no-highlight">14</i>&nbsp;
-<b class="fc"><i class="no-highlight">15</i>&nbsp;@AllArgsConstructor</b>
-<i class="no-highlight">16</i>&nbsp;public class Broker implements UnaryOperator&lt;String&gt; {
-<b class="fc"><i class="no-highlight">17</i>&nbsp;    private static final System.Logger LOGGER = System.getLogger(&quot;Request&quot;);</b>
-<b class="fc"><i class="no-highlight">18</i>&nbsp;    private static final Pattern COMMAND_PATTERN =</b>
-<b class="fc"><i class="no-highlight">19</i>&nbsp;            Pattern.compile(&quot;/?(?&lt;command&gt;[-\\w]+)(?:\\s+(?&lt;parameters&gt;.*))?&quot;);</b>
-<b class="fc"><i class="no-highlight">20</i>&nbsp;    private static final Command INVALID_COMMAND = args -&gt; &quot;Invalid Command&quot;;</b>
-<i class="no-highlight">21</i>&nbsp;
-<b class="fc"><i class="no-highlight">22</i>&nbsp;    private final ParameterParser parameterParser = new ParameterParser();</b>
-<i class="no-highlight">23</i>&nbsp;    private final Map&lt;String, Command&gt; actions;
+<i class="no-highlight">3</i>&nbsp;import metro.algorithm.SearchAlgorithm;
+<i class="no-highlight">4</i>&nbsp;import metro.model.Station;
+<i class="no-highlight">5</i>&nbsp;import metro.model.StationId;
+<i class="no-highlight">6</i>&nbsp;import metro.repository.MetroRepository;
+<i class="no-highlight">7</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i class="no-highlight">8</i>&nbsp;import org.springframework.beans.factory.annotation.Qualifier;
+<i class="no-highlight">9</i>&nbsp;import org.springframework.beans.factory.annotation.Value;
+<i class="no-highlight">10</i>&nbsp;import org.springframework.shell.standard.ShellComponent;
+<i class="no-highlight">11</i>&nbsp;import org.springframework.shell.standard.ShellMethod;
+<i class="no-highlight">12</i>&nbsp;import org.springframework.shell.standard.ShellOption;
+<i class="no-highlight">13</i>&nbsp;import org.springframework.shell.table.ArrayTableModel;
+<i class="no-highlight">14</i>&nbsp;import org.springframework.shell.table.BorderStyle;
+<i class="no-highlight">15</i>&nbsp;import org.springframework.shell.table.NoWrapSizeConstraints;
+<i class="no-highlight">16</i>&nbsp;import org.springframework.shell.table.SizeConstraints;
+<i class="no-highlight">17</i>&nbsp;import org.springframework.shell.table.Table;
+<i class="no-highlight">18</i>&nbsp;import org.springframework.shell.table.TableBuilder;
+<i class="no-highlight">19</i>&nbsp;
+<i class="no-highlight">20</i>&nbsp;import java.util.List;
+<i class="no-highlight">21</i>&nbsp;import java.util.Set;
+<i class="no-highlight">22</i>&nbsp;import java.util.StringJoiner;
+<i class="no-highlight">23</i>&nbsp;import java.util.stream.Stream;
 <i class="no-highlight">24</i>&nbsp;
-<i class="no-highlight">25</i>&nbsp;    @Override
-<i class="no-highlight">26</i>&nbsp;    public String apply(final String userInput) {
-<b class="fc"><i class="no-highlight">27</i>&nbsp;        final var matcher = COMMAND_PATTERN.matcher(userInput);</b>
-<b class="fc"><i class="no-highlight">28</i>&nbsp;        final var command = getCommand(matcher);</b>
-<b class="fc"><i class="no-highlight">29</i>&nbsp;        final var parameters = parameterParser.parse(matcher.group(&quot;parameters&quot;));</b>
-<i class="no-highlight">30</i>&nbsp;        try {
-<b class="fc"><i class="no-highlight">31</i>&nbsp;            LOGGER.log(DEBUG, &quot;Execute: {0}&quot;, userInput);</b>
-<b class="fc"><i class="no-highlight">32</i>&nbsp;            return command.apply(parameters);</b>
-<b class="fc"><i class="no-highlight">33</i>&nbsp;        } catch (NullPointerException | NoSuchElementException | IllegalArgumentException exception) {</b>
-<b class="fc"><i class="no-highlight">34</i>&nbsp;            LOGGER.log(WARNING, exception::getMessage);</b>
-<b class="fc"><i class="no-highlight">35</i>&nbsp;            return exception.getMessage();</b>
-<i class="no-highlight">36</i>&nbsp;        }
-<i class="no-highlight">37</i>&nbsp;    }
+<i class="no-highlight">25</i>&nbsp;import static java.lang.String.join;
+<i class="no-highlight">26</i>&nbsp;import static java.lang.System.Logger.Level.TRACE;
+<i class="no-highlight">27</i>&nbsp;import static java.lang.System.lineSeparator;
+<i class="no-highlight">28</i>&nbsp;import static java.util.stream.Collectors.joining;
+<i class="no-highlight">29</i>&nbsp;import static org.springframework.shell.table.CellMatchers.column;
+<i class="no-highlight">30</i>&nbsp;import static org.springframework.shell.table.SimpleHorizontalAligner.right;
+<i class="no-highlight">31</i>&nbsp;
+<i class="no-highlight">32</i>&nbsp;@ShellComponent
+<b class="fc"><i class="no-highlight">33</i>&nbsp;public class MetroCommands {</b>
+<b class="fc"><i class="no-highlight">34</i>&nbsp;    private static final System.Logger LOGGER = System.getLogger(MetroCommands.class.getName());</b>
+<b class="fc"><i class="no-highlight">35</i>&nbsp;    private static final SizeConstraints NO_WRAP = new NoWrapSizeConstraints();</b>
+<i class="no-highlight">36</i>&nbsp;
+<i class="no-highlight">37</i>&nbsp;    private MetroRepository repository;
 <i class="no-highlight">38</i>&nbsp;
-<i class="no-highlight">39</i>&nbsp;    private Command getCommand(final Matcher matcher) {
-<b class="fc"><i class="no-highlight">40</i>&nbsp;        if (!matcher.matches()) {</b>
-<b class="fc"><i class="no-highlight">41</i>&nbsp;            return INVALID_COMMAND;</b>
-<i class="no-highlight">42</i>&nbsp;        }
-<b class="fc"><i class="no-highlight">43</i>&nbsp;        final var commandName = matcher.group(&quot;command&quot;).toLowerCase();</b>
-<b class="fc"><i class="no-highlight">44</i>&nbsp;        return actions.getOrDefault(commandName, INVALID_COMMAND);</b>
-<i class="no-highlight">45</i>&nbsp;    }
-<i class="no-highlight">46</i>&nbsp;
-<i class="no-highlight">47</i>&nbsp;}
+<i class="no-highlight">39</i>&nbsp;    private SearchAlgorithm&lt;StationId&gt; shortest;
+<i class="no-highlight">40</i>&nbsp;
+<i class="no-highlight">41</i>&nbsp;    private SearchAlgorithm&lt;StationId&gt; fastest;
+<i class="no-highlight">42</i>&nbsp;
+<i class="no-highlight">43</i>&nbsp;    @Value(&quot;${hypermetro.table.border:oldschool}&quot;)
+<i class="no-highlight">44</i>&nbsp;    private String borderStyle;
+<i class="no-highlight">45</i>&nbsp;
+<i class="no-highlight">46</i>&nbsp;    @ShellMethod(&quot;Adds a new station at the beginning of the metro line&quot;)
+<i class="no-highlight">47</i>&nbsp;    public String addHead(
+<i class="no-highlight">48</i>&nbsp;            @ShellOption(help = &quot;Name of the metro line&quot;) String line,
+<i class="no-highlight">49</i>&nbsp;            @ShellOption(help = &quot;Name of the metro station&quot;) String station,
+<i class="no-highlight">50</i>&nbsp;            @ShellOption(help = &quot;Travel time to the next station in minutes&quot;) int time
+<i class="no-highlight">51</i>&nbsp;    ) {
+<b class="fc"><i class="no-highlight">52</i>&nbsp;        repository.addHead(line, station, time);</b>
+<b class="fc"><i class="no-highlight">53</i>&nbsp;        return &quot;Metro station successfully added&quot;;</b>
+<i class="no-highlight">54</i>&nbsp;    }
+<i class="no-highlight">55</i>&nbsp;
+<i class="no-highlight">56</i>&nbsp;    @ShellMethod(&quot;Adds a new station at the end of the line&quot;)
+<i class="no-highlight">57</i>&nbsp;    public String append(
+<i class="no-highlight">58</i>&nbsp;            @ShellOption(help = &quot;Name of the metro line&quot;) String line,
+<i class="no-highlight">59</i>&nbsp;            @ShellOption(help = &quot;Name of the metro station&quot;) String station,
+<i class="no-highlight">60</i>&nbsp;            @ShellOption(help = &quot;Travel time to the next station in minutes&quot;) int time
+<i class="no-highlight">61</i>&nbsp;    ) {
+<b class="nc"><i class="no-highlight">62</i>&nbsp;        repository.append(line, station, time);</b>
+<b class="nc"><i class="no-highlight">63</i>&nbsp;        return &quot;Metro station successfully added&quot;;</b>
+<i class="no-highlight">64</i>&nbsp;    }
+<i class="no-highlight">65</i>&nbsp;
+<i class="no-highlight">66</i>&nbsp;    @ShellMethod(&quot;Adds a transfer connection between two metro stations&quot;)
+<i class="no-highlight">67</i>&nbsp;    public String connect(
+<i class="no-highlight">68</i>&nbsp;            @ShellOption(help = &quot;Name of the first metro line&quot;) String sourceLine,
+<i class="no-highlight">69</i>&nbsp;            @ShellOption(help = &quot;Name of the first metro station&quot;) String sourceStation,
+<i class="no-highlight">70</i>&nbsp;            @ShellOption(help = &quot;Name of the second metro line&quot;) String targetLine,
+<i class="no-highlight">71</i>&nbsp;            @ShellOption(help = &quot;Name of the second metro station&quot;) String targetStation
+<i class="no-highlight">72</i>&nbsp;    ) {
+<b class="nc"><i class="no-highlight">73</i>&nbsp;        repository.connect(sourceLine, sourceStation, targetLine, targetStation);</b>
+<b class="nc"><i class="no-highlight">74</i>&nbsp;        return &quot;Metro stations successfully connected&quot;;</b>
+<i class="no-highlight">75</i>&nbsp;    }
+<i class="no-highlight">76</i>&nbsp;
+<i class="no-highlight">77</i>&nbsp;    @ShellMethod(&quot;Finds and prints the shortest route between two metro stations&quot;)
+<i class="no-highlight">78</i>&nbsp;    public String route(
+<i class="no-highlight">79</i>&nbsp;            @ShellOption(help = &quot;Name of the starting metro line&quot;) String sourceLine,
+<i class="no-highlight">80</i>&nbsp;            @ShellOption(help = &quot;Name of the starting metro station&quot;) String sourceStation,
+<i class="no-highlight">81</i>&nbsp;            @ShellOption(help = &quot;Name of the final metro line&quot;) String targetLine,
+<i class="no-highlight">82</i>&nbsp;            @ShellOption(help = &quot;Name of the final metro station&quot;) String targetStation
+<i class="no-highlight">83</i>&nbsp;    ) {
+<b class="nc"><i class="no-highlight">84</i>&nbsp;        var source = new StationId(sourceLine, sourceStation);</b>
+<b class="nc"><i class="no-highlight">85</i>&nbsp;        var target = new StationId(targetLine, targetStation);</b>
+<b class="nc"><i class="no-highlight">86</i>&nbsp;        var graph = repository.getGraph();</b>
+<b class="nc"><i class="no-highlight">87</i>&nbsp;        var route = shortest.findPath(graph, source, target);</b>
+<b class="nc"><i class="no-highlight">88</i>&nbsp;        return printRoute(route);</b>
+<i class="no-highlight">89</i>&nbsp;    }
+<i class="no-highlight">90</i>&nbsp;
+<i class="no-highlight">91</i>&nbsp;    @ShellMethod(&quot;Finds and prints the fastest route between two metro stations&quot;)
+<i class="no-highlight">92</i>&nbsp;    public String fastestRoute(
+<i class="no-highlight">93</i>&nbsp;            @ShellOption(help = &quot;Name of the starting metro line&quot;) String sourceLine,
+<i class="no-highlight">94</i>&nbsp;            @ShellOption(help = &quot;Name of the starting metro station&quot;) String sourceStation,
+<i class="no-highlight">95</i>&nbsp;            @ShellOption(help = &quot;Name of the final metro line&quot;) String targetLine,
+<i class="no-highlight">96</i>&nbsp;            @ShellOption(help = &quot;Name of the final metro station&quot;) String targetStation
+<i class="no-highlight">97</i>&nbsp;    ) {
+<b class="nc"><i class="no-highlight">98</i>&nbsp;        var source = new StationId(sourceLine, sourceStation);</b>
+<b class="nc"><i class="no-highlight">99</i>&nbsp;        var target = new StationId(targetLine, targetStation);</b>
+<b class="nc"><i class="no-highlight">100</i>&nbsp;        var graph = repository.getGraph();</b>
+<b class="nc"><i class="no-highlight">101</i>&nbsp;        var route = fastest.findPath(graph, source, target);</b>
+<b class="nc"><i class="no-highlight">102</i>&nbsp;        var timeMessage = lineSeparator() + &quot;Total: &quot; + (int) graph.getDistance(route) + &quot; minutes in the way&quot;;</b>
+<b class="nc"><i class="no-highlight">103</i>&nbsp;        return printRoute(route) + timeMessage;</b>
+<i class="no-highlight">104</i>&nbsp;    }
+<i class="no-highlight">105</i>&nbsp;
+<i class="no-highlight">106</i>&nbsp;    @ShellMethod(&quot;Removes a station from the metro map&quot;)
+<i class="no-highlight">107</i>&nbsp;    public String remove(
+<i class="no-highlight">108</i>&nbsp;            @ShellOption(help = &quot;Name of the metro line&quot;) String line,
+<i class="no-highlight">109</i>&nbsp;            @ShellOption(help = &quot;Name of the metro station&quot;) String station
+<i class="no-highlight">110</i>&nbsp;    ) {
+<b class="nc"><i class="no-highlight">111</i>&nbsp;        repository.remove(line, station);</b>
+<b class="nc"><i class="no-highlight">112</i>&nbsp;        return &quot;Metro station successfully removed&quot;;</b>
+<i class="no-highlight">113</i>&nbsp;    }
+<i class="no-highlight">114</i>&nbsp;
+<i class="no-highlight">115</i>&nbsp;    @ShellMethod(&quot;Outputs all stations for a given metro line&quot;)
+<i class="no-highlight">116</i>&nbsp;    public Table output(
+<i class="no-highlight">117</i>&nbsp;            @ShellOption(help = &quot;Name of the metro line&quot;) String line
+<i class="no-highlight">118</i>&nbsp;    ) {
+<b class="nc"><i class="no-highlight">119</i>&nbsp;        var header = Stream.ofNullable(new Object[]{&quot;Station&quot;, &quot;Next&quot;, &quot;Previous&quot;, &quot;Transfer to line&quot;});</b>
+<b class="nc"><i class="no-highlight">120</i>&nbsp;        var stations = repository.findLine(line).stream().map(station -&gt; new Object[]{</b>
+<b class="nc"><i class="no-highlight">121</i>&nbsp;                station.name(),</b>
+<b class="nc"><i class="no-highlight">122</i>&nbsp;                join(lineSeparator(), station.next()),</b>
+<b class="nc"><i class="no-highlight">123</i>&nbsp;                join(lineSeparator(), station.prev()),</b>
+<b class="nc"><i class="no-highlight">124</i>&nbsp;                station.transfer().stream().map(StationId::line).collect(joining(lineSeparator()))</b>
+<i class="no-highlight">125</i>&nbsp;        });
+<b class="nc"><i class="no-highlight">126</i>&nbsp;        var report = Stream.concat(header, stations).toArray(Object[][]::new);</b>
+<i class="no-highlight">127</i>&nbsp;
+<b class="nc"><i class="no-highlight">128</i>&nbsp;        return new TableBuilder(new ArrayTableModel(report))</b>
+<b class="nc"><i class="no-highlight">129</i>&nbsp;                .addFullBorder(BorderStyle.valueOf(borderStyle))</b>
+<b class="nc"><i class="no-highlight">130</i>&nbsp;                .on(column(0)).addSizer(NO_WRAP)</b>
+<b class="nc"><i class="no-highlight">131</i>&nbsp;                .on(column(1)).addSizer(NO_WRAP)</b>
+<b class="nc"><i class="no-highlight">132</i>&nbsp;                .on(column(2)).addSizer(NO_WRAP)</b>
+<b class="nc"><i class="no-highlight">133</i>&nbsp;                .on(column(3)).addSizer(NO_WRAP)</b>
+<b class="nc"><i class="no-highlight">134</i>&nbsp;                .build();</b>
+<i class="no-highlight">135</i>&nbsp;    }
+<i class="no-highlight">136</i>&nbsp;
+<i class="no-highlight">137</i>&nbsp;    @ShellMethod(&quot;Prints information about metro lines&quot;)
+<i class="no-highlight">138</i>&nbsp;    public Table lines() {
+<b class="nc"><i class="no-highlight">139</i>&nbsp;        var header = Stream.ofNullable(new Object[]{&quot;Metro Line&quot;, &quot;Stations&quot;, &quot;Length (min)&quot;, &quot;Transfers&quot;});</b>
+<b class="nc"><i class="no-highlight">140</i>&nbsp;        var lines = repository.getSchema().entrySet().stream().map(entry -&gt; new Object[]{</b>
+<b class="nc"><i class="no-highlight">141</i>&nbsp;                entry.getKey(),</b>
+<b class="nc"><i class="no-highlight">142</i>&nbsp;                entry.getValue().size(),</b>
+<b class="nc"><i class="no-highlight">143</i>&nbsp;                entry.getValue().stream().mapToInt(Station::time).sum(),</b>
+<b class="nc"><i class="no-highlight">144</i>&nbsp;                entry.getValue().stream().map(Station::transfer).mapToInt(Set::size).sum()</b>
+<i class="no-highlight">145</i>&nbsp;        });
+<b class="nc"><i class="no-highlight">146</i>&nbsp;        var report = Stream.concat(header, lines).toArray(Object[][]::new);</b>
+<i class="no-highlight">147</i>&nbsp;
+<b class="nc"><i class="no-highlight">148</i>&nbsp;        return new TableBuilder(new ArrayTableModel(report))</b>
+<b class="nc"><i class="no-highlight">149</i>&nbsp;                .addHeaderAndVerticalsBorders(BorderStyle.valueOf(borderStyle))</b>
+<b class="nc"><i class="no-highlight">150</i>&nbsp;                .on(column(0)).addSizer(NO_WRAP)</b>
+<b class="nc"><i class="no-highlight">151</i>&nbsp;                .on(column(1)).addAligner(right)</b>
+<b class="nc"><i class="no-highlight">152</i>&nbsp;                .on(column(2)).addAligner(right).addSizer(NO_WRAP)</b>
+<b class="nc"><i class="no-highlight">153</i>&nbsp;                .on(column(3)).addAligner(right)</b>
+<b class="nc"><i class="no-highlight">154</i>&nbsp;                .build();</b>
+<i class="no-highlight">155</i>&nbsp;    }
+<i class="no-highlight">156</i>&nbsp;
+<i class="no-highlight">157</i>&nbsp;    public String printRoute(List&lt;StationId&gt; route) {
+<b class="nc"><i class="no-highlight">158</i>&nbsp;        LOGGER.log(TRACE, &quot;prints route: {0}&quot;, route);</b>
+<b class="nc"><i class="no-highlight">159</i>&nbsp;        final var stringJoiner = new StringJoiner(lineSeparator());</b>
+<b class="nc"><i class="no-highlight">160</i>&nbsp;        var line = route.get(0).line();</b>
+<i class="no-highlight">161</i>&nbsp;
+<b class="nc"><i class="no-highlight">162</i>&nbsp;        for (final var node : route) {</b>
+<b class="nc"><i class="no-highlight">163</i>&nbsp;            if (!node.line().equals(line)) {</b>
+<b class="nc"><i class="no-highlight">164</i>&nbsp;                line = node.line();</b>
+<b class="nc"><i class="no-highlight">165</i>&nbsp;                stringJoiner.add(&quot;Transition to line &quot; + line);</b>
+<i class="no-highlight">166</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">167</i>&nbsp;            stringJoiner.add(node.station());</b>
+<b class="nc"><i class="no-highlight">168</i>&nbsp;            LOGGER.log(TRACE, &quot;route metro station: {0}&quot;, node.station());</b>
+<b class="nc"><i class="no-highlight">169</i>&nbsp;        }</b>
+<b class="nc"><i class="no-highlight">170</i>&nbsp;        return stringJoiner.toString();</b>
+<i class="no-highlight">171</i>&nbsp;    }
+<i class="no-highlight">172</i>&nbsp;
+<i class="no-highlight">173</i>&nbsp;    @Autowired
+<i class="no-highlight">174</i>&nbsp;    public void setRepository(MetroRepository repository) {
+<b class="fc"><i class="no-highlight">175</i>&nbsp;        this.repository = repository;</b>
+<b class="fc"><i class="no-highlight">176</i>&nbsp;    }</b>
+<i class="no-highlight">177</i>&nbsp;
+<i class="no-highlight">178</i>&nbsp;    @Autowired
+<i class="no-highlight">179</i>&nbsp;    @Qualifier(&quot;shortestAlgorithm&quot;)
+<i class="no-highlight">180</i>&nbsp;    public void setShortest(SearchAlgorithm&lt;StationId&gt; shortest) {
+<b class="nc"><i class="no-highlight">181</i>&nbsp;        this.shortest = shortest;</b>
+<b class="nc"><i class="no-highlight">182</i>&nbsp;    }</b>
+<i class="no-highlight">183</i>&nbsp;
+<i class="no-highlight">184</i>&nbsp;    @Autowired
+<i class="no-highlight">185</i>&nbsp;    @Qualifier(&quot;fastestAlgorithm&quot;)
+<i class="no-highlight">186</i>&nbsp;    public void setFastest(SearchAlgorithm&lt;StationId&gt; fastest) {
+<b class="nc"><i class="no-highlight">187</i>&nbsp;        this.fastest = fastest;</b>
+<b class="nc"><i class="no-highlight">188</i>&nbsp;    }</b>
+<i class="no-highlight">189</i>&nbsp;
+<i class="no-highlight">190</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -156,7 +299,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-01-17 01:30</div>
+    <div style="float:right;">generated on 2022-01-30 04:06</div>
 </div>
 </body>
 </html>
