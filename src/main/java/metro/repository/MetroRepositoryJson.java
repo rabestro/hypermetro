@@ -10,8 +10,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
+import static java.util.Objects.requireNonNull;
+
+/**
+ * Repository interface implementation that loads a metro map from a JSON file
+ */
 @Repository
 public class MetroRepositoryJson implements MetroRepository, InitializingBean {
 
@@ -24,11 +33,11 @@ public class MetroRepositoryJson implements MetroRepository, InitializingBean {
     private int transferTime;
 
     @Value("#{T(java.nio.file.Path).of(systemProperties['hypermetro.file'])}")
-    private Path schema;
+    private Path schemaPath;
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        metroMap = new JsonMapper().readValue(schema.toFile(), SCHEMA_TYPE);
+        metroMap = new JsonMapper().readValue(schemaPath.toFile(), SCHEMA_TYPE);
     }
 
     @Override
@@ -37,41 +46,37 @@ public class MetroRepositoryJson implements MetroRepository, InitializingBean {
     }
 
     private Deque<Station> getLine(String line) {
-        return Objects.requireNonNull(metroMap.get(line), () -> "There is no metro line with the name " + line);
+        return requireNonNull(metroMap.get(line), () -> "There is no metro line with the name " + line);
     }
 
     @Override
     public void addHead(String line, String station, int time) {
         var metroLine = getLine(line);
-        var prev = new HashSet<String>();
-        var next = new HashSet<String>();
-        var transfer = new HashSet<StationId>();
+        var metroStation = new Station(station, time);
 
         if (!metroLine.isEmpty()) {
             var firstStation = metroLine.getFirst();
-            next.add(firstStation.name());
-            prev.addAll(firstStation.prev());
+            metroStation.next().add(firstStation.name());
+            metroStation.prev().addAll(firstStation.prev());
             firstStation.prev().clear();
             firstStation.prev().add(station);
         }
-        metroLine.addFirst(new Station(station, time, next, prev, transfer));
+        metroLine.addFirst(metroStation);
     }
 
     @Override
     public void append(String line, String station, int time) {
         var metroLine = getLine(line);
-        var prev = new HashSet<String>();
-        var next = new HashSet<String>();
-        var transfer = new HashSet<StationId>();
+        var metroStation = new Station(station, time);
 
         if (!metroLine.isEmpty()) {
             var lastStation = metroLine.getLast();
-            prev.add(lastStation.name());
-            next.addAll(lastStation.next());
+            metroStation.prev().add(lastStation.name());
+            metroStation.next().addAll(lastStation.next());
             lastStation.next().clear();
             lastStation.next().add(station);
         }
-        metroLine.addLast(new Station(station, time, next, prev, transfer));
+        metroLine.addLast(metroStation);
     }
 
     @Override
@@ -121,7 +126,7 @@ public class MetroRepositoryJson implements MetroRepository, InitializingBean {
 
     @Override
     public String getMetroName() {
-        var fileName = schema.getFileName().toString();
+        var fileName = schemaPath.getFileName().toString();
         return fileName.substring(0, fileName.lastIndexOf('.'));
     }
 

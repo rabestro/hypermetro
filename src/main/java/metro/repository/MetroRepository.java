@@ -7,6 +7,9 @@ import metro.model.StationId;
 import java.util.Deque;
 import java.util.Map;
 
+/**
+ * Defines operations on the subway map.
+ */
 public interface MetroRepository {
     /**
      * Finds a metro line by its name
@@ -31,7 +34,8 @@ public interface MetroRepository {
      *
      * @param line    - the name of metro line
      * @param station - the name of new metro station
-     * @throws java.util.NoSuchElementException if there is no such metro line
+     * @param time    - travel time to the next metro station
+     * @throws NullPointerException if there is no such metro line
      */
     void append(String line, String station, int time);
 
