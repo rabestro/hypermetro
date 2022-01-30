@@ -42,18 +42,18 @@ public interface MetroRepository {
     /**
      * Removes a station from the metro map.
      *
-     * @param line-    the name of metro line
-     * @param station- the name of metro station to remove
+     * @param line    - the name of metro line
+     * @param station - the name of metro station to remove
      */
     void remove(String line, String station);
 
     /**
      * Adds a transfer connection between two metro stations.
      *
-     * @param sourceLine     - the name of the first metro line
-     * @param sourceStation- the name of the first metro station
-     * @param targetLine     - the name of the second metro line
-     * @param targetStation- the name of the second metro station
+     * @param sourceLine    - the name of the first metro line
+     * @param sourceStation - the name of the first metro station
+     * @param targetLine    - the name of the second metro line
+     * @param targetStation - the name of the second metro station
      * @throws java.util.NoSuchElementException if there is no such metro line or station
      */
     void connect(String sourceLine, String sourceStation, String targetLine, String targetStation);
