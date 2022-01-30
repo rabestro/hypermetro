@@ -7,6 +7,9 @@ import metro.model.StationId;
 import java.util.Deque;
 import java.util.Map;
 
+/**
+ * Defines operations on the subway map.
+ */
 public interface MetroRepository {
     /**
      * Finds a metro line by its name
@@ -31,25 +34,26 @@ public interface MetroRepository {
      *
      * @param line    - the name of metro line
      * @param station - the name of new metro station
-     * @throws java.util.NoSuchElementException if there is no such metro line
+     * @param time    - travel time to the next metro station
+     * @throws NullPointerException if there is no such metro line
      */
     void append(String line, String station, int time);
 
     /**
      * Removes a station from the metro map.
      *
-     * @param line-    the name of metro line
-     * @param station- the name of metro station to remove
+     * @param line    - the name of metro line
+     * @param station - the name of metro station to remove
      */
     void remove(String line, String station);
 
     /**
      * Adds a transfer connection between two metro stations.
      *
-     * @param sourceLine     - the name of the first metro line
-     * @param sourceStation- the name of the first metro station
-     * @param targetLine     - the name of the second metro line
-     * @param targetStation- the name of the second metro station
+     * @param sourceLine    - the name of the first metro line
+     * @param sourceStation - the name of the first metro station
+     * @param targetLine    - the name of the second metro line
+     * @param targetStation - the name of the second metro station
      * @throws java.util.NoSuchElementException if there is no such metro line or station
      */
     void connect(String sourceLine, String sourceStation, String targetLine, String targetStation);
