@@ -5,16 +5,14 @@ import metro.model.Station
 import spock.lang.Specification
 import spock.lang.Subject
 
-@Mockable(Station)
 class MetroRepositoryJsonSpec extends Specification {
-    def stationOne = Mock Station
-    def stationTwo = Mock Station
 
-    def S1 = new Station('S1', 7, ['A2'] as Set, [] as Set, [] as Set)
-    def S2 = new Station('S2', 5, ['A3'] as Set, ['A1'] as Set, [] as Set)
-    def S3 = new Station('S3', 9, [] as Set, ['A2'] as Set, [] as Set)
+    def A1 = new Station('A1', 7, ['A2'] as Set, [] as Set, [] as Set)
+    def A2 = new Station('A2', 5, ['A3'] as Set, ['A1'] as Set, [] as Set)
+    def A3 = new Station('A3', 9, [] as Set, ['A2'] as Set, [] as Set)
 
-    def L1 = [S1, S2, S3] as ArrayDeque
+    def L1 = [A1, A2, A3] as ArrayDeque
+    def L2 = [] as ArrayDeque
 
     @Subject
     def repository = new MetroRepositoryJson()
@@ -27,19 +25,19 @@ class MetroRepositoryJsonSpec extends Specification {
 
     def "should find metro line by name"() {
         given: 'the repository with given metro map'
-        repository.metroMap = [one: [stationOne, stationTwo] as ArrayDeque, two: [] as ArrayDeque]
+        repository.metroMap = [one: L1, two: L2]
 
         when: 'we request the repository for existing line'
         def line = repository.findLine('one')
 
         then: 'it returns expected metro line'
-        line == [stationOne, stationTwo]
+        line === L1
 
         when: 'we request for an empty line'
         line = repository.findLine('two')
 
         then: 'we get an empty metro line'
-        line == []
+        line === L2
 
         when: 'we request a non existing line'
         line = repository.findLine('unknown')
