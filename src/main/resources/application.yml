@@ -4,11 +4,8 @@ application:
 
 hypermetro:
   file: london.json
-  time: 5
+  time: 5 # Transfer time between stations on connected lines
+  table: # https://docs.spring.io/spring-shell/docs/current/api/org/springframework/shell/table/BorderStyle.html
+    border: fancy_light
 
-shell:
-  out:
-    info: CYAN
-    success: GREEN
-    warning: YELLOW
-    error: RED
+# Borders: fancy_light, oldschool, air, fancy_heavy

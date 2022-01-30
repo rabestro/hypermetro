@@ -10,12 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.nio.file.Path;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 @Repository
 public class MetroRepositoryJson implements MetroRepository, InitializingBean {
@@ -41,32 +36,42 @@ public class MetroRepositoryJson implements MetroRepository, InitializingBean {
         return metroMap.get(line);
     }
 
+    private Deque<Station> getLine(String line) {
+        return Objects.requireNonNull(metroMap.get(line), () -> "There is no metro line with the name " + line);
+    }
+
     @Override
     public void addHead(String line, String station, int time) {
         var metroLine = getLine(line);
+        var prev = new HashSet<String>();
         var next = new HashSet<String>();
-        if (metroLine.isEmpty()) {
-            metroLine.add(new Station(station, time, next, new HashSet<>(), new HashSet<>()));
-        } else {
-            next.add(metroLine.getFirst().name());
-            metroLine.addFirst(new Station(station, time, next, metroLine.getFirst().prev(), new HashSet<>()));
-        }
-    }
+        var transfer = new HashSet<StationId>();
 
-    private Deque<Station> getLine(String line) {
-        return Objects.requireNonNull(metroMap.get(line), () -> "There is no metro line with the name " + line);
+        if (!metroLine.isEmpty()) {
+            var firstStation = metroLine.getFirst();
+            next.add(firstStation.name());
+            prev.addAll(firstStation.prev());
+            firstStation.prev().clear();
+            firstStation.prev().add(station);
+        }
+        metroLine.addFirst(new Station(station, time, next, prev, transfer));
     }
 
     @Override
     public void append(String line, String station, int time) {
         var metroLine = getLine(line);
         var prev = new HashSet<String>();
-        if (metroLine.isEmpty()) {
-            metroLine.add(new Station(station, time, new HashSet<>(), prev, new HashSet<>()));
-        } else {
-            prev.add(metroLine.getLast().name());
-            metroLine.addFirst(new Station(station, time, metroLine.getLast().next(), prev, new HashSet<>()));
+        var next = new HashSet<String>();
+        var transfer = new HashSet<StationId>();
+
+        if (!metroLine.isEmpty()) {
+            var lastStation = metroLine.getLast();
+            prev.add(lastStation.name());
+            next.addAll(lastStation.next());
+            lastStation.next().clear();
+            lastStation.next().add(station);
         }
+        metroLine.addLast(new Station(station, time, next, prev, transfer));
     }
 
     @Override
@@ -107,6 +112,11 @@ public class MetroRepositoryJson implements MetroRepository, InitializingBean {
             }
         }
         return Graph.of(schema);
+    }
+
+    @Override
+    public Map<String, Deque<Station>> getSchema() {
+        return Collections.unmodifiableMap(metroMap);
     }
 
     @Override
