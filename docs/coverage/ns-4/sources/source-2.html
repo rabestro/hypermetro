@@ -1,0 +1,155 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > MetroRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">metro.repository</a>
+</div>
+
+<h1>Coverage Summary for Class: MetroRepository (metro.repository)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">MetroRepository$addHead$0</td>
+  </tr>
+  <tr>
+    <td class="name">MetroRepository$append$1</td>
+  </tr>
+  <tr>
+    <td class="name">MetroRepository$findLine</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package metro.repository;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import metro.algorithm.Graph;
+<i class="no-highlight">4</i>&nbsp;import metro.model.Station;
+<i class="no-highlight">5</i>&nbsp;import metro.model.StationId;
+<i class="no-highlight">6</i>&nbsp;
+<i class="no-highlight">7</i>&nbsp;import java.util.Deque;
+<i class="no-highlight">8</i>&nbsp;import java.util.Map;
+<i class="no-highlight">9</i>&nbsp;
+<i class="no-highlight">10</i>&nbsp;public interface MetroRepository {
+<i class="no-highlight">11</i>&nbsp;    /**
+<i class="no-highlight">12</i>&nbsp;     * Finds a metro line by its name
+<i class="no-highlight">13</i>&nbsp;     *
+<i class="no-highlight">14</i>&nbsp;     * @param line - the name of metro line
+<i class="no-highlight">15</i>&nbsp;     * @return list of metro stations for the given metro line.
+<i class="no-highlight">16</i>&nbsp;     */
+<i class="no-highlight">17</i>&nbsp;    Deque&lt;Station&gt; findLine(String line);
+<i class="no-highlight">18</i>&nbsp;
+<i class="no-highlight">19</i>&nbsp;    /**
+<i class="no-highlight">20</i>&nbsp;     * Adds a new station at the beginning of the metro line
+<i class="no-highlight">21</i>&nbsp;     *
+<i class="no-highlight">22</i>&nbsp;     * @param line    - the name of metro line
+<i class="no-highlight">23</i>&nbsp;     * @param station - the name of new metro station
+<i class="no-highlight">24</i>&nbsp;     * @param time    - travel time to the next metro station
+<i class="no-highlight">25</i>&nbsp;     * @throws NullPointerException if there is no such metro line
+<i class="no-highlight">26</i>&nbsp;     */
+<i class="no-highlight">27</i>&nbsp;    void addHead(String line, String station, int time);
+<i class="no-highlight">28</i>&nbsp;
+<i class="no-highlight">29</i>&nbsp;    /**
+<i class="no-highlight">30</i>&nbsp;     * Adds a new station at the end of the metro line
+<i class="no-highlight">31</i>&nbsp;     *
+<i class="no-highlight">32</i>&nbsp;     * @param line    - the name of metro line
+<i class="no-highlight">33</i>&nbsp;     * @param station - the name of new metro station
+<i class="no-highlight">34</i>&nbsp;     * @throws java.util.NoSuchElementException if there is no such metro line
+<i class="no-highlight">35</i>&nbsp;     */
+<i class="no-highlight">36</i>&nbsp;    void append(String line, String station, int time);
+<i class="no-highlight">37</i>&nbsp;
+<i class="no-highlight">38</i>&nbsp;    /**
+<i class="no-highlight">39</i>&nbsp;     * Removes a station from the metro map.
+<i class="no-highlight">40</i>&nbsp;     *
+<i class="no-highlight">41</i>&nbsp;     * @param line-    the name of metro line
+<i class="no-highlight">42</i>&nbsp;     * @param station- the name of metro station to remove
+<i class="no-highlight">43</i>&nbsp;     */
+<i class="no-highlight">44</i>&nbsp;    void remove(String line, String station);
+<i class="no-highlight">45</i>&nbsp;
+<i class="no-highlight">46</i>&nbsp;    /**
+<i class="no-highlight">47</i>&nbsp;     * Adds a transfer connection between two metro stations.
+<i class="no-highlight">48</i>&nbsp;     *
+<i class="no-highlight">49</i>&nbsp;     * @param sourceLine     - the name of the first metro line
+<i class="no-highlight">50</i>&nbsp;     * @param sourceStation- the name of the first metro station
+<i class="no-highlight">51</i>&nbsp;     * @param targetLine     - the name of the second metro line
+<i class="no-highlight">52</i>&nbsp;     * @param targetStation- the name of the second metro station
+<i class="no-highlight">53</i>&nbsp;     * @throws java.util.NoSuchElementException if there is no such metro line or station
+<i class="no-highlight">54</i>&nbsp;     */
+<i class="no-highlight">55</i>&nbsp;    void connect(String sourceLine, String sourceStation, String targetLine, String targetStation);
+<i class="no-highlight">56</i>&nbsp;
+<i class="no-highlight">57</i>&nbsp;    /**
+<i class="no-highlight">58</i>&nbsp;     * Creates a direct weighted graph based on the metro map.
+<i class="no-highlight">59</i>&nbsp;     *
+<i class="no-highlight">60</i>&nbsp;     * @return a direct weighted graph with StationId as vertexes
+<i class="no-highlight">61</i>&nbsp;     */
+<i class="no-highlight">62</i>&nbsp;    Graph&lt;StationId&gt; getGraph();
+<i class="no-highlight">63</i>&nbsp;
+<i class="no-highlight">64</i>&nbsp;    /**
+<i class="no-highlight">65</i>&nbsp;     * Returns metro schema
+<i class="no-highlight">66</i>&nbsp;     *
+<i class="no-highlight">67</i>&nbsp;     * @return the schema of the metro
+<i class="no-highlight">68</i>&nbsp;     */
+<i class="no-highlight">69</i>&nbsp;    Map&lt;String, Deque&lt;Station&gt;&gt; getSchema();
+<i class="no-highlight">70</i>&nbsp;
+<i class="no-highlight">71</i>&nbsp;    /**
+<i class="no-highlight">72</i>&nbsp;     * Returns name of the metro
+<i class="no-highlight">73</i>&nbsp;     *
+<i class="no-highlight">74</i>&nbsp;     * @return metro name
+<i class="no-highlight">75</i>&nbsp;     */
+<i class="no-highlight">76</i>&nbsp;    String getMetroName();
+<i class="no-highlight">77</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-01-30 04:06</div>
+</div>
+</body>
+</html>

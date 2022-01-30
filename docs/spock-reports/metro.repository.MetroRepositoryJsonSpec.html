@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Sat Jan 29 21:52:55 EET 2022 by jegors</div>
+<div class='date-test-ran'>Created on Sun Jan 30 04:39:42 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -266,13 +266,13 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-<td>1</td>
-<td>1</td>
+<td>3</td>
+<td>3</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.425 seconds</td>
+<td>0.078 seconds</td>
 </tr>
 </tbody>
 </table>
@@ -287,6 +287,12 @@ div.footer {
 <ul id='toc'>
 <li>
 <a href='#1187995273' class='feature-toc-pass'>should find metro line by name</a>
+</li>
+<li>
+<a href='#-1924034751' class='feature-toc-pass'>should add a new station to the head of metro line</a>
+</li>
+<li>
+<a href='#246154383' class='feature-toc-pass'>should append a new station to the end of metro line</a>
 </li>
 </ul>
 <tr>
@@ -310,7 +316,7 @@ div.footer {
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>repository.metroMap = [one: [stationOne, stationTwo] as Deque, two: [] as Deque]</pre>
+<pre class='block-source'>repository.metroMap = [one: L1, two: L2]</pre>
 </td>
 </tr>
 <tr>
@@ -338,7 +344,7 @@ div.footer {
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>line == [stationOne, stationTwo]</pre>
+<pre class='block-source'>line === L1</pre>
 </td>
 </tr>
 <tr>
@@ -366,7 +372,7 @@ div.footer {
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>line == []</pre>
+<pre class='block-source'>line === L2</pre>
 </td>
 </tr>
 <tr>
@@ -395,6 +401,341 @@ div.footer {
 <td></td>
 <td>
 <pre class='block-source'>line == null</pre>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='-1924034751'>
+<span>should add a new station to the head of metro line</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>three linked in cycle metro stations</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def S1 = new Station('S1', 7, ['S2'] as Set, ['S3'] as Set, [] as Set)
+def S2 = new Station('S2', 5, ['S3'] as Set, ['S1'] as Set, [] as Set)
+def S3 = new Station('S3', 9, ['S1'] as Set, ['S2'] as Set, [] as Set)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the first metro line containing these three stations</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def lineOne = [S1, S2, S3] as ArrayDeque</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the second metro line without any stations</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def lineTwo = [] as ArrayDeque&lt;Station&gt;</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>subway map containing these two metro lines</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.metroMap = [one: lineOne, two: lineTwo]</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we append a station at the end of the first metro line</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.addHead('one', 'S4', 4)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the metro line has stations in correct order</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>lineOne*.name() == ['S4', 'S1', 'S2', 'S3']
+lineOne*.time() == [4, 7, 5, 9]</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the first new station has correctly defined fields</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>with(lineOne.first) {
+    name() == 'S4'
+    next() == ['S1'] as Set
+    prev() == ['S3'] as Set
+    transfer().isEmpty()
+    time() == 4
+}</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the previous first station was correctly modified</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>with(S1) {
+    name() == 'S1'
+    next() == ['S2'] as Set
+    prev() == ['S4'] as Set
+    transfer().isEmpty()
+    time() == 7
+}</pre>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='246154383'>
+<span>should append a new station to the end of metro line</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>three linked in cycle metro stations</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def S1 = new Station('S1', 7, ['S2'] as Set, ['S3'] as Set, [] as Set)
+def S2 = new Station('S2', 5, ['S3'] as Set, ['S1'] as Set, [] as Set)
+def S3 = new Station('S3', 9, ['S1'] as Set, ['S2'] as Set, [] as Set)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the first metro line containing these three stations</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def lineOne = [S1, S2, S3] as ArrayDeque</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the second metro line without any stations</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def lineTwo = [] as ArrayDeque&lt;Station&gt;</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>subway map containing these two metro lines</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.metroMap = [one: lineOne, two: lineTwo]</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we append a station at the end of the first metro line</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.append('one', 'S4', 4)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the metro line has stations in correct order</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>lineOne*.name() == ['S1', 'S2', 'S3', 'S4']</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the new added station has correctly defined fields</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>with(lineOne.last) {
+    name() == 'S4'
+    next() == ['S1'] as Set
+    prev() == ['S3'] as Set
+    transfer().isEmpty()
+    time() == 4
+}</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the previous last station was correctly modified</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>with(S3) {
+    name() == 'S3'
+    next() == ['S4'] as Set
+    prev() == ['S2'] as Set
+    transfer().isEmpty()
+    time() == 9
+}</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we append a new station to the second empty metro line</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.append('two', 'X', 5)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the second line become not empty</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>lineTwo</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>it has exactly one station</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>lineTwo.size() == 1</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the new station has expected fields</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>with(lineTwo.first) {
+    name() == 'X'
+    time() == 5
+    next().isEmpty()
+    prev().isEmpty()
+    transfer().isEmpty()
+}</pre>
 </td>
 </tr>
 </tbody>

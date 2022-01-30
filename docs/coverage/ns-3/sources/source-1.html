@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > AddHead</title>
+  <title>Coverage Report > Station</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/highlight-idea.css";
@@ -17,10 +17,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">metro.command</a>
+    <a href="../index.html">metro.model</a>
 </div>
 
-<h1>Coverage Summary for Class: AddHead (metro.command)</h1>
+<h1>Coverage Summary for Class: Station (metro.model)</h1>
 
 <table class="coverageStats">
 
@@ -36,13 +36,13 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">AddHead</td>
+  <td class="name">Station</td>
 <td class="coverageStat">
   <span class="percent">
     100%
   </span>
   <span class="absValue">
-    (2/2)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
@@ -50,12 +50,42 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (5/5)
+    (1/1)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">AddHead$apply</td>
+    <td class="name">Station$SpockMock$130998399</td>
+  </tr>
+  <tr>
+    <td class="name">Station$SpockMock$130998399$auxiliary$2wlDnpCm</td>
+  </tr>
+  <tr>
+    <td class="name">Station$SpockMock$130998399$auxiliary$4ni5bBu4</td>
+  </tr>
+  <tr>
+    <td class="name">Station$SpockMock$130998399$auxiliary$A2XV9FVO</td>
+  </tr>
+  <tr>
+    <td class="name">Station$SpockMock$130998399$auxiliary$C0rJhzQd</td>
+  </tr>
+  <tr>
+    <td class="name">Station$SpockMock$130998399$auxiliary$CU4SFxln</td>
+  </tr>
+  <tr>
+    <td class="name">Station$SpockMock$130998399$auxiliary$Gfkl5wr5</td>
+  </tr>
+  <tr>
+    <td class="name">Station$SpockMock$130998399$auxiliary$iFR8V3VT</td>
+  </tr>
+  <tr>
+    <td class="name">Station$SpockMock$130998399$auxiliary$tU7KJlf4</td>
+  </tr>
+  <tr>
+    <td class="name">Station$SpockMock$130998399$auxiliary$x1kFidFg</td>
+  </tr>
+  <tr>
+    <td class="name">Station$SpockMock$130998399$auxiliary$zW1SwX4g</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
@@ -64,7 +94,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (2/2)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
@@ -72,7 +102,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (5/5)
+    (1/1)
   </span>
 </td>
 </tr>
@@ -83,27 +113,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package metro.command;
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package metro.model;
 <i class="no-highlight">2</i>&nbsp;
-<i class="no-highlight">3</i>&nbsp;import metro.service.MetroService;
+<i class="no-highlight">3</i>&nbsp;import java.util.Set;
 <i class="no-highlight">4</i>&nbsp;
-<i class="no-highlight">5</i>&nbsp;import java.util.List;
-<i class="no-highlight">6</i>&nbsp;
-<i class="no-highlight">7</i>&nbsp;/**
-<i class="no-highlight">8</i>&nbsp; * Adds a new station at the beginning of the metro line
-<i class="no-highlight">9</i>&nbsp; */
-<i class="no-highlight">10</i>&nbsp;public class AddHead extends HyperMetroCommand {
-<i class="no-highlight">11</i>&nbsp;    public AddHead(final MetroService metroService) {
-<b class="fc"><i class="no-highlight">12</i>&nbsp;        super(metroService);</b>
-<b class="fc"><i class="no-highlight">13</i>&nbsp;    }</b>
-<i class="no-highlight">14</i>&nbsp;
-<i class="no-highlight">15</i>&nbsp;    @Override
-<i class="no-highlight">16</i>&nbsp;    public String apply(final List&lt;String&gt; parameters) {
-<b class="fc"><i class="no-highlight">17</i>&nbsp;        validateParametersNumber(parameters, REQUIRED_TWO);</b>
-<b class="fc"><i class="no-highlight">18</i>&nbsp;        metroService.addHead(parameters.get(SOURCE_LINE), parameters.get(SOURCE_NAME));</b>
-<b class="fc"><i class="no-highlight">19</i>&nbsp;        return &quot;Metro station successfully added&quot;;</b>
-<i class="no-highlight">20</i>&nbsp;    }
-<i class="no-highlight">21</i>&nbsp;}
+<i class="no-highlight">5</i>&nbsp;/**
+<i class="no-highlight">6</i>&nbsp; * Subway station model.
+<i class="no-highlight">7</i>&nbsp; *
+<i class="no-highlight">8</i>&nbsp; * Includes the name of the station, a list of next and previous stations,
+<i class="no-highlight">9</i>&nbsp; * and a list of stations to which a transfer is possible.
+<i class="no-highlight">10</i>&nbsp; */
+<b class="fc"><i class="no-highlight">11</i>&nbsp;public record Station(String name, int time, Set&lt;String&gt; next, Set&lt;String&gt; prev, Set&lt;StationId&gt; transfer) {</b>
+<i class="no-highlight">12</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -130,7 +151,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-01-17 01:30</div>
+    <div style="float:right;">generated on 2022-01-30 04:06</div>
 </div>
 </body>
 </html>

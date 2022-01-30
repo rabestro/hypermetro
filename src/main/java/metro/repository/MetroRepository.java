@@ -5,6 +5,7 @@ import metro.model.Station;
 import metro.model.StationId;
 
 import java.util.Deque;
+import java.util.Map;
 
 public interface MetroRepository {
     /**
@@ -60,5 +61,17 @@ public interface MetroRepository {
      */
     Graph<StationId> getGraph();
 
+    /**
+     * Returns metro schema
+     *
+     * @return the schema of the metro
+     */
+    Map<String, Deque<Station>> getSchema();
+
+    /**
+     * Returns name of the metro
+     *
+     * @return metro name
+     */
     String getMetroName();
 }

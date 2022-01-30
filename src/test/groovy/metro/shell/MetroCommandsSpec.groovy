@@ -1,7 +1,6 @@
 package metro.shell
 
 import metro.repository.MetroRepository
-import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -35,7 +34,8 @@ class MetroCommandsSpec extends Specification {
         output.contains 'successfully'
     }
 
-    def "Append"() {
+    def "should append a new metro station to metro line"() {
+
     }
 
     def "Connect"() {

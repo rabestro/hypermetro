@@ -1,6 +1,7 @@
 package metro.shell;
 
 import metro.algorithm.SearchAlgorithm;
+import metro.model.Station;
 import metro.model.StationId;
 import metro.repository.MetroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,13 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import org.springframework.shell.table.ArrayTableModel;
 import org.springframework.shell.table.BorderStyle;
+import org.springframework.shell.table.NoWrapSizeConstraints;
+import org.springframework.shell.table.SizeConstraints;
+import org.springframework.shell.table.Table;
 import org.springframework.shell.table.TableBuilder;
 
 import java.util.List;
+import java.util.Set;
 import java.util.StringJoiner;
 import java.util.stream.Stream;
 
@@ -21,10 +26,13 @@ import static java.lang.String.join;
 import static java.lang.System.Logger.Level.TRACE;
 import static java.lang.System.lineSeparator;
 import static java.util.stream.Collectors.joining;
+import static org.springframework.shell.table.CellMatchers.column;
+import static org.springframework.shell.table.SimpleHorizontalAligner.right;
 
 @ShellComponent
 public class MetroCommands {
     private static final System.Logger LOGGER = System.getLogger(MetroCommands.class.getName());
+    private static final SizeConstraints NO_WRAP = new NoWrapSizeConstraints();
 
     private MetroRepository repository;
 
@@ -32,8 +40,8 @@ public class MetroCommands {
 
     private SearchAlgorithm<StationId> fastest;
 
-    @Value("${hypermetro.terminal.width:120}")
-    private int terminalWidth;
+    @Value("${hypermetro.table.border:oldschool}")
+    private String borderStyle;
 
     @ShellMethod("Adds a new station at the beginning of the metro line")
     public String addHead(
@@ -104,23 +112,46 @@ public class MetroCommands {
         return "Metro station successfully removed";
     }
 
-    @ShellMethod("Prints a metro line")
-    public String output(
+    @ShellMethod("Outputs all stations for a given metro line")
+    public Table output(
             @ShellOption(help = "Name of the metro line") String line
     ) {
-        var header = Stream.ofNullable(new Object[]{"Station", "Next", "Previous", "Transfer"});
+        var header = Stream.ofNullable(new Object[]{"Station", "Next", "Previous", "Transfer to line"});
         var stations = repository.findLine(line).stream().map(station -> new Object[]{
                 station.name(),
                 join(lineSeparator(), station.next()),
                 join(lineSeparator(), station.prev()),
                 station.transfer().stream().map(StationId::line).collect(joining(lineSeparator()))
         });
-        var table = Stream.concat(header, stations).toArray(Object[][]::new);
+        var report = Stream.concat(header, stations).toArray(Object[][]::new);
 
-        return new TableBuilder(new ArrayTableModel(table))
-                .addFullBorder(BorderStyle.fancy_light)
-                .build()
-                .render(terminalWidth);
+        return new TableBuilder(new ArrayTableModel(report))
+                .addFullBorder(BorderStyle.valueOf(borderStyle))
+                .on(column(0)).addSizer(NO_WRAP)
+                .on(column(1)).addSizer(NO_WRAP)
+                .on(column(2)).addSizer(NO_WRAP)
+                .on(column(3)).addSizer(NO_WRAP)
+                .build();
+    }
+
+    @ShellMethod("Prints information about metro lines")
+    public Table lines() {
+        var header = Stream.ofNullable(new Object[]{"Metro Line", "Stations", "Length (min)", "Transfers"});
+        var lines = repository.getSchema().entrySet().stream().map(entry -> new Object[]{
+                entry.getKey(),
+                entry.getValue().size(),
+                entry.getValue().stream().mapToInt(Station::time).sum(),
+                entry.getValue().stream().map(Station::transfer).mapToInt(Set::size).sum()
+        });
+        var report = Stream.concat(header, lines).toArray(Object[][]::new);
+
+        return new TableBuilder(new ArrayTableModel(report))
+                .addHeaderAndVerticalsBorders(BorderStyle.valueOf(borderStyle))
+                .on(column(0)).addSizer(NO_WRAP)
+                .on(column(1)).addAligner(right)
+                .on(column(2)).addAligner(right).addSizer(NO_WRAP)
+                .on(column(3)).addAligner(right)
+                .build();
     }
 
     public String printRoute(List<StationId> route) {
