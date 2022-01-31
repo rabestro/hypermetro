@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import static java.lang.System.Logger.Level.INFO;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -23,6 +24,7 @@ import static java.util.Objects.requireNonNull;
  */
 @Repository
 public class MetroRepositoryJson implements MetroRepository, InitializingBean {
+    private static final System.Logger LOGGER = System.getLogger(MetroRepositoryJson.class.getName());
 
     private static final TypeReference<Map<String, Deque<Station>>> SCHEMA_TYPE = new TypeReference<>() {
     };
@@ -37,7 +39,9 @@ public class MetroRepositoryJson implements MetroRepository, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        LOGGER.log(INFO, "Loading metro schema from file: „{0}“", schemaPath);
         metroMap = new JsonMapper().readValue(schemaPath.toFile(), SCHEMA_TYPE);
+        LOGGER.log(INFO, "Metro map successfully loaded.");
     }
 
     @Override
@@ -51,6 +55,7 @@ public class MetroRepositoryJson implements MetroRepository, InitializingBean {
 
     @Override
     public void addHead(String line, String station, int time) {
+        LOGGER.log(INFO, "Executing command: add-head „{0}“ „{1}“ „{2}“", line, station, time);
         var metroLine = getLine(line);
         var metroStation = new Station(station, time);
 
@@ -66,6 +71,7 @@ public class MetroRepositoryJson implements MetroRepository, InitializingBean {
 
     @Override
     public void append(String line, String station, int time) {
+        LOGGER.log(INFO, "Executing command: append „{0}“ „{1}“ „{2}“", line, station, time);
         var metroLine = getLine(line);
         var metroStation = new Station(station, time);
 
@@ -81,11 +87,14 @@ public class MetroRepositoryJson implements MetroRepository, InitializingBean {
 
     @Override
     public void remove(String line, String station) {
+        LOGGER.log(INFO, "Executing command: remove „{0}“ „{1}“", line, station);
         throw new UnsupportedOperationException("This operation has not yet been implemented");
     }
 
     @Override
     public void connect(String sourceLine, String sourceStation, String targetLine, String targetStation) {
+        LOGGER.log(INFO, "Executing command: connect „{0}“ „{1}“ „{2}“ „{3}“",
+                sourceLine, sourceStation, targetLine, targetStation);
         var source = getStation(sourceLine, sourceStation);
         var target = getStation(targetLine, targetStation);
         source.transfer().add(new StationId(targetLine, targetStation));
