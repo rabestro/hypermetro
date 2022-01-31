@@ -17,12 +17,15 @@ import org.springframework.shell.table.SizeConstraints;
 import org.springframework.shell.table.Table;
 import org.springframework.shell.table.TableBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.lang.String.join;
+import static java.lang.System.Logger.Level.DEBUG;
 import static java.lang.System.Logger.Level.TRACE;
 import static java.lang.System.lineSeparator;
 import static java.util.stream.Collectors.joining;
@@ -75,7 +78,7 @@ public class MetroCommands {
     }
 
     @ShellMethod("Finds and prints the shortest route between two metro stations")
-    public String route(
+    public Table route(
             @ShellOption(help = "Name of the starting metro line") String sourceLine,
             @ShellOption(help = "Name of the starting metro station") String sourceStation,
             @ShellOption(help = "Name of the final metro line") String targetLine,
@@ -85,7 +88,7 @@ public class MetroCommands {
         var target = new StationId(targetLine, targetStation);
         var graph = repository.getGraph();
         var route = shortest.findPath(graph, source, target);
-        return printRoute(route);
+        return route(route);
     }
 
     @ShellMethod("Finds and prints the fastest route between two metro stations")
@@ -100,7 +103,7 @@ public class MetroCommands {
         var graph = repository.getGraph();
         var route = fastest.findPath(graph, source, target);
         var timeMessage = lineSeparator() + "Total: " + (int) graph.getDistance(route) + " minutes in the way";
-        return printRoute(route) + timeMessage;
+        return route(route).render(80) + timeMessage;
     }
 
     @ShellMethod("Removes a station from the metro map")
@@ -158,6 +161,7 @@ public class MetroCommands {
         LOGGER.log(TRACE, "prints route: {0}", route);
         final var stringJoiner = new StringJoiner(lineSeparator());
         var line = route.get(0).line();
+        var data = new ArrayList<String>();
 
         for (final var node : route) {
             if (!node.line().equals(line)) {
@@ -168,6 +172,29 @@ public class MetroCommands {
             LOGGER.log(TRACE, "route metro station: {0}", node.station());
         }
         return stringJoiner.toString();
+    }
+
+    public Table route(List<StationId> route) {
+        LOGGER.log(DEBUG, "prints route: {0}", route);
+        var line = route.get(0).line();
+        var data = new ArrayList<String>();
+        data.add("Route");
+        for (final var node : route) {
+            if (!node.line().equals(line)) {
+                line = node.line();
+                data.add("Transition to line " + line);
+            }
+            data.add(node.station());
+        }
+
+        var table = IntStream.range(0, data.size())
+                .mapToObj(i -> new Object[]{i == 0 ? "" : i, data.get(i)}).toArray(Object[][]::new);
+
+        return new TableBuilder(new ArrayTableModel(table))
+                .addHeaderAndVerticalsBorders(BorderStyle.valueOf(borderStyle))
+                .on(column(0)).addAligner(right)
+                .on(column(1)).addSizer(NO_WRAP)
+                .build();
     }
 
     @Autowired
