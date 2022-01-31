@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Sun Jan 30 19:41:30 EET 2022 by jegors</div>
+<div class='date-test-ran'>Created on Mon Jan 31 22:19:55 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -266,13 +266,13 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-<td>1</td>
-<td>1</td>
+<td>4</td>
+<td>4</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.226 seconds</td>
+<td>0.104 seconds</td>
 </tr>
 </tbody>
 </table>
@@ -287,6 +287,15 @@ div.footer {
 <ul id='toc'>
 <li>
 <a href='#791096783' class='feature-toc-pass'>should execute add-head command</a>
+</li>
+<li>
+<a href='#917356893' class='feature-toc-pass'>should execute append command</a>
+</li>
+<li>
+<a href='#-1477288963' class='feature-toc-pass'>should execute connect command</a>
+</li>
+<li>
+<a href='#-416227129' class='feature-toc-pass'>should execute remove command</a>
 </li>
 </ul>
 <tr>
@@ -341,6 +350,199 @@ def transferTime = 5</pre>
 <td></td>
 <td>
 <pre class='block-source'>1 * repository.addHead(metroLine, metroStation, transferTime)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>execution of the command is successful</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>output.contains 'successfully'</pre>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='917356893'>
+<span>should execute append command</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we execute the command with these parameters</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def output = commands.append metroLine, metroStation, transferTime</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the metro repository is called with the parameters</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>1 * repository.append(metroLine, metroStation, transferTime)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>execution of the command is successful</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>output.contains 'successfully'</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Where:</div>
+</td>
+<td>
+<div class='block-text'>metro line, station and transfer time to the next station as</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>metroLine</th>
+<th class='ex-header'>metroStation</th>
+<th class='ex-header'>transferTime</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>Bakerloo</td>
+<td class='ex-value'>Waterloo</td>
+<td class='ex-value'>5</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div class='spec-status'>1/1 passed</div>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='-1477288963'>
+<span>should execute connect command</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we execute the command with these parameters</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def output = commands.connect 'one', 'A1', 'two', 'B2'</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the metro repository is called with the parameters</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>1 * repository.connect('one', 'A1', 'two', 'B2')</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>execution of the command is successful</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>output.contains 'successfully'</pre>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='-416227129'>
+<span>should execute remove command</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we execute the command with these parameters</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def output = commands.remove 'Bakerloo', 'Waterloo'</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the metro repository is called with the parameters</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>1 * repository.remove('Bakerloo', 'Waterloo')</pre>
 </td>
 </tr>
 <tr>

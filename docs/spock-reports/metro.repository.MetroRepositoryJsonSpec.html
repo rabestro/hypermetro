@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Sun Jan 30 19:41:30 EET 2022 by jegors</div>
+<div class='date-test-ran'>Created on Mon Jan 31 22:19:54 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -266,13 +266,13 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-<td>5</td>
-<td>5</td>
+<td>6</td>
+<td>6</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.181 seconds</td>
+<td>0.117 seconds</td>
 </tr>
 </tbody>
 </table>
@@ -299,6 +299,9 @@ div.footer {
 </li>
 <li>
 <a href='#84975638' class='feature-toc-pass'>should throw an exception for unimplemented remove operation</a>
+</li>
+<li>
+<a href='#1533476510' class='feature-toc-pass'>should connect two station from different metro lines</a>
 </li>
 </ul>
 <tr>
@@ -906,6 +909,133 @@ def S3 = new Station('S3', 9, ['S1'] as Set, ['S2'] as Set, [] as Set)</pre>
 <td></td>
 <td>
 <pre class='block-source'>repository.remove(_ as String, _ as String)</pre>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='1533476510'>
+<span>should connect two station from different metro lines</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>subway stations creating a circular subway line</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def A1 = new Station('A1', 7, ['A2'] as Set, ['A3'] as Set, [] as Set)
+def A2 = new Station('A2', 5, ['A3'] as Set, ['A1'] as Set, [] as Set)
+def A3 = new Station('A3', 9, ['A1'] as Set, ['A2'] as Set, [] as Set)
+def L1 = [A1, A2, A3] as ArrayDeque</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>subway stations that create an open subway line</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def B1 = new Station('B1', 6, ['B2'] as Set, [] as Set, [] as Set)
+def B2 = new Station('B2', 8, ['B3'] as Set, ['B1'] as Set, [] as Set)
+def B3 = new Station('B3', 7, ['B4'] as Set, ['B2'] as Set, [] as Set)
+def B4 = new Station('B3', 9, [] as Set, ['B3'] as Set, [] as Set)
+def L2 = [B1, B2, B3, B4] as ArrayDeque</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>subway map containing these two unconnected metro lines</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.metroMap = [one: L1, two: L2]</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Expect:</div>
+</td>
+<td>
+<div class='block-text'>that every stations on line one and two has no transfers</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>L1*.transfer().every { it.isEmpty() }
+L2*.transfer().every { it.isEmpty() }</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we connect station A2 with station B3</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.connect('one', 'A2', 'two', 'B3')</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>station A2 from line one has transfer to line two, station B3</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>A1.transfer().isEmpty()
+A3.transfer().isEmpty()
+with(A2) {
+    transfer().size() == 1
+    transfer().contains new StationId('two', 'B3')
+}</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>station B3 from line two has transfer to line one, station A2</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>B1.transfer().isEmpty()
+B2.transfer().isEmpty()
+B4.transfer().isEmpty()
+with(B3) {
+    transfer().size() == 1
+    transfer().contains new StationId('one', 'A2')
+}</pre>
 </td>
 </tr>
 </tbody>
