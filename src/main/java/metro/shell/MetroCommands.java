@@ -20,13 +20,11 @@ import org.springframework.shell.table.TableBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.StringJoiner;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.lang.String.join;
 import static java.lang.System.Logger.Level.DEBUG;
-import static java.lang.System.Logger.Level.TRACE;
 import static java.lang.System.lineSeparator;
 import static java.util.stream.Collectors.joining;
 import static org.springframework.shell.table.CellMatchers.column;
@@ -88,7 +86,7 @@ public class MetroCommands {
         var target = new StationId(targetLine, targetStation);
         var graph = repository.getGraph();
         var route = shortest.findPath(graph, source, target);
-        return route(route);
+        return getRouteTable(route);
     }
 
     @ShellMethod("Finds and prints the fastest route between two metro stations")
@@ -103,7 +101,7 @@ public class MetroCommands {
         var graph = repository.getGraph();
         var route = fastest.findPath(graph, source, target);
         var timeMessage = lineSeparator() + "Total: " + (int) graph.getDistance(route) + " minutes in the way";
-        return route(route).render(80) + timeMessage;
+        return getRouteTable(route).render(80) + timeMessage;
     }
 
     @ShellMethod("Removes a station from the metro map")
@@ -157,24 +155,7 @@ public class MetroCommands {
                 .build();
     }
 
-    public String printRoute(List<StationId> route) {
-        LOGGER.log(TRACE, "prints route: {0}", route);
-        final var stringJoiner = new StringJoiner(lineSeparator());
-        var line = route.get(0).line();
-        var data = new ArrayList<String>();
-
-        for (final var node : route) {
-            if (!node.line().equals(line)) {
-                line = node.line();
-                stringJoiner.add("Transition to line " + line);
-            }
-            stringJoiner.add(node.station());
-            LOGGER.log(TRACE, "route metro station: {0}", node.station());
-        }
-        return stringJoiner.toString();
-    }
-
-    public Table route(List<StationId> route) {
+    public Table getRouteTable(List<StationId> route) {
         LOGGER.log(DEBUG, "prints route: {0}", route);
         var line = route.get(0).line();
         var data = new ArrayList<String>();
