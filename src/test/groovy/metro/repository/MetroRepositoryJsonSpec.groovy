@@ -196,6 +196,45 @@ class MetroRepositoryJsonSpec extends Specification {
     }
 
     def "should connect two station from different metro lines"() {
+        given: 'subway stations creating a circular subway line'
+        def A1 = new Station('A1', 7, ['A2'] as Set, ['A3'] as Set, [] as Set)
+        def A2 = new Station('A2', 5, ['A3'] as Set, ['A1'] as Set, [] as Set)
+        def A3 = new Station('A3', 9, ['A1'] as Set, ['A2'] as Set, [] as Set)
+        def L1 = [A1, A2, A3] as ArrayDeque
+
+        and: 'subway stations that create an open subway line'
+        def B1 = new Station('B1', 6, ['B2'] as Set, [] as Set, [] as Set)
+        def B2 = new Station('B2', 8, ['B3'] as Set, ['B1'] as Set, [] as Set)
+        def B3 = new Station('B3', 7, ['B4'] as Set, ['B2'] as Set, [] as Set)
+        def B4 = new Station('B3', 9, [] as Set, ['B3'] as Set, [] as Set)
+        def L2 = [B1, B2, B3, B4] as ArrayDeque
+
+        and: 'subway map containing these two unconnected metro lines'
+        repository.metroMap = [one: L1, two: L2]
+
+        expect: 'that every stations on line one and two has no transfers'
+        L1*.transfer().every { it.isEmpty() }
+        L2*.transfer().every { it.isEmpty() }
+
+        when: 'we connect station A2 with station B3'
+        repository.connect('one', 'A2', 'two', 'B3')
+
+        then: 'station A2 from line one has transfer to line two, station B3'
+        A1.transfer().isEmpty()
+        A3.transfer().isEmpty()
+        with(A2) {
+            transfer().size() == 1
+            transfer().contains new StationId('two', 'B3')
+        }
+
+        and: 'station B3 from line two has transfer to line one, station A2'
+        B1.transfer().isEmpty()
+        B2.transfer().isEmpty()
+        B4.transfer().isEmpty()
+        with(B3) {
+            transfer().size() == 1
+            transfer().contains new StationId('one', 'A2')
+        }
     }
 
     def "GetGraph"() {
