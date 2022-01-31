@@ -47,3 +47,12 @@ You may check the report and the documentation:
 - [Tests Coverage](https://rabestro.github.io/hypermetro/coverage) report
 - [Gradle unit test](https://rabestro.github.io/hypermetro/reports/test) report
 
+## Hi-Level Architecture
+
+Variant A
+
+![Architecture](assets/architect-01A.gif)
+
+Variant B
+
+![Architecture](assets/architect-01B.gif)
