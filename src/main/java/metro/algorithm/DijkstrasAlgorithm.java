@@ -4,11 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
-
-import static java.util.stream.Stream.iterate;
 
 /**
  * Algorithm for finding the fastest paths between nodes in a graph.
@@ -41,12 +37,9 @@ public class DijkstrasAlgorithm<T> implements SearchAlgorithm<T> {
                 }
             });
         }
-        if (previous.containsKey(target) || source.equals(target)) {
-            var path = new LinkedList<T>();
-            iterate(target, Objects::nonNull, previous::get).forEach(path::addFirst);
-            return path;
-        }
-        return List.of();
+        var isFoundPath = previous.containsKey(target) || source.equals(target);
+
+        return isFoundPath ? buildPath(target, previous) : List.of();
     }
 
 }

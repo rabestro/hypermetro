@@ -5,12 +5,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.function.Predicate.not;
-import static java.util.stream.Stream.iterate;
 
 /**
  * Algorithm for finding the shortest paths between nodes in a graph.
@@ -34,9 +31,7 @@ public class BreadthFirstSearch<T> implements SearchAlgorithm<T> {
         while (!queue.isEmpty()) {
             var node = queue.removeFirst();
             if (target.equals(node)) {
-                var path = new LinkedList<T>();
-                iterate(node, Objects::nonNull, previous::get).forEach(path::addFirst);
-                return path;
+                return buildPath(target, previous);
             }
             visited.add(node);
             graph.edges(node).keySet().stream()
