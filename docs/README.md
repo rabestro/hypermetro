@@ -42,8 +42,8 @@ In order to run the application you should specify a metro schema as argument:
 ## Documentation
 
 You may check the report and the documentation:
-- [JavaDoc](https://rabestro.github.io/hypermetro/docs/javadoc) for the program
-- [Specifications](https://rabestro.github.io/hypermetro/docs/spock-reports) by Spock Reports
-- [Tests Coverage](https://rabestro.github.io/hypermetro/docs/coverage) report
-- [Gradle unit test](https://rabestro.github.io/hypermetro/docs/reports/test) report
+- [JavaDoc](https://rabestro.github.io/hypermetro/javadoc) for the program
+- [Specifications](https://rabestro.github.io/hypermetro/spock-reports) by Spock Reports
+- [Tests Coverage](https://rabestro.github.io/hypermetro/coverage) report
+- [Gradle unit test](https://rabestro.github.io/hypermetro/reports/test) report
 
