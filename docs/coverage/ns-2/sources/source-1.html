@@ -61,7 +61,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (20/20)
+    (18/18)
   </span>
 </td>
 </tr>
@@ -80,51 +80,46 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">5</i>&nbsp;import java.util.ArrayDeque;
 <i class="no-highlight">6</i>&nbsp;import java.util.HashMap;
 <i class="no-highlight">7</i>&nbsp;import java.util.HashSet;
-<i class="no-highlight">8</i>&nbsp;import java.util.LinkedList;
-<i class="no-highlight">9</i>&nbsp;import java.util.List;
-<i class="no-highlight">10</i>&nbsp;import java.util.Objects;
+<i class="no-highlight">8</i>&nbsp;import java.util.List;
+<i class="no-highlight">9</i>&nbsp;
+<i class="no-highlight">10</i>&nbsp;import static java.util.function.Predicate.not;
 <i class="no-highlight">11</i>&nbsp;
-<i class="no-highlight">12</i>&nbsp;import static java.util.function.Predicate.not;
-<i class="no-highlight">13</i>&nbsp;import static java.util.stream.Stream.iterate;
-<i class="no-highlight">14</i>&nbsp;
-<i class="no-highlight">15</i>&nbsp;/**
-<i class="no-highlight">16</i>&nbsp; * Algorithm for finding the shortest paths between nodes in a graph.
-<i class="no-highlight">17</i>&nbsp; * &lt;p&gt;
-<i class="no-highlight">18</i>&nbsp; * The algorithm doesn&#39;t take into account the distance between nodes.
-<i class="no-highlight">19</i>&nbsp; *
-<i class="no-highlight">20</i>&nbsp; * @param &lt;T&gt; the type of vertex
-<i class="no-highlight">21</i>&nbsp; * @author Jegors Čemisovs
-<i class="no-highlight">22</i>&nbsp; * @since 1.0
-<i class="no-highlight">23</i>&nbsp; */
-<i class="no-highlight">24</i>&nbsp;@Component(&quot;shortestAlgorithm&quot;)
-<b class="fc"><i class="no-highlight">25</i>&nbsp;public class BreadthFirstSearch&lt;T&gt; implements SearchAlgorithm&lt;T&gt; {</b>
-<i class="no-highlight">26</i>&nbsp;
-<i class="no-highlight">27</i>&nbsp;    @Override
-<i class="no-highlight">28</i>&nbsp;    public List&lt;T&gt; findPath(Graph&lt;T&gt; graph, T source, T target) {
-<b class="fc"><i class="no-highlight">29</i>&nbsp;        var queue = new ArrayDeque&lt;T&gt;();</b>
-<b class="fc"><i class="no-highlight">30</i>&nbsp;        var visited = new HashSet&lt;T&gt;();</b>
-<b class="fc"><i class="no-highlight">31</i>&nbsp;        var previous = new HashMap&lt;T, T&gt;();</b>
-<b class="fc"><i class="no-highlight">32</i>&nbsp;        queue.add(source);</b>
-<i class="no-highlight">33</i>&nbsp;
-<b class="fc"><i class="no-highlight">34</i>&nbsp;        while (!queue.isEmpty()) {</b>
-<b class="fc"><i class="no-highlight">35</i>&nbsp;            var node = queue.removeFirst();</b>
-<b class="fc"><i class="no-highlight">36</i>&nbsp;            if (target.equals(node)) {</b>
-<b class="fc"><i class="no-highlight">37</i>&nbsp;                var path = new LinkedList&lt;T&gt;();</b>
-<b class="fc"><i class="no-highlight">38</i>&nbsp;                iterate(node, Objects::nonNull, previous::get).forEach(path::addFirst);</b>
-<b class="fc"><i class="no-highlight">39</i>&nbsp;                return path;</b>
-<i class="no-highlight">40</i>&nbsp;            }
-<b class="fc"><i class="no-highlight">41</i>&nbsp;            visited.add(node);</b>
-<b class="fc"><i class="no-highlight">42</i>&nbsp;            graph.edges(node).keySet().stream()</b>
-<b class="fc"><i class="no-highlight">43</i>&nbsp;                    .filter(not(visited::contains))</b>
-<b class="fc"><i class="no-highlight">44</i>&nbsp;                    .forEach(it -&gt; {</b>
-<b class="fc"><i class="no-highlight">45</i>&nbsp;                        previous.computeIfAbsent(it, x -&gt; node);</b>
-<b class="fc"><i class="no-highlight">46</i>&nbsp;                        queue.addLast(it);</b>
-<b class="fc"><i class="no-highlight">47</i>&nbsp;                    });</b>
-<b class="fc"><i class="no-highlight">48</i>&nbsp;        }</b>
-<b class="fc"><i class="no-highlight">49</i>&nbsp;        return List.of();</b>
-<i class="no-highlight">50</i>&nbsp;    }
-<i class="no-highlight">51</i>&nbsp;
-<i class="no-highlight">52</i>&nbsp;}
+<i class="no-highlight">12</i>&nbsp;/**
+<i class="no-highlight">13</i>&nbsp; * Algorithm for finding the shortest paths between nodes in a graph.
+<i class="no-highlight">14</i>&nbsp; * &lt;p&gt;
+<i class="no-highlight">15</i>&nbsp; * The algorithm doesn&#39;t take into account the distance between nodes.
+<i class="no-highlight">16</i>&nbsp; *
+<i class="no-highlight">17</i>&nbsp; * @param &lt;T&gt; the type of vertex
+<i class="no-highlight">18</i>&nbsp; * @author Jegors Čemisovs
+<i class="no-highlight">19</i>&nbsp; * @since 1.0
+<i class="no-highlight">20</i>&nbsp; */
+<i class="no-highlight">21</i>&nbsp;@Component(&quot;shortestAlgorithm&quot;)
+<b class="fc"><i class="no-highlight">22</i>&nbsp;public class BreadthFirstSearch&lt;T&gt; implements SearchAlgorithm&lt;T&gt; {</b>
+<i class="no-highlight">23</i>&nbsp;
+<i class="no-highlight">24</i>&nbsp;    @Override
+<i class="no-highlight">25</i>&nbsp;    public List&lt;T&gt; findPath(Graph&lt;T&gt; graph, T source, T target) {
+<b class="fc"><i class="no-highlight">26</i>&nbsp;        var queue = new ArrayDeque&lt;T&gt;();</b>
+<b class="fc"><i class="no-highlight">27</i>&nbsp;        var visited = new HashSet&lt;T&gt;();</b>
+<b class="fc"><i class="no-highlight">28</i>&nbsp;        var previous = new HashMap&lt;T, T&gt;();</b>
+<b class="fc"><i class="no-highlight">29</i>&nbsp;        queue.add(source);</b>
+<i class="no-highlight">30</i>&nbsp;
+<b class="fc"><i class="no-highlight">31</i>&nbsp;        while (!queue.isEmpty()) {</b>
+<b class="fc"><i class="no-highlight">32</i>&nbsp;            var node = queue.removeFirst();</b>
+<b class="fc"><i class="no-highlight">33</i>&nbsp;            if (target.equals(node)) {</b>
+<b class="fc"><i class="no-highlight">34</i>&nbsp;                return buildPath(target, previous);</b>
+<i class="no-highlight">35</i>&nbsp;            }
+<b class="fc"><i class="no-highlight">36</i>&nbsp;            visited.add(node);</b>
+<b class="fc"><i class="no-highlight">37</i>&nbsp;            graph.edges(node).keySet().stream()</b>
+<b class="fc"><i class="no-highlight">38</i>&nbsp;                    .filter(not(visited::contains))</b>
+<b class="fc"><i class="no-highlight">39</i>&nbsp;                    .forEach(it -&gt; {</b>
+<b class="fc"><i class="no-highlight">40</i>&nbsp;                        previous.computeIfAbsent(it, x -&gt; node);</b>
+<b class="fc"><i class="no-highlight">41</i>&nbsp;                        queue.addLast(it);</b>
+<b class="fc"><i class="no-highlight">42</i>&nbsp;                    });</b>
+<b class="fc"><i class="no-highlight">43</i>&nbsp;        }</b>
+<b class="fc"><i class="no-highlight">44</i>&nbsp;        return List.of();</b>
+<i class="no-highlight">45</i>&nbsp;    }
+<i class="no-highlight">46</i>&nbsp;
+<i class="no-highlight">47</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -151,7 +146,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-01-30 04:06</div>
+    <div style="float:right;">generated on 2022-02-01 22:34</div>
 </div>
 </body>
 </html>
