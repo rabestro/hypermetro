@@ -49,7 +49,7 @@ You may check the report and the documentation:
 
 ## Hi-Level Architecture
 
-![Architecture](assets/architect-01B.gif)
+![Architecture](assets/architect-01C.png)
 
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=rabestro_hypermetro)
