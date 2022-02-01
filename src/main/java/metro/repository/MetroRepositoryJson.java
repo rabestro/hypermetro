@@ -73,6 +73,7 @@ public class MetroRepositoryJson implements MetroRepository, InitializingBean {
     public void append(String line, String station, int time) {
         LOGGER.log(INFO, "Executing command: append „{0}“ „{1}“ „{2}“", line, station, time);
         var metroLine = getLine(line);
+        requireNoStation(metroLine, station);
         var metroStation = new Station(station, time);
 
         if (!metroLine.isEmpty()) {
@@ -83,6 +84,13 @@ public class MetroRepositoryJson implements MetroRepository, InitializingBean {
             lastStation.next().add(station);
         }
         metroLine.addLast(metroStation);
+    }
+
+    private void requireNoStation(Deque<Station> metroLine, String station) {
+        var hasStation = metroLine.stream().map(Station::name).anyMatch(station::equalsIgnoreCase);
+        if (hasStation) {
+            throw new IllegalArgumentException("the station with the name '" + station + "' is already on the metro line");
+        }
     }
 
     @Override
