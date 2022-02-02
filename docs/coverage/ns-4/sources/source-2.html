@@ -28,13 +28,16 @@ Current scope:     <a href="../../index.html">all classes</a>
   <th class="name">Class</th>
 </tr>
   <tr>
-    <td class="name">MetroRepository$addHead$0</td>
+    <td class="name">MetroRepository$addHead$1</td>
   </tr>
   <tr>
-    <td class="name">MetroRepository$append$1</td>
+    <td class="name">MetroRepository$append</td>
   </tr>
   <tr>
-    <td class="name">MetroRepository$findLine</td>
+    <td class="name">MetroRepository$connect$2</td>
+  </tr>
+  <tr>
+    <td class="name">MetroRepository$findLine$0</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
@@ -55,74 +58,78 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">7</i>&nbsp;import java.util.Deque;
 <i class="no-highlight">8</i>&nbsp;import java.util.Map;
 <i class="no-highlight">9</i>&nbsp;
-<i class="no-highlight">10</i>&nbsp;public interface MetroRepository {
-<i class="no-highlight">11</i>&nbsp;    /**
-<i class="no-highlight">12</i>&nbsp;     * Finds a metro line by its name
-<i class="no-highlight">13</i>&nbsp;     *
-<i class="no-highlight">14</i>&nbsp;     * @param line - the name of metro line
-<i class="no-highlight">15</i>&nbsp;     * @return list of metro stations for the given metro line.
-<i class="no-highlight">16</i>&nbsp;     */
-<i class="no-highlight">17</i>&nbsp;    Deque&lt;Station&gt; findLine(String line);
-<i class="no-highlight">18</i>&nbsp;
-<i class="no-highlight">19</i>&nbsp;    /**
-<i class="no-highlight">20</i>&nbsp;     * Adds a new station at the beginning of the metro line
-<i class="no-highlight">21</i>&nbsp;     *
-<i class="no-highlight">22</i>&nbsp;     * @param line    - the name of metro line
-<i class="no-highlight">23</i>&nbsp;     * @param station - the name of new metro station
-<i class="no-highlight">24</i>&nbsp;     * @param time    - travel time to the next metro station
-<i class="no-highlight">25</i>&nbsp;     * @throws NullPointerException if there is no such metro line
-<i class="no-highlight">26</i>&nbsp;     */
-<i class="no-highlight">27</i>&nbsp;    void addHead(String line, String station, int time);
-<i class="no-highlight">28</i>&nbsp;
-<i class="no-highlight">29</i>&nbsp;    /**
-<i class="no-highlight">30</i>&nbsp;     * Adds a new station at the end of the metro line
-<i class="no-highlight">31</i>&nbsp;     *
-<i class="no-highlight">32</i>&nbsp;     * @param line    - the name of metro line
-<i class="no-highlight">33</i>&nbsp;     * @param station - the name of new metro station
-<i class="no-highlight">34</i>&nbsp;     * @throws java.util.NoSuchElementException if there is no such metro line
-<i class="no-highlight">35</i>&nbsp;     */
-<i class="no-highlight">36</i>&nbsp;    void append(String line, String station, int time);
-<i class="no-highlight">37</i>&nbsp;
-<i class="no-highlight">38</i>&nbsp;    /**
-<i class="no-highlight">39</i>&nbsp;     * Removes a station from the metro map.
-<i class="no-highlight">40</i>&nbsp;     *
-<i class="no-highlight">41</i>&nbsp;     * @param line-    the name of metro line
-<i class="no-highlight">42</i>&nbsp;     * @param station- the name of metro station to remove
-<i class="no-highlight">43</i>&nbsp;     */
-<i class="no-highlight">44</i>&nbsp;    void remove(String line, String station);
-<i class="no-highlight">45</i>&nbsp;
-<i class="no-highlight">46</i>&nbsp;    /**
-<i class="no-highlight">47</i>&nbsp;     * Adds a transfer connection between two metro stations.
-<i class="no-highlight">48</i>&nbsp;     *
-<i class="no-highlight">49</i>&nbsp;     * @param sourceLine     - the name of the first metro line
-<i class="no-highlight">50</i>&nbsp;     * @param sourceStation- the name of the first metro station
-<i class="no-highlight">51</i>&nbsp;     * @param targetLine     - the name of the second metro line
-<i class="no-highlight">52</i>&nbsp;     * @param targetStation- the name of the second metro station
-<i class="no-highlight">53</i>&nbsp;     * @throws java.util.NoSuchElementException if there is no such metro line or station
-<i class="no-highlight">54</i>&nbsp;     */
-<i class="no-highlight">55</i>&nbsp;    void connect(String sourceLine, String sourceStation, String targetLine, String targetStation);
-<i class="no-highlight">56</i>&nbsp;
-<i class="no-highlight">57</i>&nbsp;    /**
-<i class="no-highlight">58</i>&nbsp;     * Creates a direct weighted graph based on the metro map.
-<i class="no-highlight">59</i>&nbsp;     *
-<i class="no-highlight">60</i>&nbsp;     * @return a direct weighted graph with StationId as vertexes
-<i class="no-highlight">61</i>&nbsp;     */
-<i class="no-highlight">62</i>&nbsp;    Graph&lt;StationId&gt; getGraph();
-<i class="no-highlight">63</i>&nbsp;
-<i class="no-highlight">64</i>&nbsp;    /**
-<i class="no-highlight">65</i>&nbsp;     * Returns metro schema
-<i class="no-highlight">66</i>&nbsp;     *
-<i class="no-highlight">67</i>&nbsp;     * @return the schema of the metro
-<i class="no-highlight">68</i>&nbsp;     */
-<i class="no-highlight">69</i>&nbsp;    Map&lt;String, Deque&lt;Station&gt;&gt; getSchema();
-<i class="no-highlight">70</i>&nbsp;
-<i class="no-highlight">71</i>&nbsp;    /**
-<i class="no-highlight">72</i>&nbsp;     * Returns name of the metro
-<i class="no-highlight">73</i>&nbsp;     *
-<i class="no-highlight">74</i>&nbsp;     * @return metro name
-<i class="no-highlight">75</i>&nbsp;     */
-<i class="no-highlight">76</i>&nbsp;    String getMetroName();
-<i class="no-highlight">77</i>&nbsp;}
+<i class="no-highlight">10</i>&nbsp;/**
+<i class="no-highlight">11</i>&nbsp; * Defines operations on the subway map.
+<i class="no-highlight">12</i>&nbsp; */
+<i class="no-highlight">13</i>&nbsp;public interface MetroRepository {
+<i class="no-highlight">14</i>&nbsp;    /**
+<i class="no-highlight">15</i>&nbsp;     * Finds a metro line by its name
+<i class="no-highlight">16</i>&nbsp;     *
+<i class="no-highlight">17</i>&nbsp;     * @param line - the name of metro line
+<i class="no-highlight">18</i>&nbsp;     * @return list of metro stations for the given metro line.
+<i class="no-highlight">19</i>&nbsp;     */
+<i class="no-highlight">20</i>&nbsp;    Deque&lt;Station&gt; findLine(String line);
+<i class="no-highlight">21</i>&nbsp;
+<i class="no-highlight">22</i>&nbsp;    /**
+<i class="no-highlight">23</i>&nbsp;     * Adds a new station at the beginning of the metro line
+<i class="no-highlight">24</i>&nbsp;     *
+<i class="no-highlight">25</i>&nbsp;     * @param line    - the name of metro line
+<i class="no-highlight">26</i>&nbsp;     * @param station - the name of new metro station
+<i class="no-highlight">27</i>&nbsp;     * @param time    - travel time to the next metro station
+<i class="no-highlight">28</i>&nbsp;     * @throws NullPointerException if there is no such metro line
+<i class="no-highlight">29</i>&nbsp;     */
+<i class="no-highlight">30</i>&nbsp;    void addHead(String line, String station, int time);
+<i class="no-highlight">31</i>&nbsp;
+<i class="no-highlight">32</i>&nbsp;    /**
+<i class="no-highlight">33</i>&nbsp;     * Adds a new station at the end of the metro line
+<i class="no-highlight">34</i>&nbsp;     *
+<i class="no-highlight">35</i>&nbsp;     * @param line    - the name of metro line
+<i class="no-highlight">36</i>&nbsp;     * @param station - the name of new metro station
+<i class="no-highlight">37</i>&nbsp;     * @param time    - travel time to the next metro station
+<i class="no-highlight">38</i>&nbsp;     * @throws NullPointerException if there is no such metro line
+<i class="no-highlight">39</i>&nbsp;     */
+<i class="no-highlight">40</i>&nbsp;    void append(String line, String station, int time);
+<i class="no-highlight">41</i>&nbsp;
+<i class="no-highlight">42</i>&nbsp;    /**
+<i class="no-highlight">43</i>&nbsp;     * Removes a station from the metro map.
+<i class="no-highlight">44</i>&nbsp;     *
+<i class="no-highlight">45</i>&nbsp;     * @param line    - the name of metro line
+<i class="no-highlight">46</i>&nbsp;     * @param station - the name of metro station to remove
+<i class="no-highlight">47</i>&nbsp;     */
+<i class="no-highlight">48</i>&nbsp;    void remove(String line, String station);
+<i class="no-highlight">49</i>&nbsp;
+<i class="no-highlight">50</i>&nbsp;    /**
+<i class="no-highlight">51</i>&nbsp;     * Adds a transfer connection between two metro stations.
+<i class="no-highlight">52</i>&nbsp;     *
+<i class="no-highlight">53</i>&nbsp;     * @param sourceLine    - the name of the first metro line
+<i class="no-highlight">54</i>&nbsp;     * @param sourceStation - the name of the first metro station
+<i class="no-highlight">55</i>&nbsp;     * @param targetLine    - the name of the second metro line
+<i class="no-highlight">56</i>&nbsp;     * @param targetStation - the name of the second metro station
+<i class="no-highlight">57</i>&nbsp;     * @throws java.util.NoSuchElementException if there is no such metro line or station
+<i class="no-highlight">58</i>&nbsp;     */
+<i class="no-highlight">59</i>&nbsp;    void connect(String sourceLine, String sourceStation, String targetLine, String targetStation);
+<i class="no-highlight">60</i>&nbsp;
+<i class="no-highlight">61</i>&nbsp;    /**
+<i class="no-highlight">62</i>&nbsp;     * Creates a direct weighted graph based on the metro map.
+<i class="no-highlight">63</i>&nbsp;     *
+<i class="no-highlight">64</i>&nbsp;     * @return a direct weighted graph with StationId as vertexes
+<i class="no-highlight">65</i>&nbsp;     */
+<i class="no-highlight">66</i>&nbsp;    Graph&lt;StationId&gt; getGraph();
+<i class="no-highlight">67</i>&nbsp;
+<i class="no-highlight">68</i>&nbsp;    /**
+<i class="no-highlight">69</i>&nbsp;     * Returns metro schema
+<i class="no-highlight">70</i>&nbsp;     *
+<i class="no-highlight">71</i>&nbsp;     * @return the schema of the metro
+<i class="no-highlight">72</i>&nbsp;     */
+<i class="no-highlight">73</i>&nbsp;    Map&lt;String, Deque&lt;Station&gt;&gt; getSchema();
+<i class="no-highlight">74</i>&nbsp;
+<i class="no-highlight">75</i>&nbsp;    /**
+<i class="no-highlight">76</i>&nbsp;     * Returns name of the metro
+<i class="no-highlight">77</i>&nbsp;     *
+<i class="no-highlight">78</i>&nbsp;     * @return metro name
+<i class="no-highlight">79</i>&nbsp;     */
+<i class="no-highlight">80</i>&nbsp;    String getMetroName();
+<i class="no-highlight">81</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -149,7 +156,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-01-30 04:06</div>
+    <div style="float:right;">generated on 2022-02-01 22:34</div>
 </div>
 </body>
 </html>
