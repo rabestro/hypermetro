@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Graph.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">hypermetro</a> &gt; <a href="index.source.html" class="el_package">metro.algorithm</a> &gt; <span class="el_source">Graph.java</span></div><h1>Graph.java</h1><pre class="source lang-java linenums">package metro.algorithm;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
+
+/**
+ * An interface for weighted directed graph (network)
+ *
+ * @param &lt;T&gt; the type of vertex in this graph
+ * @author Jegors Čemisovs
+ * @since 1.1
+ */
+@FunctionalInterface
+public interface Graph&lt;T&gt; {
+    /**
+     * Creates a Graph object by given schema.
+     * &lt;p&gt;
+     * In a graph schema, each vertex is assigned an edge map.
+     * If the vertex has no edges, then it should be assigned an empty map.
+     *
+     * @param schema of the graph
+     * @param &lt;T&gt;    the type of vertex in this graph
+     * @return graph object with given schema
+     */
+    static &lt;T&gt; Graph&lt;T&gt; of(Map&lt;T, Map&lt;T, Number&gt;&gt; schema) {
+<span class="fc" id="L27">        return () -&gt; schema;</span>
+    }
+
+    /**
+     * The schema of this graph.
+     * &lt;p&gt;
+     * In a graph schema, each vertex is assigned an edge map.
+     * If the vertex has no edges, then it should be assigned an empty map.
+     *
+     * @return the graph scheme
+     */
+    Map&lt;T, Map&lt;T, Number&gt;&gt; schema();
+
+    /**
+     * Returns the edges of the given vertex,
+     * or {@code null} if this graph contains no given vertex.
+     *
+     * &lt;p&gt;A return value of {@code null} does not &lt;i&gt;necessarily&lt;/i&gt;
+     * indicate that the specified vertex is not present in the graph;
+     * it's also possible that in the graph schema, {@code null} was specified
+     * for the edges of this vertex instead of an empty map.
+     *
+     * @param vertex vertex
+     * @return all links for the given vertex
+     * or null if no such vertex in the graph
+     */
+    default Map&lt;T, Number&gt; edges(T vertex) {
+<span class="fc" id="L54">        return schema().get(vertex);</span>
+    }
+
+    /**
+     * Calculate the distance for the given path
+     *
+     * @param path the list of vertices representing the path
+     * @return distance for the given path as double
+     * @throws NullPointerException if {@code path} is incorrect and contains more than one vertex
+     */
+    default double getDistance(List&lt;T&gt; path) {
+<span class="fc" id="L65">        return IntStream</span>
+<span class="fc" id="L66">                .range(1, path.size())</span>
+<span class="fc" id="L67">                .mapToObj(i -&gt; edges(path.get(i - 1)).get(path.get(i)))</span>
+<span class="fc" id="L68">                .mapToDouble(Number::doubleValue)</span>
+<span class="fc" id="L69">                .sum();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
