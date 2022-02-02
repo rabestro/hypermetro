@@ -10,9 +10,9 @@ plugins {
 group 'lv.id.jc'
 version '1.0-SNAPSHOT'
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
+//java {
+//    sourceCompatibility = JavaVersion.VERSION_17
+//}
 
 application {
 //    mainModule = 'hypermetro.main'
@@ -30,6 +30,9 @@ run {
 bootRun {
     standardInput = System.in
     args("london.json")
+}
+bootJar {
+    launchScript()
 }
 
 repositories {
@@ -54,7 +57,7 @@ dependencies {
     testImplementation 'org.spockframework:spock-core'
     testImplementation 'io.github.joke:spock-mockable:1.4.4'
 
-    testRuntimeClasspath("com.athaydes:spock-reports:2.1.1-groovy-3.0")
+    testRuntimeClasspath('com.athaydes:spock-reports:2.2.0-groovy-3.0')
 //    testImplementation 'org.slf4j:slf4j-api:1.7.33'
 //    testRuntimeClasspath 'org.slf4j:slf4j-simple:1.7.33'
 }

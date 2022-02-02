@@ -1,6 +1,10 @@
 package metro.shell
 
+import metro.algorithm.Graph
+import metro.algorithm.SearchAlgorithm
+import metro.model.StationId
 import metro.repository.MetroRepository
+import org.springframework.shell.table.Table
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -8,11 +12,15 @@ class MetroCommandsSpec extends Specification {
 
     def repository = Mock MetroRepository
 
+    def tableReport = Mock Table
+
     @Subject
-    def commands = new MetroCommands(repository: repository)
+    def commands = Spy(MetroCommands) {
+        getRouteTable(_ as List<StationId>) >> tableReport
+    }
 
     void setup() {
-
+        commands.setRepository(repository)
     }
 
     void cleanup() {
@@ -73,11 +81,50 @@ class MetroCommandsSpec extends Specification {
         output.contains 'successfully'
     }
 
-    def "Route"() {
+    def 'should execute route command'() {
+        given: 'we have some path finding algorithm'
+        def algorithm = Mock SearchAlgorithm
+
+        and: 'we set the algorithm to find the shortest path'
+        commands.shortest = algorithm
+
+        when: 'we execute route command'
+        def output = commands.route 'L1', 'A1', 'L2', 'B2'
+
+        then: 'the command request the repository for a graph of metro'
+        1 * repository.getGraph()
+
+        and: 'the algorithm is called to find the shortest path'
+        1 * algorithm.findPath(_, _, _) >> []
+
+        and: 'we receive a report in the form of a table'
+        output === tableReport
     }
 
-    def "FastestRoute"() {
+    def 'should execute fastest-route command'() {
+        given: 'we have some path finding algorithm'
+        def algorithm = Mock SearchAlgorithm
+
+        and: 'we set the algorithm to find the fastest path'
+        commands.fastest = algorithm
+
+        and: 'we mock the graph for metro map'
+        def graph = Mock Graph
+
+        when: 'we execute fastest-route command'
+        commands.fastestRoute 'L1', 'A1', 'L2', 'B2'
+
+        then: 'the repository requested for a graph and it returns the mocked graph '
+        1 * repository.getGraph() >> graph
+
+        and: 'the algorithm is called to find the fastest path'
+        1 * algorithm.findPath(_, _, _) >> []
+
+        and: 'the distance for the found path is calculated.'
+        1 * graph.getDistance(_)
+
     }
+
 
     def "Output"() {
     }
