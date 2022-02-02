@@ -244,14 +244,14 @@ div.footer {
 </style>
 </head>
 <body>
-<h2>Report for metro.algorithm.BreadthFirstSearchSpec</h2>
+<h2>Report for metro.repository.RepositoryGraphSpec</h2>
 <hr></hr>
 <div class='back-link'>
 <a href='index.html'>&lt;&lt; Back</a>
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Wed Feb 02 23:14:43 EET 2022 by jegors</div>
+<div class='date-test-ran'>Created on Wed Feb 02 23:14:44 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -266,36 +266,18 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-<td>4</td>
-<td>4</td>
+<td>3</td>
+<td>3</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.109 seconds</td>
+<td>0.013 seconds</td>
 </tr>
 </tbody>
 </table>
 </div>
-<pre class='title'>Breadth First Search Algorithm</pre>
-<pre class='narrative'>Breadth First Search algorithm for finding the shortest paths between nodes in a graph</pre>
-<div class='issues'>
-<div>Issues:</div>
-<ul>
-<li>
-<a href='https://hyperskill.org/projects/120/stages/651/implement'>implement</a>
-</li>
-</ul>
-<div>See:</div>
-<ul>
-<li>
-<a href='https://hyperskill.org/learn/step/7068'>https://hyperskill.org/learn/step/7068</a>
-</li>
-<li>
-<a href='https://en.wikipedia.org/wiki/Breadth-first_search'>https://en.wikipedia.org/wiki/Breadth-first_search</a>
-</li>
-</ul>
-</div>
+<pre class='title'>Command 'getGraph' specifications</pre>
 <h3>Features:</h3>
 <table class='features-table'>
 <colgroup>
@@ -305,22 +287,19 @@ div.footer {
 <tbody>
 <ul id='toc'>
 <li>
-<a href='#942393799' class='feature-toc-pass'>should find a route for simple graph</a>
+<a href='#2032614751' class='feature-toc-pass'>should create an empty graph from the empty metro schema</a>
 </li>
 <li>
-<a href='#-928009641' class='feature-toc-pass'>should find a route for complex graph</a>
+<a href='#1614185630' class='feature-toc-pass'>should create a graph from one line, one station metro schema</a>
 </li>
 <li>
-<a href='#-2095690062' class='feature-toc-pass'>should thrown NPE path for an empty graph</a>
-</li>
-<li>
-<a href='#-498380623' class='feature-toc-pass'>should return an empty path if can't find a route</a>
+<a href='#-1230003378' class='feature-toc-pass'>should create a graph from one line and three stations</a>
 </li>
 </ul>
 <tr>
 <td colspan='10'>
-<div class='feature-description' id='942393799'>
-<span>should find a route for simple graph</span>
+<div class='feature-description' id='2032614751'>
+<span>should create an empty graph from the empty metro schema</span>
 <span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
@@ -332,274 +311,13 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-<pre class='block-source'>def graph = Graph.of([
-        A: [B: 7, C: 2],
-        B: [A: 3, C: 5],
-        C: [A: 1, B: 3]
-])</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>When:</div>
-</td>
-<td>
-<pre class='block-source'>def path = algorithm.findPath(graph, source, target)</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Then:</div>
-</td>
-<td>
-<pre class='block-source'>path == shortest</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<pre class='block-source'>graph.getDistance(path) == time as double</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Examples:</div>
-</td>
-<td>
-<div class='spec-examples'>
-<table class='ex-table'>
-<thead>
-<tr>
-<th class='ex-header'>source</th>
-<th class='ex-header'>target</th>
-<th class='ex-header'>time</th>
-<th class='ex-header'>shortest</th>
-</tr>
-</thead>
-<tbody>
-<tr class='ex-pass'>
-<td class='ex-value'>A</td>
-<td class='ex-value'>A</td>
-<td class='ex-value'>0</td>
-<td class='ex-value'>[A]</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>A</td>
-<td class='ex-value'>B</td>
-<td class='ex-value'>7</td>
-<td class='ex-value'>[A, B]</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>B</td>
-<td class='ex-value'>C</td>
-<td class='ex-value'>5</td>
-<td class='ex-value'>[B, C]</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>C</td>
-<td class='ex-value'>B</td>
-<td class='ex-value'>3</td>
-<td class='ex-value'>[C, B]</td>
-<td class='ex-result'>OK</td>
-</tr>
-</tbody>
-</table>
-</div>
-</td>
-<td>
-<div class='spec-status'>4/4 passed</div>
-</td>
-</tr>
-<tr>
-<td colspan='10'>
-<div class='feature-description' id='-928009641'>
-<span>should find a route for complex graph</span>
-<span style='float: right; font-size: 60%;'>
-<a href='#toc'>Return</a>
-</span>
-</div>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Given:</div>
-</td>
-<td>
-<pre class='block-source'>def graph = Graph.of([
-A: [B: 1],
-B: [A: 1, D: 1],
-C: [A: 1],
-D: [C: 1, E: 1],
-E: [F: 1],
-F: [D: 1, E: 1]])</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>When:</div>
-</td>
-<td>
-<pre class='block-source'>def path = algorithm.findPath(graph, source, target)</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Then:</div>
-</td>
-<td>
-<pre class='block-source'>path == shortest</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<pre class='block-source'>graph.getDistance(path) == time as double</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<pre class='block-source'>time = shortest.size() - 1</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Examples:</div>
-</td>
-<td>
-<div class='spec-examples'>
-<table class='ex-table'>
-<thead>
-<tr>
-<th class='ex-header'>source</th>
-<th class='ex-header'>target</th>
-<th class='ex-header'>shortest</th>
-<th class='ex-header'>time</th>
-</tr>
-</thead>
-<tbody>
-<tr class='ex-pass'>
-<td class='ex-value'>A</td>
-<td class='ex-value'>A</td>
-<td class='ex-value'>[A]</td>
-<td class='ex-value'>0</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>B</td>
-<td class='ex-value'>B</td>
-<td class='ex-value'>[B]</td>
-<td class='ex-value'>0</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>A</td>
-<td class='ex-value'>B</td>
-<td class='ex-value'>[A, B]</td>
-<td class='ex-value'>1</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>B</td>
-<td class='ex-value'>A</td>
-<td class='ex-value'>[B, A]</td>
-<td class='ex-value'>1</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>A</td>
-<td class='ex-value'>C</td>
-<td class='ex-value'>[A, B, D, C]</td>
-<td class='ex-value'>3</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>C</td>
-<td class='ex-value'>A</td>
-<td class='ex-value'>[C, A]</td>
-<td class='ex-value'>1</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>E</td>
-<td class='ex-value'>B</td>
-<td class='ex-value'>[E, F, D, C, A, B]</td>
-<td class='ex-value'>5</td>
-<td class='ex-result'>OK</td>
-</tr>
-</tbody>
-</table>
-</div>
-</td>
-<td>
-<div class='spec-status'>7/7 passed</div>
-</td>
-</tr>
-<tr>
-<td colspan='10'>
-<div class='feature-description' id='-2095690062'>
-<span>should thrown NPE path for an empty graph</span>
-<span style='float: right; font-size: 60%;'>
-<a href='#toc'>Return</a>
-</span>
-</div>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Given:</div>
-</td>
-<td>
-<pre class='block-source'>def graph = Graph.of([:])</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>When:</div>
-</td>
-<td>
-<pre class='block-source'>algorithm.findPath(graph, 'A', 'B')</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Then:</div>
-</td>
-<td>
-<pre class='block-source'>thrown NullPointerException</pre>
-</td>
-</tr>
-<tr>
-<td colspan='10'>
-<div class='feature-description' id='-498380623'>
-<span>should return an empty path if can't find a route</span>
-<span style='float: right; font-size: 60%;'>
-<a href='#toc'>Return</a>
-</span>
-</div>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Given:</div>
-</td>
-<td>
-<div class='block-text'>a simple graph with no edge between nodes</div>
+<div class='block-text'>an empty metro map</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>def graph = Graph.of([A: [:], B: [:]])</pre>
+<pre class='block-source'>repository.metroMap = [:]</pre>
 </td>
 </tr>
 <tr>
@@ -607,7 +325,13 @@ F: [D: 1, E: 1]])</pre>
 <div class='block-kind'>When:</div>
 </td>
 <td>
-<pre class='block-source'>def path = algorithm.findPath(graph, 'A', 'B')</pre>
+<div class='block-text'>we create a graph from the metro map</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def graph = repository.getGraph()</pre>
 </td>
 </tr>
 <tr>
@@ -615,7 +339,229 @@ F: [D: 1, E: 1]])</pre>
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<pre class='block-source'>path == []</pre>
+<div class='block-text'>we get an empty graph</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>graph.schema().isEmpty()</pre>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='1614185630'>
+<span>should create a graph from one line, one station metro schema</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>a one line, one station metro schema</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.metroMap = [(line): [new Station(station, 5)] as ArrayDeque]</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we create a graph from the metro map</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def graph = repository.getGraph()</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the graph schema is not empty</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>graph.schema()</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>it has only one vertex</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>graph.schema().size() == 1</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the only vertex in the graph has correct Station ID</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>graph.schema().keySet().contains new StationId(line, station)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Where:</div>
+</td>
+<td>
+<div class='block-text'>metro line and metro station as</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>line</th>
+<th class='ex-header'>station</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>Bakerloo line</td>
+<td class='ex-value'>Waterloo</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>Central line</td>
+<td class='ex-value'>White City</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div class='spec-status'>2/2 passed</div>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='-1230003378'>
+<span>should create a graph from one line and three stations</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>three stations creating a open-ended line</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def A1 = new Station('A1', 7, ['A2'] as Set, [] as Set, [] as Set)
+def A2 = new Station('A2', 5, ['A3'] as Set, ['A1'] as Set, [] as Set)
+def A3 = new Station('A3', 9, [] as Set, ['A2'] as Set, [] as Set)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>a metro line with these stations</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def L1 = [A1, A2, A3] as ArrayDeque</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>a metro schema with one line</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.metroMap = [one: L1]</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we create a graph from the metro map</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def graph = repository.getGraph()</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the graph schema is not empty</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>graph.schema()</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>it has three vertexes</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>graph.schema().size() == 3</pre>
 </td>
 </tr>
 </tbody>
