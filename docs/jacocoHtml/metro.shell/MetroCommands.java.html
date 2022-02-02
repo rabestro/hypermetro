@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MetroCommands.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">hypermetro</a> &gt; <a href="index.source.html" class="el_package">metro.shell</a> &gt; <span class="el_source">MetroCommands.java</span></div><h1>MetroCommands.java</h1><pre class="source lang-java linenums">package metro.shell;
+
+import metro.algorithm.SearchAlgorithm;
+import metro.model.Station;
+import metro.model.StationId;
+import metro.repository.MetroRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.shell.standard.ShellComponent;
+import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellOption;
+import org.springframework.shell.table.ArrayTableModel;
+import org.springframework.shell.table.BorderStyle;
+import org.springframework.shell.table.NoWrapSizeConstraints;
+import org.springframework.shell.table.SizeConstraints;
+import org.springframework.shell.table.Table;
+import org.springframework.shell.table.TableBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import static java.lang.String.join;
+import static java.lang.System.Logger.Level.DEBUG;
+import static java.lang.System.lineSeparator;
+import static java.util.stream.Collectors.joining;
+import static org.springframework.shell.table.CellMatchers.column;
+import static org.springframework.shell.table.SimpleHorizontalAligner.right;
+
+@ShellComponent
+<span class="fc" id="L34">public class MetroCommands {</span>
+<span class="fc" id="L35">    private static final System.Logger LOGGER = System.getLogger(MetroCommands.class.getName());</span>
+<span class="fc" id="L36">    private static final SizeConstraints NO_WRAP = new NoWrapSizeConstraints();</span>
+
+    private MetroRepository repository;
+
+    private SearchAlgorithm&lt;StationId&gt; shortest;
+
+    private SearchAlgorithm&lt;StationId&gt; fastest;
+
+    @Value(&quot;${hypermetro.table.border:oldschool}&quot;)
+    private String borderStyle;
+
+    @ShellMethod(&quot;Adds a new station at the beginning of the metro line&quot;)
+    public String addHead(
+            @ShellOption(help = &quot;Name of the metro line&quot;) String line,
+            @ShellOption(help = &quot;Name of the metro station&quot;) String station,
+            @ShellOption(help = &quot;Travel time to the next station in minutes&quot;) int time
+    ) {
+<span class="fc" id="L53">        repository.addHead(line, station, time);</span>
+<span class="fc" id="L54">        return &quot;Metro station successfully added&quot;;</span>
+    }
+
+    @ShellMethod(&quot;Adds a new station at the end of the line&quot;)
+    public String append(
+            @ShellOption(help = &quot;Name of the metro line&quot;) String line,
+            @ShellOption(help = &quot;Name of the metro station&quot;) String station,
+            @ShellOption(help = &quot;Travel time to the next station in minutes&quot;) int time
+    ) {
+<span class="fc" id="L63">        repository.append(line, station, time);</span>
+<span class="fc" id="L64">        return &quot;Metro station successfully added&quot;;</span>
+    }
+
+    @ShellMethod(&quot;Adds a transfer connection between two metro stations&quot;)
+    public String connect(
+            @ShellOption(help = &quot;Name of the first metro line&quot;) String sourceLine,
+            @ShellOption(help = &quot;Name of the first metro station&quot;) String sourceStation,
+            @ShellOption(help = &quot;Name of the second metro line&quot;) String targetLine,
+            @ShellOption(help = &quot;Name of the second metro station&quot;) String targetStation
+    ) {
+<span class="fc" id="L74">        repository.connect(sourceLine, sourceStation, targetLine, targetStation);</span>
+<span class="fc" id="L75">        return &quot;Metro stations successfully connected&quot;;</span>
+    }
+
+    @ShellMethod(&quot;Finds and prints the shortest route between two metro stations&quot;)
+    public Table route(
+            @ShellOption(help = &quot;Name of the starting metro line&quot;) String sourceLine,
+            @ShellOption(help = &quot;Name of the starting metro station&quot;) String sourceStation,
+            @ShellOption(help = &quot;Name of the final metro line&quot;) String targetLine,
+            @ShellOption(help = &quot;Name of the final metro station&quot;) String targetStation
+    ) {
+<span class="fc" id="L85">        var source = new StationId(sourceLine, sourceStation);</span>
+<span class="fc" id="L86">        var target = new StationId(targetLine, targetStation);</span>
+<span class="fc" id="L87">        var graph = repository.getGraph();</span>
+<span class="fc" id="L88">        var route = shortest.findPath(graph, source, target);</span>
+<span class="fc" id="L89">        return getRouteTable(route);</span>
+    }
+
+    @ShellMethod(&quot;Finds and prints the fastest route between two metro stations&quot;)
+    public String fastestRoute(
+            @ShellOption(help = &quot;Name of the starting metro line&quot;) String sourceLine,
+            @ShellOption(help = &quot;Name of the starting metro station&quot;) String sourceStation,
+            @ShellOption(help = &quot;Name of the final metro line&quot;) String targetLine,
+            @ShellOption(help = &quot;Name of the final metro station&quot;) String targetStation
+    ) {
+<span class="fc" id="L99">        var source = new StationId(sourceLine, sourceStation);</span>
+<span class="fc" id="L100">        var target = new StationId(targetLine, targetStation);</span>
+<span class="fc" id="L101">        var graph = repository.getGraph();</span>
+<span class="fc" id="L102">        var route = fastest.findPath(graph, source, target);</span>
+<span class="fc" id="L103">        var timeMessage = lineSeparator() + &quot;Total: &quot; + (int) graph.getDistance(route) + &quot; minutes in the way&quot;;</span>
+<span class="fc" id="L104">        return getRouteTable(route).render(80) + timeMessage;</span>
+    }
+
+    @ShellMethod(&quot;Removes a station from the metro map&quot;)
+    public String remove(
+            @ShellOption(help = &quot;Name of the metro line&quot;) String line,
+            @ShellOption(help = &quot;Name of the metro station&quot;) String station
+    ) {
+<span class="fc" id="L112">        repository.remove(line, station);</span>
+<span class="fc" id="L113">        return &quot;Metro station successfully removed&quot;;</span>
+    }
+
+    @ShellMethod(&quot;Outputs all stations for a given metro line&quot;)
+    public Table output(
+            @ShellOption(help = &quot;Name of the metro line&quot;) String line
+    ) {
+<span class="nc" id="L120">        var header = Stream.ofNullable(new Object[]{&quot;Station&quot;, &quot;Next&quot;, &quot;Previous&quot;, &quot;Transfer to line&quot;});</span>
+<span class="nc" id="L121">        var stations = repository.findLine(line).stream().map(station -&gt; new Object[]{</span>
+<span class="nc" id="L122">                station.name(),</span>
+<span class="nc" id="L123">                join(lineSeparator(), station.next()),</span>
+<span class="nc" id="L124">                join(lineSeparator(), station.prev()),</span>
+<span class="nc" id="L125">                station.transfer().stream().map(StationId::line).collect(joining(lineSeparator()))</span>
+        });
+<span class="nc" id="L127">        var report = Stream.concat(header, stations).toArray(Object[][]::new);</span>
+
+<span class="nc" id="L129">        return new TableBuilder(new ArrayTableModel(report))</span>
+<span class="nc" id="L130">                .addFullBorder(BorderStyle.valueOf(borderStyle))</span>
+<span class="nc" id="L131">                .on(column(0)).addSizer(NO_WRAP)</span>
+<span class="nc" id="L132">                .on(column(1)).addSizer(NO_WRAP)</span>
+<span class="nc" id="L133">                .on(column(2)).addSizer(NO_WRAP)</span>
+<span class="nc" id="L134">                .on(column(3)).addSizer(NO_WRAP)</span>
+<span class="nc" id="L135">                .build();</span>
+    }
+
+    @ShellMethod(&quot;Prints information about metro lines&quot;)
+    public Table lines() {
+<span class="nc" id="L140">        var header = Stream.ofNullable(new Object[]{&quot;Metro Line&quot;, &quot;Stations&quot;, &quot;Length (min)&quot;, &quot;Transfers&quot;});</span>
+<span class="nc" id="L141">        var lines = repository.getSchema().entrySet().stream().map(entry -&gt; new Object[]{</span>
+<span class="nc" id="L142">                entry.getKey(),</span>
+<span class="nc" id="L143">                entry.getValue().size(),</span>
+<span class="nc" id="L144">                entry.getValue().stream().mapToInt(Station::time).sum(),</span>
+<span class="nc" id="L145">                entry.getValue().stream().map(Station::transfer).mapToInt(Set::size).sum()</span>
+        });
+<span class="nc" id="L147">        var report = Stream.concat(header, lines).toArray(Object[][]::new);</span>
+
+<span class="nc" id="L149">        return new TableBuilder(new ArrayTableModel(report))</span>
+<span class="nc" id="L150">                .addHeaderAndVerticalsBorders(BorderStyle.valueOf(borderStyle))</span>
+<span class="nc" id="L151">                .on(column(0)).addSizer(NO_WRAP)</span>
+<span class="nc" id="L152">                .on(column(1)).addAligner(right)</span>
+<span class="nc" id="L153">                .on(column(2)).addAligner(right).addSizer(NO_WRAP)</span>
+<span class="nc" id="L154">                .on(column(3)).addAligner(right)</span>
+<span class="nc" id="L155">                .build();</span>
+    }
+
+    public Table getRouteTable(List&lt;StationId&gt; route) {
+<span class="nc" id="L159">        LOGGER.log(DEBUG, &quot;prints route: {0}&quot;, route);</span>
+<span class="nc" id="L160">        var line = route.get(0).line();</span>
+<span class="nc" id="L161">        var data = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L162">        data.add(&quot;Route&quot;);</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        for (final var node : route) {</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">            if (!node.line().equals(line)) {</span>
+<span class="nc" id="L165">                line = node.line();</span>
+<span class="nc" id="L166">                data.add(&quot;Transition to line &quot; + line);</span>
+            }
+<span class="nc" id="L168">            data.add(node.station());</span>
+<span class="nc" id="L169">        }</span>
+
+<span class="nc" id="L171">        var table = IntStream.range(0, data.size())</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">                .mapToObj(i -&gt; new Object[]{i == 0 ? &quot;&quot; : i, data.get(i)}).toArray(Object[][]::new);</span>
+
+<span class="nc" id="L174">        return new TableBuilder(new ArrayTableModel(table))</span>
+<span class="nc" id="L175">                .addHeaderAndVerticalsBorders(BorderStyle.valueOf(borderStyle))</span>
+<span class="nc" id="L176">                .on(column(0)).addAligner(right)</span>
+<span class="nc" id="L177">                .on(column(1)).addSizer(NO_WRAP)</span>
+<span class="nc" id="L178">                .build();</span>
+    }
+
+    @Autowired
+    public void setRepository(MetroRepository repository) {
+<span class="fc" id="L183">        this.repository = repository;</span>
+<span class="fc" id="L184">    }</span>
+
+    @Autowired
+    @Qualifier(&quot;shortestAlgorithm&quot;)
+    public void setShortest(SearchAlgorithm&lt;StationId&gt; shortest) {
+<span class="fc" id="L189">        this.shortest = shortest;</span>
+<span class="fc" id="L190">    }</span>
+
+    @Autowired
+    @Qualifier(&quot;fastestAlgorithm&quot;)
+    public void setFastest(SearchAlgorithm&lt;StationId&gt; fastest) {
+<span class="fc" id="L195">        this.fastest = fastest;</span>
+<span class="fc" id="L196">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

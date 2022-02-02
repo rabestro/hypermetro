@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MetroRepositoryJson.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">hypermetro</a> &gt; <a href="index.source.html" class="el_package">metro.repository</a> &gt; <span class="el_source">MetroRepositoryJson.java</span></div><h1>MetroRepositoryJson.java</h1><pre class="source lang-java linenums">package metro.repository;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import metro.algorithm.Graph;
+import metro.model.Station;
+import metro.model.StationId;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
+
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+import static java.lang.System.Logger.Level.INFO;
+import static java.util.Objects.requireNonNull;
+
+/**
+ * Repository interface implementation that loads a metro map from a JSON file
+ */
+@Repository
+<span class="fc" id="L26">public class MetroRepositoryJson implements MetroRepository, InitializingBean {</span>
+<span class="fc" id="L27">    private static final System.Logger LOGGER = System.getLogger(MetroRepositoryJson.class.getName());</span>
+
+<span class="fc" id="L29">    private static final TypeReference&lt;Map&lt;String, Deque&lt;Station&gt;&gt;&gt; SCHEMA_TYPE = new TypeReference&lt;&gt;() {</span>
+    };
+
+    private Map&lt;String, Deque&lt;Station&gt;&gt; metroMap;
+
+    @Value(&quot;${hypermetro.time:5}&quot;)
+    private int transferTime;
+
+    @Value(&quot;#{T(java.nio.file.Path).of(systemProperties['hypermetro.file'])}&quot;)
+    private Path schemaPath;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+<span class="nc" id="L42">        LOGGER.log(INFO, &quot;Loading metro schema from file: „{0}“&quot;, schemaPath);</span>
+<span class="nc" id="L43">        metroMap = new JsonMapper().readValue(schemaPath.toFile(), SCHEMA_TYPE);</span>
+<span class="nc" id="L44">        LOGGER.log(INFO, &quot;Metro map successfully loaded.&quot;);</span>
+<span class="nc" id="L45">    }</span>
+
+    @Override
+    public Deque&lt;Station&gt; findLine(String line) {
+<span class="fc" id="L49">        return metroMap.get(line);</span>
+    }
+
+    private Deque&lt;Station&gt; getLine(String line) {
+<span class="pc" id="L53">        return requireNonNull(metroMap.get(line), () -&gt; &quot;There is no metro line with the name &quot; + line);</span>
+    }
+
+    @Override
+    public void addHead(String line, String station, int time) {
+<span class="fc" id="L58">        LOGGER.log(INFO, &quot;Executing command: add-head „{0}“ „{1}“ „{2}“&quot;, line, station, time);</span>
+<span class="fc" id="L59">        var metroLine = getLine(line);</span>
+<span class="fc" id="L60">        var metroStation = new Station(station, time);</span>
+
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (!metroLine.isEmpty()) {</span>
+<span class="fc" id="L63">            var firstStation = metroLine.getFirst();</span>
+<span class="fc" id="L64">            metroStation.next().add(firstStation.name());</span>
+<span class="fc" id="L65">            metroStation.prev().addAll(firstStation.prev());</span>
+<span class="fc" id="L66">            firstStation.prev().clear();</span>
+<span class="fc" id="L67">            firstStation.prev().add(station);</span>
+        }
+<span class="fc" id="L69">        metroLine.addFirst(metroStation);</span>
+<span class="fc" id="L70">    }</span>
+
+    @Override
+    public void append(String line, String station, int time) {
+<span class="fc" id="L74">        LOGGER.log(INFO, &quot;Executing command: append „{0}“ „{1}“ „{2}“&quot;, line, station, time);</span>
+<span class="fc" id="L75">        var metroLine = getLine(line);</span>
+<span class="fc" id="L76">        var metroStation = new Station(station, time);</span>
+
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (!metroLine.isEmpty()) {</span>
+<span class="fc" id="L79">            var lastStation = metroLine.getLast();</span>
+<span class="fc" id="L80">            metroStation.prev().add(lastStation.name());</span>
+<span class="fc" id="L81">            metroStation.next().addAll(lastStation.next());</span>
+<span class="fc" id="L82">            lastStation.next().clear();</span>
+<span class="fc" id="L83">            lastStation.next().add(station);</span>
+        }
+<span class="fc" id="L85">        metroLine.addLast(metroStation);</span>
+<span class="fc" id="L86">    }</span>
+
+    @Override
+    public void remove(String line, String station) {
+<span class="fc" id="L90">        LOGGER.log(INFO, &quot;Executing command: remove „{0}“ „{1}“&quot;, line, station);</span>
+<span class="fc" id="L91">        throw new UnsupportedOperationException(&quot;This operation has not yet been implemented&quot;);</span>
+    }
+
+    @Override
+    public void connect(String sourceLine, String sourceStation, String targetLine, String targetStation) {
+<span class="fc" id="L96">        LOGGER.log(INFO, &quot;Executing command: connect „{0}“ „{1}“ „{2}“ „{3}“&quot;,</span>
+                sourceLine, sourceStation, targetLine, targetStation);
+<span class="fc" id="L98">        var source = getStation(sourceLine, sourceStation);</span>
+<span class="fc" id="L99">        var target = getStation(targetLine, targetStation);</span>
+<span class="fc" id="L100">        source.transfer().add(new StationId(targetLine, targetStation));</span>
+<span class="fc" id="L101">        target.transfer().add(new StationId(sourceLine, sourceStation));</span>
+<span class="fc" id="L102">    }</span>
+
+    private Station getStation(String line, String station) {
+<span class="fc" id="L105">        return getLine(line).stream()</span>
+<span class="fc" id="L106">                .filter(s -&gt; s.name().equals(station))</span>
+<span class="fc" id="L107">                .findAny()</span>
+<span class="pc" id="L108">                .orElseThrow(() -&gt; new NoSuchElementException(</span>
+<span class="nc" id="L109">                        &quot;There is no station named “%s” on the metro line “%s”.&quot;.formatted(station, line)</span>
+                ));
+    }
+
+    @Override
+    public Graph&lt;StationId&gt; getGraph() {
+<span class="nc" id="L115">        var schema = new HashMap&lt;StationId, Map&lt;StationId, Number&gt;&gt;();</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        for (var entry : metroMap.entrySet()) {</span>
+<span class="nc" id="L117">            var line = entry.getKey();</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">            for (var station : entry.getValue()) {</span>
+<span class="nc" id="L119">                var vertex = new StationId(line, station.name());</span>
+<span class="nc" id="L120">                var edges = new HashMap&lt;StationId, Number&gt;();</span>
+<span class="nc" id="L121">                station.transfer().forEach(target -&gt; edges.put(target, transferTime));</span>
+<span class="nc" id="L122">                station.next().forEach(target -&gt; edges.put(new StationId(line, target), station.time()));</span>
+<span class="nc" id="L123">                station.prev().forEach(target -&gt;</span>
+<span class="nc" id="L124">                        edges.put(new StationId(line, target), getStation(line, target).time()));</span>
+<span class="nc" id="L125">                schema.put(vertex, edges);</span>
+<span class="nc" id="L126">            }</span>
+<span class="nc" id="L127">        }</span>
+<span class="nc" id="L128">        return Graph.of(schema);</span>
+    }
+
+    @Override
+    public Map&lt;String, Deque&lt;Station&gt;&gt; getSchema() {
+<span class="nc" id="L133">        return Collections.unmodifiableMap(metroMap);</span>
+    }
+
+    @Override
+    public String getMetroName() {
+<span class="nc" id="L138">        var fileName = schemaPath.getFileName().toString();</span>
+<span class="nc" id="L139">        return fileName.substring(0, fileName.lastIndexOf('.'));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

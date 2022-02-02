@@ -1,6 +1,5 @@
 plugins {
     id 'groovy'
-    id 'application'
     id 'jacoco'
     id "org.sonarqube" version "3.3"
     id 'org.springframework.boot' version '2.6.3'
@@ -10,26 +9,17 @@ plugins {
 group 'lv.id.jc'
 version '1.0-SNAPSHOT'
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
-
-application {
-//    mainModule = 'hypermetro.main'
-    mainClass = 'metro.HyperMetro'
-    applicationDefaultJvmArgs = ['-Djava.util.logging.config.file=logging.properties']
-}
-
-run {
-//    standardInput = System.in
-    args("london.json")
-}
-
-// ./gradlew run -q --console=plain
+//java {
+//    sourceCompatibility = JavaVersion.VERSION_17
+//}
 
 bootRun {
     standardInput = System.in
     args("london.json")
+}
+
+bootJar {
+    launchScript()
 }
 
 repositories {
@@ -54,9 +44,7 @@ dependencies {
     testImplementation 'org.spockframework:spock-core'
     testImplementation 'io.github.joke:spock-mockable:1.4.4'
 
-    testRuntimeClasspath("com.athaydes:spock-reports:2.1.1-groovy-3.0")
-//    testImplementation 'org.slf4j:slf4j-api:1.7.33'
-//    testRuntimeClasspath 'org.slf4j:slf4j-simple:1.7.33'
+    testRuntimeClasspath('com.athaydes:spock-reports:2.2.0-groovy-3.0')
 }
 
 test {

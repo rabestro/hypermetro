@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Wed Feb 02 18:54:52 EET 2022 by jegors.cemisovs</div>
+<div class='date-test-ran'>Created on Wed Feb 02 22:58:30 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -266,13 +266,13 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-<td>4</td>
-<td>4</td>
+<td>6</td>
+<td>6</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.069 seconds</td>
+<td>0.841 seconds</td>
 </tr>
 </tbody>
 </table>
@@ -296,6 +296,12 @@ div.footer {
 </li>
 <li>
 <a href='#-416227129' class='feature-toc-pass'>should execute remove command</a>
+</li>
+<li>
+<a href='#1085808732' class='feature-toc-pass'>should execute route command</a>
+</li>
+<li>
+<a href='#-1122108551' class='feature-toc-pass'>should execute fastest-route command</a>
 </li>
 </ul>
 <tr>
@@ -557,6 +563,208 @@ def transferTime = 5</pre>
 <td></td>
 <td>
 <pre class='block-source'>output.contains 'successfully'</pre>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='1085808732'>
+<span>should execute route command</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>we have some path finding algorithm</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def algorithm = Mock SearchAlgorithm</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>we set the algorithm to find the shortest path</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>commands.shortest = algorithm</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we execute route command</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def output = commands.route 'L1', 'A1', 'L2', 'B2'</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the command request the repository for a graph of metro</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>1 * repository.getGraph()</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the algorithm is called to find the shortest path</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>1 * algorithm.findPath(_, _, _) &gt;&gt; []</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>we receive a report in the form of a table</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>output === tableReport</pre>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='-1122108551'>
+<span>should execute fastest-route command</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>we have some path finding algorithm</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def algorithm = Mock SearchAlgorithm</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>we set the algorithm to find the fastest path</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>commands.fastest = algorithm</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>we mock the graph for metro map</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def graph = Mock Graph</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we execute fastest-route command</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>commands.fastestRoute 'L1', 'A1', 'L2', 'B2'</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the repository requested for a graph and it returns the mocked graph </div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>1 * repository.getGraph() &gt;&gt; graph</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the algorithm is called to find the fastest path</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>1 * algorithm.findPath(_, _, _) &gt;&gt; []</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the distance for the found path is calculated.</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>1 * graph.getDistance(_)</pre>
 </td>
 </tr>
 </tbody>
