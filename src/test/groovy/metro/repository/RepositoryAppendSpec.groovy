@@ -3,8 +3,8 @@ package metro.repository
 import metro.model.Station
 import spock.lang.Title
 
-@Title("Command 'append' specifications")
-class AppendSpec extends MetroRepositorySpec {
+@Title("Specifications for 'append' command")
+class RepositoryAppendSpec extends MetroRepositorySpec {
 
     def 'should thrown an exception for non existing metro line'() {
         given: "the metro map returns null for non-existing line"

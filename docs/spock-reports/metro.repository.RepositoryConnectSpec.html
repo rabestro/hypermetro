@@ -244,7 +244,7 @@ div.footer {
 </style>
 </head>
 <body>
-<h2>Report for metro.shell.PromptSpec</h2>
+<h2>Report for metro.repository.RepositoryConnectSpec</h2>
 <hr></hr>
 <div class='back-link'>
 <a href='index.html'>&lt;&lt; Back</a>
@@ -272,7 +272,7 @@ div.footer {
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.047 seconds</td>
+<td>0.020 seconds</td>
 </tr>
 </tbody>
 </table>
@@ -286,13 +286,13 @@ div.footer {
 <tbody>
 <ul id='toc'>
 <li>
-<a href='#1684357581' class='feature-toc-pass'>should generate a prompt with metro name</a>
+<a href='#1610005338' class='feature-toc-pass'>should connect the source station to the target station</a>
 </li>
 </ul>
 <tr>
 <td colspan='10'>
-<div class='feature-description' id='1684357581'>
-<span>should generate a prompt with metro name</span>
+<div class='feature-description' id='1610005338'>
+<span>should connect the source station to the target station</span>
 <span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
@@ -304,41 +304,16 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-<div class='block-text'>a prompt provider for the shell</div>
+<div class='block-text'>subway stations creating a circular subway line</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>def prompt = new Prompt(repository)</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>When:</div>
-</td>
-<td>
-<div class='block-text'>we get a prompt for the shell</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>def output = prompt.prompt</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Then:</div>
-</td>
-<td>
-<div class='block-text'>the prompt provider asks the repository for the metro name</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>1 * repository.metroName &gt;&gt; 'london'</pre>
+<pre class='block-source'>def A1 = new Station('A1', 7, ['A2'] as Set, ['A3'] as Set, [] as Set)
+def A2 = new Station('A2', 5, ['A3'] as Set, ['A1'] as Set, [] as Set)
+def A3 = new Station('A3', 9, ['A1'] as Set, ['A2'] as Set, [] as Set)
+def L1 = [A1, A2, A3] as ArrayDeque</pre>
 </td>
 </tr>
 <tr>
@@ -346,13 +321,108 @@ div.footer {
 <div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>the prompt contains the name of metro</div>
+<div class='block-text'>subway stations that create an open subway line</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>output.contains 'london'</pre>
+<pre class='block-source'>def B1 = new Station('B1', 6, ['B2'] as Set, [] as Set, [] as Set)
+def B2 = new Station('B2', 8, ['B3'] as Set, ['B1'] as Set, [] as Set)
+def B3 = new Station('B3', 7, ['B4'] as Set, ['B2'] as Set, [] as Set)
+def B4 = new Station('B3', 9, [] as Set, ['B3'] as Set, [] as Set)
+def L2 = [B1, B2, B3, B4] as ArrayDeque</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>metro map consist of these two metro lines</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.metroMap = [L1: L1, L2: L2]</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Expect:</div>
+</td>
+<td>
+<div class='block-text'>none of the stations has a transfer to another station</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>L1*.transfer().every { it.isEmpty() }
+L2*.transfer().every { it.isEmpty() }</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we connect two stations</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.connect('L1', 'A2', 'L2', 'B2')</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the first station has transfer to the second</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>with(A2.transfer()) {
+    size() == 1
+    contains new StationId('L2', 'B2')
+}</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the second station has transfer to the first</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>with(B2.transfer()) {
+    size() == 1
+    contains new StationId('L1', 'A2')
+}</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>other metro stations do not have transitions to other stations</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>[A1, A3, B1, B3, B4].every { it.transfer().isEmpty() }</pre>
 </td>
 </tr>
 </tbody>

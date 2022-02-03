@@ -244,7 +244,7 @@ div.footer {
 </style>
 </head>
 <body>
-<h2>Report for metro.repository.MetroRepositoryJsonSpec</h2>
+<h2>Report for metro.repository.RepositoryAddHeadSpec</h2>
 <hr></hr>
 <div class='back-link'>
 <a href='index.html'>&lt;&lt; Back</a>
@@ -266,17 +266,18 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-<td>4</td>
-<td>4</td>
+<td>2</td>
+<td>2</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.132 seconds</td>
+<td>0.022 seconds</td>
 </tr>
 </tbody>
 </table>
 </div>
+<pre class='title'>Specifications for 'add-head' command</pre>
 <h3>Features:</h3>
 <table class='features-table'>
 <colgroup>
@@ -286,22 +287,16 @@ div.footer {
 <tbody>
 <ul id='toc'>
 <li>
-<a href='#1187995273' class='feature-toc-pass'>should find metro line by name</a>
+<a href='#-21176720' class='feature-toc-pass'>should add-head a new station to the empty metro line</a>
 </li>
 <li>
-<a href='#246154383' class='feature-toc-pass'>should append a new station to the end of metro line</a>
-</li>
-<li>
-<a href='#84975638' class='feature-toc-pass'>should throw an exception for unimplemented remove operation</a>
-</li>
-<li>
-<a href='#1533476510' class='feature-toc-pass'>should connect two station from different metro lines</a>
+<a href='#-1924034751' class='feature-toc-pass'>should add a new station to the head of metro line</a>
 </li>
 </ul>
 <tr>
 <td colspan='10'>
-<div class='feature-description' id='1187995273'>
-<span>should find metro line by name</span>
+<div class='feature-description' id='-21176720'>
+<span>should add-head a new station to the empty metro line</span>
 <span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
@@ -313,13 +308,27 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-<div class='block-text'>the repository with given metro map</div>
+<div class='block-text'>an empty metro line</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>repository.metroMap = [one: L1, two: L2]</pre>
+<pre class='block-source'>def metroLine = [] as ArrayDeque&lt;Station&gt;</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>subway map containing this metro line</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.metroMap = [one: metroLine]</pre>
 </td>
 </tr>
 <tr>
@@ -327,13 +336,13 @@ div.footer {
 <div class='block-kind'>When:</div>
 </td>
 <td>
-<div class='block-text'>we request the repository for existing line</div>
+<div class='block-text'>we add-head a station to this metro line</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>def line = repository.findLine('one')</pre>
+<pre class='block-source'>repository.addHead('one', station, nextTime)</pre>
 </td>
 </tr>
 <tr>
@@ -341,75 +350,93 @@ div.footer {
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<div class='block-text'>it returns expected metro line</div>
+<div class='block-text'>the line become not empty</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>line === L1</pre>
+<pre class='block-source'>metroLine</pre>
 </td>
 </tr>
 <tr>
 <td>
-<div class='block-kind'>When:</div>
+<div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>we request for an empty line</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>line = repository.findLine('two')</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Then:</div>
-</td>
-<td>
-<div class='block-text'>we get an empty metro line</div>
+<div class='block-text'>it has exactly one station</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>line === L2</pre>
+<pre class='block-source'>metroLine.size() == 1</pre>
 </td>
 </tr>
 <tr>
 <td>
-<div class='block-kind'>When:</div>
+<div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>we request a non existing line</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>line = repository.findLine('unknown')</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Then:</div>
-</td>
-<td>
-<div class='block-text'>we got a null</div>
+<div class='block-text'>the new created and added station has expected properties</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>line == null</pre>
+<pre class='block-source'>with(metroLine.first) {
+    name() == station
+    time() == nextTime
+    next().isEmpty()
+    prev().isEmpty()
+    transfer().isEmpty()
+}</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Where:</div>
+</td>
+<td>
+<div class='block-text'>station and travel time to the next station defined as</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>station</th>
+<th class='ex-header'>nextTime</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>Harrow &amp; Wealdstone</td>
+<td class='ex-value'>5</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>Warwick Avenue</td>
+<td class='ex-value'>7</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div class='spec-status'>2/2 passed</div>
 </td>
 </tr>
 <tr>
 <td colspan='10'>
-<div class='feature-description' id='246154383'>
-<span>should append a new station to the end of metro line</span>
+<div class='feature-description' id='-1924034751'>
+<span>should add a new station to the head of metro line</span>
 <span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
@@ -485,7 +512,7 @@ def S3 = new Station('S3', 9, ['S1'] as Set, ['S2'] as Set, [] as Set)</pre>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>repository.append('one', 'S4', 4)</pre>
+<pre class='block-source'>repository.addHead('one', 'S4', 4)</pre>
 </td>
 </tr>
 <tr>
@@ -499,7 +526,8 @@ def S3 = new Station('S3', 9, ['S1'] as Set, ['S2'] as Set, [] as Set)</pre>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>lineOne*.name() == ['S1', 'S2', 'S3', 'S4']</pre>
+<pre class='block-source'>lineOne*.name() == ['S4', 'S1', 'S2', 'S3']
+lineOne*.time() == [4, 7, 5, 9]</pre>
 </td>
 </tr>
 <tr>
@@ -507,13 +535,13 @@ def S3 = new Station('S3', 9, ['S1'] as Set, ['S2'] as Set, [] as Set)</pre>
 <div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>the new added station has correctly defined fields</div>
+<div class='block-text'>the first new station has correctly defined fields</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>with(lineOne.last) {
+<pre class='block-source'>with(lineOne.first) {
     name() == 'S4'
     next() == ['S1'] as Set
     prev() == ['S3'] as Set
@@ -527,231 +555,18 @@ def S3 = new Station('S3', 9, ['S1'] as Set, ['S2'] as Set, [] as Set)</pre>
 <div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>the previous last station was correctly modified</div>
+<div class='block-text'>the previous first station was correctly modified</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>with(S3) {
-    name() == 'S3'
-    next() == ['S4'] as Set
-    prev() == ['S2'] as Set
+<pre class='block-source'>with(S1) {
+    name() == 'S1'
+    next() == ['S2'] as Set
+    prev() == ['S4'] as Set
     transfer().isEmpty()
-    time() == 9
-}</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>When:</div>
-</td>
-<td>
-<div class='block-text'>we append a new station to the second empty metro line</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>repository.append('two', 'X', 5)</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Then:</div>
-</td>
-<td>
-<div class='block-text'>the second line become not empty</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>lineTwo</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>it has exactly one station</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>lineTwo.size() == 1</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>the new station has expected fields</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>with(lineTwo.first) {
-    name() == 'X'
-    time() == 5
-    next().isEmpty()
-    prev().isEmpty()
-    transfer().isEmpty()
-}</pre>
-</td>
-</tr>
-<tr>
-<td colspan='10'>
-<div class='feature-description' id='84975638'>
-<span>should throw an exception for unimplemented remove operation</span>
-<span style='float: right; font-size: 60%;'>
-<a href='#toc'>Return</a>
-</span>
-</div>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Given:</div>
-</td>
-<td>
-<div class='block-text'>we try to remove any station from any metro line</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>repository.remove(_ as String, _ as String)</pre>
-</td>
-</tr>
-<tr>
-<td colspan='10'>
-<div class='feature-description' id='1533476510'>
-<span>should connect two station from different metro lines</span>
-<span style='float: right; font-size: 60%;'>
-<a href='#toc'>Return</a>
-</span>
-</div>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Given:</div>
-</td>
-<td>
-<div class='block-text'>subway stations creating a circular subway line</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>def A1 = new Station('A1', 7, ['A2'] as Set, ['A3'] as Set, [] as Set)
-def A2 = new Station('A2', 5, ['A3'] as Set, ['A1'] as Set, [] as Set)
-def A3 = new Station('A3', 9, ['A1'] as Set, ['A2'] as Set, [] as Set)
-def L1 = [A1, A2, A3] as ArrayDeque</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>subway stations that create an open subway line</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>def B1 = new Station('B1', 6, ['B2'] as Set, [] as Set, [] as Set)
-def B2 = new Station('B2', 8, ['B3'] as Set, ['B1'] as Set, [] as Set)
-def B3 = new Station('B3', 7, ['B4'] as Set, ['B2'] as Set, [] as Set)
-def B4 = new Station('B3', 9, [] as Set, ['B3'] as Set, [] as Set)
-def L2 = [B1, B2, B3, B4] as ArrayDeque</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>subway map containing these two unconnected metro lines</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>repository.metroMap = [one: L1, two: L2]</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Expect:</div>
-</td>
-<td>
-<div class='block-text'>that every stations on line one and two has no transfers</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>L1*.transfer().every { it.isEmpty() }
-L2*.transfer().every { it.isEmpty() }</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>When:</div>
-</td>
-<td>
-<div class='block-text'>we connect station A2 with station B3</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>repository.connect('one', 'A2', 'two', 'B3')</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Then:</div>
-</td>
-<td>
-<div class='block-text'>station A2 from line one has transfer to line two, station B3</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>A1.transfer().isEmpty()
-A3.transfer().isEmpty()
-with(A2) {
-    transfer().size() == 1
-    transfer().contains new StationId('two', 'B3')
-}</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>station B3 from line two has transfer to line one, station A2</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>B1.transfer().isEmpty()
-B2.transfer().isEmpty()
-B4.transfer().isEmpty()
-with(B3) {
-    transfer().size() == 1
-    transfer().contains new StationId('one', 'A2')
+    time() == 7
 }</pre>
 </td>
 </tr>
