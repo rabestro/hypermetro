@@ -6,7 +6,7 @@ import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Title
 
-@Title("Command 'getGraph' specifications")
+@Title("Repository 'getGraph' specifications")
 class RepositoryGraphSpec extends Specification {
     @Subject
     def repository = new MetroRepositoryJson()
@@ -59,14 +59,24 @@ class RepositoryGraphSpec extends Specification {
         when: 'we create a graph from the metro map'
         def graph = repository.getGraph()
 
-        then: 'the graph schema is not empty'
-        graph.schema()
+        then: 'the graph schema is not empty and it has correct vertexes'
+        with(graph.schema()) {
+            !isEmpty()
+            size() == 3
+            keySet() == [S1, S2, S3] as Set
+        }
 
-        and: 'it has three vertexes'
-        graph.schema().size() == 3
+        and: 'each vertex has correct edges'
+        with(graph) {
+            edges(S1) == [(S2): 7]
+            edges(S2) == [(S1): 7, (S3): 5]
+            edges(S3) == [(S2): 5]
+        }
+
+        where:
+        S1 = new StationId('one', 'A1')
+        S2 = new StationId('one', 'A2')
+        S3 = new StationId('one', 'A3')
     }
 
-    StationId sid(line, name) {
-        new StationId(line, name)
-    }
 }

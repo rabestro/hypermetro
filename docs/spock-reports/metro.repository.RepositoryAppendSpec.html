@@ -244,7 +244,7 @@ div.footer {
 </style>
 </head>
 <body>
-<h2>Report for metro.shell.MetroCommandsSpec</h2>
+<h2>Report for metro.repository.RepositoryAppendSpec</h2>
 <hr></hr>
 <div class='back-link'>
 <a href='index.html'>&lt;&lt; Back</a>
@@ -266,17 +266,18 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-<td>6</td>
-<td>6</td>
+<td>4</td>
+<td>4</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.459 seconds</td>
+<td>0.084 seconds</td>
 </tr>
 </tbody>
 </table>
 </div>
+<pre class='title'>Specifications for 'append' command</pre>
 <h3>Features:</h3>
 <table class='features-table'>
 <colgroup>
@@ -286,28 +287,22 @@ div.footer {
 <tbody>
 <ul id='toc'>
 <li>
-<a href='#791096783' class='feature-toc-pass'>should execute add-head command</a>
+<a href='#-2415475' class='feature-toc-pass'>should thrown an exception for non existing metro line</a>
 </li>
 <li>
-<a href='#917356893' class='feature-toc-pass'>should execute append command</a>
+<a href='#1163170814' class='feature-toc-pass'>should thrown an exception if the station is already exist</a>
 </li>
 <li>
-<a href='#-1477288963' class='feature-toc-pass'>should execute connect command</a>
+<a href='#-469696834' class='feature-toc-pass'>should append a new station to the empty metro line</a>
 </li>
 <li>
-<a href='#-416227129' class='feature-toc-pass'>should execute remove command</a>
-</li>
-<li>
-<a href='#1085808732' class='feature-toc-pass'>should execute route command</a>
-</li>
-<li>
-<a href='#-1122108551' class='feature-toc-pass'>should execute fastest-route command</a>
+<a href='#246154383' class='feature-toc-pass'>should append a new station to the end of metro line</a>
 </li>
 </ul>
 <tr>
 <td colspan='10'>
-<div class='feature-description' id='791096783'>
-<span>should execute add-head command</span>
+<div class='feature-description' id='-2415475'>
+<span>should thrown an exception for non existing metro line</span>
 <span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
@@ -319,15 +314,15 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-<div class='block-text'>Metro line, station and transfer time to the next station</div>
+<div class='block-text'>the metro map returns null for non-existing line</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>def metroLine = 'Bakerloo'
-def metroStation = 'Waterloo'
-def transferTime = 5</pre>
+<pre class='block-source'>repository.metroMap = Stub (Map) {
+    it.get(_) &gt;&gt; null
+}</pre>
 </td>
 </tr>
 <tr>
@@ -335,13 +330,13 @@ def transferTime = 5</pre>
 <div class='block-kind'>When:</div>
 </td>
 <td>
-<div class='block-text'>we execute the command with these parameters</div>
+<div class='block-text'>we are trying to append a station to non-existing metro line</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>def output = commands.addHead(metroLine, metroStation, transferTime)</pre>
+<pre class='block-source'>repository.append(metroLine, 'some station', 5)</pre>
 </td>
 </tr>
 <tr>
@@ -349,13 +344,13 @@ def transferTime = 5</pre>
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<div class='block-text'>the metro repository is called with the parameters</div>
+<div class='block-text'>null pointer exception thrown</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>1 * repository.addHead(metroLine, metroStation, transferTime)</pre>
+<pre class='block-source'>def exception = thrown(NullPointerException)</pre>
 </td>
 </tr>
 <tr>
@@ -363,65 +358,13 @@ def transferTime = 5</pre>
 <div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>execution of the command is successful</div>
+<div class='block-text'>the error message explains the reason</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>output.contains 'successfully'</pre>
-</td>
-</tr>
-<tr>
-<td colspan='10'>
-<div class='feature-description' id='917356893'>
-<span>should execute append command</span>
-<span style='float: right; font-size: 60%;'>
-<a href='#toc'>Return</a>
-</span>
-</div>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>When:</div>
-</td>
-<td>
-<div class='block-text'>we execute the command with these parameters</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>def output = commands.append metroLine, metroStation, transferTime</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Then:</div>
-</td>
-<td>
-<div class='block-text'>the metro repository is called with the parameters</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>1 * repository.append(metroLine, metroStation, transferTime)</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>execution of the command is successful</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>output.contains 'successfully'</pre>
+<pre class='block-source'>exception.message.contains "no metro line with the name $metroLine"</pre>
 </td>
 </tr>
 <tr>
@@ -429,7 +372,7 @@ def transferTime = 5</pre>
 <div class='block-kind'>Where:</div>
 </td>
 <td>
-<div class='block-text'>metro line, station and transfer time to the next station as</div>
+<div class='block-text'>the line doesn't exist on the metro map</div>
 </td>
 </tr>
 <tr>
@@ -442,8 +385,107 @@ def transferTime = 5</pre>
 <thead>
 <tr>
 <th class='ex-header'>metroLine</th>
-<th class='ex-header'>metroStation</th>
-<th class='ex-header'>transferTime</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>some non existing line</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div class='spec-status'>1/1 passed</div>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='1163170814'>
+<span>should thrown an exception if the station is already exist</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>the metro line already has a station</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.metroMap = [(metroLine): [new Station(stationName, time)] as ArrayDeque]</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we try to append this station</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.append(metroLine, stationName, time)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>illegal argument exception thrown</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def exception = thrown(IllegalArgumentException)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the error message explains the reason</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>exception.message == "the station with the name '$stationName' is already on the metro line"</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Where:</div>
+</td>
+<td>
+<div class='block-text'>the station name and metro line name as</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>metroLine</th>
+<th class='ex-header'>stationName</th>
+<th class='ex-header'>time</th>
 </tr>
 </thead>
 <tbody>
@@ -463,8 +505,8 @@ def transferTime = 5</pre>
 </tr>
 <tr>
 <td colspan='10'>
-<div class='feature-description' id='-1477288963'>
-<span>should execute connect command</span>
+<div class='feature-description' id='-469696834'>
+<span>should append a new station to the empty metro line</span>
 <span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
@@ -476,13 +518,13 @@ def transferTime = 5</pre>
 <div class='block-kind'>When:</div>
 </td>
 <td>
-<div class='block-text'>we execute the command with these parameters</div>
+<div class='block-text'>we append a stationName to the empty metro line</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>def output = commands.connect 'one', 'A1', 'two', 'B2'</pre>
+<pre class='block-source'>repository.append('empty', stationName, timeToNextStation)</pre>
 </td>
 </tr>
 <tr>
@@ -490,13 +532,13 @@ def transferTime = 5</pre>
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<div class='block-text'>the metro repository is called with the parameters</div>
+<div class='block-text'>the line become not empty</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>1 * repository.connect('one', 'A1', 'two', 'B2')</pre>
+<pre class='block-source'>emptyLine</pre>
 </td>
 </tr>
 <tr>
@@ -504,71 +546,79 @@ def transferTime = 5</pre>
 <div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>execution of the command is successful</div>
+<div class='block-text'>it has exactly one stationName</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>output.contains 'successfully'</pre>
+<pre class='block-source'>emptyLine.size() == 1</pre>
 </td>
 </tr>
 <tr>
-<td colspan='10'>
-<div class='feature-description' id='-416227129'>
-<span>should execute remove command</span>
-<span style='float: right; font-size: 60%;'>
-<a href='#toc'>Return</a>
-</span>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the new created and added stationName has expected properties</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>with(emptyLine.first) {
+    name() == stationName
+    time() == timeToNextStation
+    next().isEmpty()
+    prev().isEmpty()
+    transfer().isEmpty()
+}</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Where:</div>
+</td>
+<td>
+<div class='block-text'>station name and time to the next station defined as</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>stationName</th>
+<th class='ex-header'>timeToNextStation</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>Harrow &amp; Wealdstone</td>
+<td class='ex-value'>5</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>Warwick Avenue</td>
+<td class='ex-value'>7</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
 </div>
 </td>
-</tr>
-<tr>
 <td>
-<div class='block-kind'>When:</div>
-</td>
-<td>
-<div class='block-text'>we execute the command with these parameters</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>def output = commands.remove 'Bakerloo', 'Waterloo'</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Then:</div>
-</td>
-<td>
-<div class='block-text'>the metro repository is called with the parameters</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>1 * repository.remove('Bakerloo', 'Waterloo')</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>execution of the command is successful</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>output.contains 'successfully'</pre>
+<div class='spec-status'>2/2 passed</div>
 </td>
 </tr>
 <tr>
 <td colspan='10'>
-<div class='feature-description' id='1085808732'>
-<span>should execute route command</span>
+<div class='feature-description' id='246154383'>
+<span>should append a new station to the end of metro line</span>
 <span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
@@ -580,13 +630,15 @@ def transferTime = 5</pre>
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-<div class='block-text'>we have some path finding algorithm</div>
+<div class='block-text'>three linked in cycle metro stations</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>def algorithm = Mock SearchAlgorithm</pre>
+<pre class='block-source'>def S1 = new Station('S1', 7, ['S2'] as Set, ['S3'] as Set, [] as Set)
+def S2 = new Station('S2', 5, ['S3'] as Set, ['S1'] as Set, [] as Set)
+def S3 = new Station('S3', 9, ['S1'] as Set, ['S2'] as Set, [] as Set)</pre>
 </td>
 </tr>
 <tr>
@@ -594,13 +646,41 @@ def transferTime = 5</pre>
 <div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>we set the algorithm to find the shortest path</div>
+<div class='block-text'>the first metro line containing these three stations</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>commands.shortest = algorithm</pre>
+<pre class='block-source'>def lineOne = [S1, S2, S3] as ArrayDeque</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the second metro line without any stations</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def lineTwo = [] as ArrayDeque&lt;Station&gt;</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>subway map containing these two metro lines</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>repository.metroMap = [one: lineOne, two: lineTwo]</pre>
 </td>
 </tr>
 <tr>
@@ -608,13 +688,13 @@ def transferTime = 5</pre>
 <div class='block-kind'>When:</div>
 </td>
 <td>
-<div class='block-text'>we execute route command</div>
+<div class='block-text'>we append a stationName at the end of the first metro line</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>def output = commands.route 'L1', 'A1', 'L2', 'B2'</pre>
+<pre class='block-source'>repository.append('one', 'S4', 4)</pre>
 </td>
 </tr>
 <tr>
@@ -622,13 +702,13 @@ def transferTime = 5</pre>
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<div class='block-text'>the command request the repository for a graph of metro</div>
+<div class='block-text'>the metro line has stations in correct order</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>1 * repository.getGraph()</pre>
+<pre class='block-source'>lineOne*.name() == ['S1', 'S2', 'S3', 'S4']</pre>
 </td>
 </tr>
 <tr>
@@ -636,13 +716,19 @@ def transferTime = 5</pre>
 <div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>the algorithm is called to find the shortest path</div>
+<div class='block-text'>the new added stationName has correctly defined fields</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>1 * algorithm.findPath(_, _, _) &gt;&gt; []</pre>
+<pre class='block-source'>with(lineOne.last) {
+    name() == 'S4'
+    next() == ['S1'] as Set
+    prev() == ['S3'] as Set
+    transfer().isEmpty()
+    time() == 4
+}</pre>
 </td>
 </tr>
 <tr>
@@ -650,65 +736,19 @@ def transferTime = 5</pre>
 <div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>we receive a report in the form of a table</div>
+<div class='block-text'>the previous last stationName was correctly modified</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>output === tableReport</pre>
-</td>
-</tr>
-<tr>
-<td colspan='10'>
-<div class='feature-description' id='-1122108551'>
-<span>should execute fastest-route command</span>
-<span style='float: right; font-size: 60%;'>
-<a href='#toc'>Return</a>
-</span>
-</div>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Given:</div>
-</td>
-<td>
-<div class='block-text'>we have some path finding algorithm</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>def algorithm = Mock SearchAlgorithm</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>we set the algorithm to find the fastest path</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>commands.fastest = algorithm</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>we mock the graph for metro map</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>def graph = Mock Graph</pre>
+<pre class='block-source'>with(S3) {
+    name() == 'S3'
+    next() == ['S4'] as Set
+    prev() == ['S2'] as Set
+    transfer().isEmpty()
+    time() == 9
+}</pre>
 </td>
 </tr>
 <tr>
@@ -716,13 +756,13 @@ def transferTime = 5</pre>
 <div class='block-kind'>When:</div>
 </td>
 <td>
-<div class='block-text'>we execute fastest-route command</div>
+<div class='block-text'>we append a new stationName to the second empty metro line</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>commands.fastestRoute 'L1', 'A1', 'L2', 'B2'</pre>
+<pre class='block-source'>repository.append('two', 'X', 5)</pre>
 </td>
 </tr>
 <tr>
@@ -730,13 +770,13 @@ def transferTime = 5</pre>
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<div class='block-text'>the repository requested for a graph and it returns the mocked graph </div>
+<div class='block-text'>the second line become not empty</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>1 * repository.getGraph() &gt;&gt; graph</pre>
+<pre class='block-source'>lineTwo</pre>
 </td>
 </tr>
 <tr>
@@ -744,13 +784,13 @@ def transferTime = 5</pre>
 <div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>the algorithm is called to find the fastest path</div>
+<div class='block-text'>it has exactly one stationName</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>1 * algorithm.findPath(_, _, _) &gt;&gt; []</pre>
+<pre class='block-source'>lineTwo.size() == 1</pre>
 </td>
 </tr>
 <tr>
@@ -758,13 +798,19 @@ def transferTime = 5</pre>
 <div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>the distance for the found path is calculated.</div>
+<div class='block-text'>the new stationName has expected fields</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>1 * graph.getDistance(_)</pre>
+<pre class='block-source'>with(lineTwo.first) {
+    name() == 'X'
+    time() == 5
+    next().isEmpty()
+    prev().isEmpty()
+    transfer().isEmpty()
+}</pre>
 </td>
 </tr>
 </tbody>
