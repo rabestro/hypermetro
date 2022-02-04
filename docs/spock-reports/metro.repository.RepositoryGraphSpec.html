@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Sat Feb 05 00:05:29 EET 2022 by jegors</div>
+<div class='date-test-ran'>Created on Thu Feb 03 18:36:16 EET 2022 by jegors.cemisovs</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -272,12 +272,12 @@ div.footer {
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.021 seconds</td>
+<td>0.020 seconds</td>
 </tr>
 </tbody>
 </table>
 </div>
-<pre class='title'>Command 'getGraph' specifications</pre>
+<pre class='title'>Repository 'getGraph' specifications</pre>
 <h3>Features:</h3>
 <table class='features-table'>
 <colgroup>
@@ -541,13 +541,17 @@ def A3 = new Station('A3', 9, [] as Set, ['A2'] as Set, [] as Set)</pre>
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<div class='block-text'>the graph schema is not empty</div>
+<div class='block-text'>the graph schema is not empty and it has correct vertexes</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>graph.schema()</pre>
+<pre class='block-source'>with(graph.schema()) {
+    !isEmpty()
+    size() == 3
+    keySet() == [S1, S2, S3] as Set
+}</pre>
 </td>
 </tr>
 <tr>
@@ -555,13 +559,46 @@ def A3 = new Station('A3', 9, [] as Set, ['A2'] as Set, [] as Set)</pre>
 <div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>it has three vertexes</div>
+<div class='block-text'>each vertex has correct edges</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>graph.schema().size() == 3</pre>
+<pre class='block-source'>with(graph) {
+    edges(S1) == [(S2): 7]
+    edges(S2) == [(S1): 7, (S3): 5]
+    edges(S3) == [(S2): 5]
+}</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>S1</th>
+<th class='ex-header'>S2</th>
+<th class='ex-header'>S3</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>StationId[line=one, station=A1]</td>
+<td class='ex-value'>StationId[line=one, station=A2]</td>
+<td class='ex-value'>StationId[line=one, station=A3]</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div class='spec-status'>1/1 passed</div>
 </td>
 </tr>
 </tbody>
