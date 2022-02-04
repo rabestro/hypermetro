@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Sat Feb 05 00:42:08 EET 2022 by jegors</div>
+<div class='date-test-ran'>Created on Sat Feb 05 00:55:59 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -266,13 +266,13 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-<td>4</td>
-<td>4</td>
+<td>5</td>
+<td>5</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
+<td>1</td>
 <td>100.0%</td>
-<td>0.105 seconds</td>
+<td>0.115 seconds</td>
 </tr>
 </tbody>
 </table>
@@ -296,6 +296,12 @@ div.footer {
 </li>
 <li>
 <a href='#1533476510' class='feature-toc-pass'>should connect two station from different metro lines</a>
+</li>
+<li>
+<a href='#-972369938' class='feature-toc-pass'>should return metro name on UNIX machines</a>
+</li>
+<li>
+<a href='#1380805279' class='feature-toc-ignored'>should return metro name on Windows machines</a>
 </li>
 </ul>
 <tr>
@@ -753,6 +759,121 @@ with(B3) {
     transfer().size() == 1
     transfer().contains new StationId('one', 'A2')
 }</pre>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='-972369938'>
+<span>should return metro name on UNIX machines</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>----</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Expect:</div>
+</td>
+<td>
+<div class='block-text'>----</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Where:</div>
+</td>
+<td>
+<div class='block-text'>----</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>fileName</th>
+<th class='ex-header'>metroName</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>london.json</td>
+<td class='ex-value'>london</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>london.jsn</td>
+<td class='ex-value'>london</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>./london.json</td>
+<td class='ex-value'>london</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>../london.json</td>
+<td class='ex-value'>london</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>/usr/home/london.json</td>
+<td class='ex-value'>london</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div class='spec-status'>5/5 passed</div>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description ignored' id='1380805279'>
+<span>should return metro name on Windows machines</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr class='ignored'>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>----</div>
+</td>
+</tr>
+<tr class='ignored'>
+<td>
+<div class='block-kind'>Expect:</div>
+</td>
+<td>
+<div class='block-text'>----</div>
+</td>
+</tr>
+<tr class='ignored'>
+<td>
+<div class='block-kind'>Where:</div>
+</td>
+<td>
+<div class='block-text'>----</div>
 </td>
 </tr>
 </tbody>
