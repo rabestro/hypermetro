@@ -2,9 +2,9 @@ package metro.repository
 
 import metro.model.Station
 import metro.model.StationId
-import spock.lang.FailsWith
-import spock.lang.Specification
-import spock.lang.Subject
+import spock.lang.*
+
+import java.nio.file.Path
 
 class MetroRepositoryJsonSpec extends Specification {
 
@@ -163,10 +163,38 @@ class MetroRepositoryJsonSpec extends Specification {
         }
     }
 
-    def "GetGraph"() {
+    @IgnoreIf({ os.windows })
+    def "should return metro name on UNIX machines"() {
+        given:
+        repository.schemaPath = Path.of(fileName)
+
+        expect:
+        repository.getMetroName() == metroName
+
+        where:
+        fileName                | metroName
+        'london.json'           | 'london'
+        'london.jsn'            | 'london'
+        './london.json'         | 'london'
+        '../london.json'        | 'london'
+        '/usr/home/london.json' | 'london'
     }
 
-    def "GetMetroName"() {
+    @Requires({ os.windows })
+    def "should return metro name on Windows machines"() {
+        given:
+        repository.schemaPath = Path.of(fileName)
+
+        expect:
+        repository.getMetroName() == metroName
+
+        where:
+        fileName                  | metroName
+        'london.json'             | 'london'
+        'london.jsn'              | 'london'
+        /.\london.json/           | 'london'
+        /..\london.json/          | 'london'
+        /c:\usr\home\london.json/ | 'london'
     }
 
     def 'should add a new station at the beginning of metro line'() {

@@ -46,7 +46,7 @@ public class MetroCommands {
 
     @ShellMethod("Adds a new station at the beginning of the metro line")
     public String addHead(
-            @ShellOption(help = "Name of the metro line") String line,
+            @ShellOption(help = "Name of the metro line", valueProvider = MetroLineValueProvider.class) String line,
             @ShellOption(help = "Name of the metro station") String station,
             @ShellOption(help = "Travel time to the next station in minutes") int time
     ) {
@@ -56,7 +56,7 @@ public class MetroCommands {
 
     @ShellMethod("Adds a new station at the end of the line")
     public String append(
-            @ShellOption(help = "Name of the metro line") String line,
+            @ShellOption(help = "Name of the metro line", valueProvider = MetroLineValueProvider.class) String line,
             @ShellOption(help = "Name of the metro station") String station,
             @ShellOption(help = "Travel time to the next station in minutes") int time
     ) {
@@ -66,9 +66,11 @@ public class MetroCommands {
 
     @ShellMethod("Adds a transfer connection between two metro stations")
     public String connect(
-            @ShellOption(help = "Name of the first metro line") String sourceLine,
+            @ShellOption(help = "Name of the first metro line",
+                    valueProvider = MetroLineValueProvider.class) String sourceLine,
             @ShellOption(help = "Name of the first metro station") String sourceStation,
-            @ShellOption(help = "Name of the second metro line") String targetLine,
+            @ShellOption(help = "Name of the second metro line",
+                    valueProvider = MetroLineValueProvider.class) String targetLine,
             @ShellOption(help = "Name of the second metro station") String targetStation
     ) {
         repository.connect(sourceLine, sourceStation, targetLine, targetStation);
@@ -77,9 +79,11 @@ public class MetroCommands {
 
     @ShellMethod("Finds and prints the shortest route between two metro stations")
     public Table route(
-            @ShellOption(help = "Name of the starting metro line") String sourceLine,
+            @ShellOption(help = "Name of the starting metro line",
+                    valueProvider = MetroLineValueProvider.class) String sourceLine,
             @ShellOption(help = "Name of the starting metro station") String sourceStation,
-            @ShellOption(help = "Name of the final metro line") String targetLine,
+            @ShellOption(help = "Name of the final metro line",
+                    valueProvider = MetroLineValueProvider.class) String targetLine,
             @ShellOption(help = "Name of the final metro station") String targetStation
     ) {
         var source = new StationId(sourceLine, sourceStation);
@@ -91,9 +95,11 @@ public class MetroCommands {
 
     @ShellMethod("Finds and prints the fastest route between two metro stations")
     public String fastestRoute(
-            @ShellOption(help = "Name of the starting metro line") String sourceLine,
+            @ShellOption(help = "Name of the starting metro line",
+                    valueProvider = MetroLineValueProvider.class) String sourceLine,
             @ShellOption(help = "Name of the starting metro station") String sourceStation,
-            @ShellOption(help = "Name of the final metro line") String targetLine,
+            @ShellOption(help = "Name of the final metro line",
+                    valueProvider = MetroLineValueProvider.class) String targetLine,
             @ShellOption(help = "Name of the final metro station") String targetStation
     ) {
         var source = new StationId(sourceLine, sourceStation);
@@ -106,7 +112,7 @@ public class MetroCommands {
 
     @ShellMethod("Removes a station from the metro map")
     public String remove(
-            @ShellOption(help = "Name of the metro line") String line,
+            @ShellOption(help = "Name of the metro line", valueProvider = MetroLineValueProvider.class) String line,
             @ShellOption(help = "Name of the metro station") String station
     ) {
         repository.remove(line, station);
@@ -115,7 +121,7 @@ public class MetroCommands {
 
     @ShellMethod("Outputs all stations for a given metro line")
     public Table output(
-            @ShellOption(help = "Name of the metro line") String line
+            @ShellOption(help = "Name of the metro line", valueProvider = MetroLineValueProvider.class) String line
     ) {
         var header = Stream.ofNullable(new Object[]{"Station", "Next", "Previous", "Transfer to line"});
         var stations = repository.findLine(line).stream().map(station -> new Object[]{
