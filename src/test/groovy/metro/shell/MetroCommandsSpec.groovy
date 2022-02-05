@@ -10,21 +10,18 @@ import spock.lang.Subject
 
 class MetroCommandsSpec extends Specification {
 
-    def repository = Mock MetroRepository
+    def graph = Mock Graph
 
-    def tableReport = Mock Table
+    def repository = Mock MetroRepository
+    def bfsAlgorithm = Mock SearchAlgorithm
+    def dijkstrasAlgorithm = Mock SearchAlgorithm
 
     @Subject
-    def commands = Spy(MetroCommands) {
-        getRouteTable(_ as List<StationId>) >> tableReport
-    }
-
-    void setup() {
-        commands.setRepository(repository)
-    }
-
-    void cleanup() {
-    }
+    def commands = new MetroCommands(
+            repository: repository,
+            shortest: bfsAlgorithm,
+            fastest: dijkstrasAlgorithm
+    )
 
     def "should execute add-head command"() {
         given: 'Metro line, station and transfer time to the next station'
@@ -82,47 +79,64 @@ class MetroCommandsSpec extends Specification {
     }
 
     def 'should execute route command'() {
-        given: 'we have some path finding algorithm'
-        def algorithm = Mock SearchAlgorithm
-
-        and: 'we set the algorithm to find the shortest path'
-        commands.shortest = algorithm
-
         when: 'we execute route command'
-        def output = commands.route 'L1', 'A1', 'L2', 'B2'
+        def output = commands.route sourceLine, sourceStation, targetLine, targetStation
 
         then: 'the command request the repository for a graph of metro'
-        1 * repository.getGraph()
+        1 * repository.getGraph() >> graph
 
         and: 'the algorithm is called to find the shortest path'
-        1 * algorithm.findPath(_, _, _) >> []
+        1 * bfsAlgorithm.findPath(graph, source, target) >> route
+
+        and: 'the distance for the found path is calculated.'
+        1 * graph.getDistance(route)
 
         and: 'we receive a report in the form of a table'
-        output === tableReport
+        output.getClass() == Table.class
+
+        where: 'the parameters for fastest-route method are'
+        sourceLine = 'L1'
+        sourceStation = 'A1'
+        targetLine = 'L2'
+        targetStation = 'B2'
+
+        and: 'source and target stationIds are'
+        source = new StationId(sourceLine, sourceStation)
+        target = new StationId(targetLine, targetStation)
+
+        and: 'the route between stations is'
+        route = [source, target]
     }
 
     def 'should execute fastest-route command'() {
-        given: 'we have some path finding algorithm'
-        def algorithm = Mock SearchAlgorithm
-
-        and: 'we set the algorithm to find the fastest path'
-        commands.fastest = algorithm
-
-        and: 'we mock the graph for metro map'
-        def graph = Mock Graph
-
         when: 'we execute fastest-route command'
-        commands.fastestRoute 'L1', 'A1', 'L2', 'B2'
+        def output = commands.fastestRoute sourceLine, sourceStation, targetLine, targetStation
 
         then: 'the repository requested for a graph and it returns the mocked graph '
         1 * repository.getGraph() >> graph
 
         and: 'the algorithm is called to find the fastest path'
-        1 * algorithm.findPath(_, _, _) >> []
+        1 * dijkstrasAlgorithm.findPath(graph, source, target) >> route
 
         and: 'the distance for the found path is calculated.'
-        1 * graph.getDistance(_)
+        1 * graph.getDistance(route)
 
+        and: 'we receive a report in the form of a table'
+        output.getClass() == Table.class
+
+
+        where: 'the parameters for fastest-route method are'
+        sourceLine = 'L1'
+        sourceStation = 'A1'
+        targetLine = 'L2'
+        targetStation = 'B2'
+
+        and: 'source and target stationIds are'
+        source = new StationId(sourceLine, sourceStation)
+        target = new StationId(targetLine, targetStation)
+
+        and: 'the route between stations is'
+        route = [source, target]
     }
 
 

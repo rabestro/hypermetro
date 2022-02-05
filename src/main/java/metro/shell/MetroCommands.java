@@ -18,13 +18,10 @@ import org.springframework.shell.table.Table;
 import org.springframework.shell.table.TableBuilder;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.lang.String.join;
-import static java.lang.System.Logger.Level.DEBUG;
 import static java.lang.System.lineSeparator;
 import static java.util.stream.Collectors.joining;
 import static org.springframework.shell.table.CellMatchers.column;
@@ -86,15 +83,11 @@ public class MetroCommands {
                     valueProvider = MetroLineValueProvider.class) String targetLine,
             @ShellOption(help = "Name of the final metro station") String targetStation
     ) {
-        var source = new StationId(sourceLine, sourceStation);
-        var target = new StationId(targetLine, targetStation);
-        var graph = repository.getGraph();
-        var route = shortest.findPath(graph, source, target);
-        return getRouteTable(route);
+        return getRouteTable(shortest, sourceLine, sourceStation, targetLine, targetStation);
     }
 
     @ShellMethod("Finds and prints the fastest route between two metro stations")
-    public String fastestRoute(
+    public Table fastestRoute(
             @ShellOption(help = "Name of the starting metro line",
                     valueProvider = MetroLineValueProvider.class) String sourceLine,
             @ShellOption(help = "Name of the starting metro station") String sourceStation,
@@ -102,12 +95,39 @@ public class MetroCommands {
                     valueProvider = MetroLineValueProvider.class) String targetLine,
             @ShellOption(help = "Name of the final metro station") String targetStation
     ) {
+        return getRouteTable(fastest, sourceLine, sourceStation, targetLine, targetStation);
+    }
+
+    private Table getRouteTable(
+            SearchAlgorithm<StationId> algorithm,
+            String sourceLine, String sourceStation,
+            String targetLine, String targetStation) {
         var source = new StationId(sourceLine, sourceStation);
         var target = new StationId(targetLine, targetStation);
         var graph = repository.getGraph();
-        var route = fastest.findPath(graph, source, target);
-        var timeMessage = lineSeparator() + "Total: " + (int) graph.getDistance(route) + " minutes in the way";
-        return getRouteTable(route).render(80) + timeMessage;
+        var route = algorithm.findPath(graph, source, target);
+
+        var line = route.get(0).line();
+        var data = new ArrayList<Object[]>();
+        data.add(new String[]{"", "Route"});
+        var number = 1;
+        for (final var node : route) {
+            if (!node.line().equals(line)) {
+                line = node.line();
+                data.add(new String[]{"", "Transition to line " + line});
+            }
+            data.add(new Object[]{number++, node.station()});
+        }
+        data.add(new Object[]{"", ""});
+        data.add(new Object[]{"Total", (int) graph.getDistance(route) + " minutes in the way"});
+
+        var table = data.toArray(Object[][]::new);
+
+        return new TableBuilder(new ArrayTableModel(table))
+                .addHeaderAndVerticalsBorders(BorderStyle.air)
+                .on(column(0)).addAligner(right)
+                .on(column(1)).addSizer(NO_WRAP)
+                .build();
     }
 
     @ShellMethod("Removes a station from the metro map")
@@ -161,28 +181,6 @@ public class MetroCommands {
                 .build();
     }
 
-    public Table getRouteTable(List<StationId> route) {
-        LOGGER.log(DEBUG, "prints route: {0}", route);
-        var line = route.get(0).line();
-        var data = new ArrayList<String>();
-        data.add("Route");
-        for (final var node : route) {
-            if (!node.line().equals(line)) {
-                line = node.line();
-                data.add("Transition to line " + line);
-            }
-            data.add(node.station());
-        }
-
-        var table = IntStream.range(0, data.size())
-                .mapToObj(i -> new Object[]{i == 0 ? "" : i, data.get(i)}).toArray(Object[][]::new);
-
-        return new TableBuilder(new ArrayTableModel(table))
-                .addHeaderAndVerticalsBorders(BorderStyle.valueOf(borderStyle))
-                .on(column(0)).addAligner(right)
-                .on(column(1)).addSizer(NO_WRAP)
-                .build();
-    }
 
     @Autowired
     public void setRepository(MetroRepository repository) {
