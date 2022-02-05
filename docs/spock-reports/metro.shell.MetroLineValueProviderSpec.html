@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Sat Feb 05 13:05:48 EET 2022 by jegors</div>
+<div class='date-test-ran'>Created on Sat Feb 05 15:38:31 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -266,13 +266,13 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-<td>1</td>
-<td>1</td>
+<td>2</td>
+<td>2</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.502 seconds</td>
+<td>0.757 seconds</td>
 </tr>
 </tbody>
 </table>
@@ -287,6 +287,9 @@ div.footer {
 <ul id='toc'>
 <li>
 <a href='#-2118040050' class='feature-toc-pass'>should support only parameters of type String</a>
+</li>
+<li>
+<a href='#506861743' class='feature-toc-pass'>should suggest metro lines</a>
 </li>
 </ul>
 <tr>
@@ -378,6 +381,161 @@ div.footer {
 </td>
 <td>
 <div class='spec-status'>5/5 passed</div>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='506861743'>
+<span>should suggest metro lines</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>parameter is mocked and no hints</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def hints = [] as String[]
+def parameter = Mock MethodParameter</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we call value provider to complete our word</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def proposals = valueProvider.complete(parameter, context, hints)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the context is called and the repository requested for the schema of metro</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>1 * context.currentWordUpToCursor() &gt;&gt; word
+1 * repository.getSchema() &gt;&gt; schema</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the value of proposals as expected</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>proposals*.value() == expected</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Where:</div>
+</td>
+<td>
+<div class='block-text'>the metro schema as</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>entered word and expected suggestions are</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>word  | expected
+'B'   | ['Bakerloo']
+'C'   | ['Circle', 'Central']
+'Co'  | []
+'D'   | ['District']
+'Jub' | ['Jubilee']
+'F'   | []</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>schema</th>
+<th class='ex-header'>word</th>
+<th class='ex-header'>expected</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>[Bakerloo:[Station[name=Kenton, time=5, next=[], prev=[], transfer=[]]], Circle:[], District:[], Jubilee:[], Central:[]]</td>
+<td class='ex-value'>B</td>
+<td class='ex-value'>[Bakerloo]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>[Bakerloo:[Station[name=Kenton, time=5, next=[], prev=[], transfer=[]]], Circle:[], District:[], Jubilee:[], Central:[]]</td>
+<td class='ex-value'>C</td>
+<td class='ex-value'>[Circle, Central]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>[Bakerloo:[Station[name=Kenton, time=5, next=[], prev=[], transfer=[]]], Circle:[], District:[], Jubilee:[], Central:[]]</td>
+<td class='ex-value'>Co</td>
+<td class='ex-value'>[]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>[Bakerloo:[Station[name=Kenton, time=5, next=[], prev=[], transfer=[]]], Circle:[], District:[], Jubilee:[], Central:[]]</td>
+<td class='ex-value'>D</td>
+<td class='ex-value'>[District]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>[Bakerloo:[Station[name=Kenton, time=5, next=[], prev=[], transfer=[]]], Circle:[], District:[], Jubilee:[], Central:[]]</td>
+<td class='ex-value'>Jub</td>
+<td class='ex-value'>[Jubilee]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>[Bakerloo:[Station[name=Kenton, time=5, next=[], prev=[], transfer=[]]], Circle:[], District:[], Jubilee:[], Central:[]]</td>
+<td class='ex-value'>F</td>
+<td class='ex-value'>[]</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div class='spec-status'>6/6 passed</div>
 </td>
 </tr>
 </tbody>
