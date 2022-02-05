@@ -8,6 +8,8 @@ import java.nio.file.Path
 
 class MetroRepositoryJsonSpec extends Specification {
 
+    def resourceDirectory = Path.of("src", "test", "resources")
+
     def L1A2 = new StationId('L1', 'A2')
     def L2B2 = new StationId('L2', 'B2')
 
@@ -165,13 +167,13 @@ class MetroRepositoryJsonSpec extends Specification {
 
     @IgnoreIf({ os.windows })
     def "should return metro name on UNIX machines"() {
-        given:
+        given: 'metro schema loaded from file in Unix/MacOS'
         repository.schemaPath = Path.of(fileName)
 
-        expect:
+        expect: 'the metro name equals the file name without extension'
         repository.getMetroName() == metroName
 
-        where:
+        where: 'full file path and metro name as'
         fileName                | metroName
         'london.json'           | 'london'
         'london.jsn'            | 'london'
@@ -182,19 +184,32 @@ class MetroRepositoryJsonSpec extends Specification {
 
     @Requires({ os.windows })
     def "should return metro name on Windows machines"() {
-        given:
+        given: 'metro schema loaded from file in Windows'
         repository.schemaPath = Path.of(fileName)
 
-        expect:
+        expect: 'the metro name equals the file name without extension'
         repository.getMetroName() == metroName
 
-        where:
+        where: 'full file path and metro name as'
         fileName                  | metroName
         'london.json'             | 'london'
         'london.jsn'              | 'london'
         /.\london.json/           | 'london'
         /..\london.json/          | 'london'
         /c:\usr\home\london.json/ | 'london'
+    }
+
+    def 'should load an empty metro map'() {
+        given:
+        def metroJson = Path.of("metro", "empty.json")
+        repository.filePath = resourceDirectory.resolve(metroJson).toString()
+
+        when:
+        repository.afterPropertiesSet()
+
+        then:
+        repository.getSchema().isEmpty()
+
     }
 
     def 'should add a new station at the beginning of metro line'() {
