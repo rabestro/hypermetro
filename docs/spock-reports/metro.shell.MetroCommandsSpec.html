@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Sat Feb 05 00:56:00 EET 2022 by jegors</div>
+<div class='date-test-ran'>Created on Sat Feb 05 13:05:47 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -272,7 +272,7 @@ div.footer {
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.428 seconds</td>
+<td>0.065 seconds</td>
 </tr>
 </tbody>
 </table>
@@ -577,34 +577,6 @@ def transferTime = 5</pre>
 </tr>
 <tr>
 <td>
-<div class='block-kind'>Given:</div>
-</td>
-<td>
-<div class='block-text'>we have some path finding algorithm</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>def algorithm = Mock SearchAlgorithm</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>we set the algorithm to find the shortest path</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>commands.shortest = algorithm</pre>
-</td>
-</tr>
-<tr>
-<td>
 <div class='block-kind'>When:</div>
 </td>
 <td>
@@ -614,7 +586,7 @@ def transferTime = 5</pre>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>def output = commands.route 'L1', 'A1', 'L2', 'B2'</pre>
+<pre class='block-source'>def output = commands.route sourceLine, sourceStation, targetLine, targetStation</pre>
 </td>
 </tr>
 <tr>
@@ -628,7 +600,7 @@ def transferTime = 5</pre>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>1 * repository.getGraph()</pre>
+<pre class='block-source'>1 * repository.getGraph() &gt;&gt; graph</pre>
 </td>
 </tr>
 <tr>
@@ -642,7 +614,21 @@ def transferTime = 5</pre>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>1 * algorithm.findPath(_, _, _) &gt;&gt; []</pre>
+<pre class='block-source'>1 * bfsAlgorithm.findPath(graph, source, target) &gt;&gt; route</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the distance for the found path is calculated.</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>1 * graph.getDistance(route)</pre>
 </td>
 </tr>
 <tr>
@@ -656,7 +642,81 @@ def transferTime = 5</pre>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>output === tableReport</pre>
+<pre class='block-source'>output.getClass() == Table.class</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Where:</div>
+</td>
+<td>
+<div class='block-text'>the parameters for fastest-route method are</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>source and target stationIds are</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>source = new StationId(sourceLine, sourceStation)
+target = new StationId(targetLine, targetStation)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the route between stations is</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>route = [source, target]</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>sourceLine</th>
+<th class='ex-header'>sourceStation</th>
+<th class='ex-header'>targetLine</th>
+<th class='ex-header'>targetStation</th>
+<th class='ex-header'>source</th>
+<th class='ex-header'>target</th>
+<th class='ex-header'>route</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>L1</td>
+<td class='ex-value'>A1</td>
+<td class='ex-value'>L2</td>
+<td class='ex-value'>B2</td>
+<td class='ex-value'>StationId[line=L1, station=A1]</td>
+<td class='ex-value'>StationId[line=L2, station=B2]</td>
+<td class='ex-value'>[StationId[line=L1, station=A1], StationId[line=L2, station=B2]]</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div class='spec-status'>1/1 passed</div>
 </td>
 </tr>
 <tr>
@@ -671,48 +731,6 @@ def transferTime = 5</pre>
 </tr>
 <tr>
 <td>
-<div class='block-kind'>Given:</div>
-</td>
-<td>
-<div class='block-text'>we have some path finding algorithm</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>def algorithm = Mock SearchAlgorithm</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>we set the algorithm to find the fastest path</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>commands.fastest = algorithm</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>And:</div>
-</td>
-<td>
-<div class='block-text'>we mock the graph for metro map</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>def graph = Mock Graph</pre>
-</td>
-</tr>
-<tr>
-<td>
 <div class='block-kind'>When:</div>
 </td>
 <td>
@@ -722,7 +740,7 @@ def transferTime = 5</pre>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>commands.fastestRoute 'L1', 'A1', 'L2', 'B2'</pre>
+<pre class='block-source'>def output = commands.fastestRoute sourceLine, sourceStation, targetLine, targetStation</pre>
 </td>
 </tr>
 <tr>
@@ -750,7 +768,7 @@ def transferTime = 5</pre>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>1 * algorithm.findPath(_, _, _) &gt;&gt; []</pre>
+<pre class='block-source'>1 * dijkstrasAlgorithm.findPath(graph, source, target) &gt;&gt; route</pre>
 </td>
 </tr>
 <tr>
@@ -764,7 +782,95 @@ def transferTime = 5</pre>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>1 * graph.getDistance(_)</pre>
+<pre class='block-source'>1 * graph.getDistance(route)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>we receive a report in the form of a table</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>output.getClass() == Table.class</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Where:</div>
+</td>
+<td>
+<div class='block-text'>the parameters for fastest-route method are</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>source and target stationIds are</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>source = new StationId(sourceLine, sourceStation)
+target = new StationId(targetLine, targetStation)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the route between stations is</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>route = [source, target]</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>sourceLine</th>
+<th class='ex-header'>sourceStation</th>
+<th class='ex-header'>targetLine</th>
+<th class='ex-header'>targetStation</th>
+<th class='ex-header'>source</th>
+<th class='ex-header'>target</th>
+<th class='ex-header'>route</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>L1</td>
+<td class='ex-value'>A1</td>
+<td class='ex-value'>L2</td>
+<td class='ex-value'>B2</td>
+<td class='ex-value'>StationId[line=L1, station=A1]</td>
+<td class='ex-value'>StationId[line=L2, station=B2]</td>
+<td class='ex-value'>[StationId[line=L1, station=A1], StationId[line=L2, station=B2]]</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div class='spec-status'>1/1 passed</div>
 </td>
 </tr>
 </tbody>
