@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Sat Feb 05 15:38:33 EET 2022 by jegors</div>
+<div class='date-test-ran'>Created on Sat Feb 05 16:38:46 EET 2022 by jegors</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -266,13 +266,13 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-<td>6</td>
-<td>6</td>
+<td>8</td>
+<td>8</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.116 seconds</td>
+<td>0.112 seconds</td>
 </tr>
 </tbody>
 </table>
@@ -302,6 +302,12 @@ div.footer {
 </li>
 <li>
 <a href='#-1122108551' class='feature-toc-pass'>should execute fastest-route command</a>
+</li>
+<li>
+<a href='#589778712' class='feature-toc-pass'>should print metro lines</a>
+</li>
+<li>
+<a href='#-984494719' class='feature-toc-pass'>should output metro line by name</a>
 </li>
 </ul>
 <tr>
@@ -863,6 +869,144 @@ target = new StationId(targetLine, targetStation)</pre>
 <td class='ex-value'>StationId[line=L1, station=A1]</td>
 <td class='ex-value'>StationId[line=L2, station=B2]</td>
 <td class='ex-value'>[StationId[line=L1, station=A1], StationId[line=L2, station=B2]]</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div class='spec-status'>1/1 passed</div>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='589778712'>
+<span>should print metro lines</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we execute the command</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def output = commands.lines()</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the repository requested for the metro schema</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>1 * repository.getSchema() &gt;&gt; [:]</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the resulting table has four columns</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>output.getModel().columnCount == 4</pre>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='-984494719'>
+<span>should output metro line by name</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we execute the command output</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def output = commands.output(metroLine)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>the repository requested for a metro line</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>1 * repository.findLine(metroLine) &gt;&gt; new ArrayDeque() {{
+    add(new Station('Waterloo', 5))
+}}</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the table has four columns and two rows (header and one station)</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>with(output.getModel()) {
+    columnCount == 4
+    rowCount == 2
+    getValue(1, 0) == 'Waterloo'
+    getValue(1, 1).toString().isEmpty()
+    getValue(1, 2).toString().isEmpty()
+    getValue(1, 3).toString().isEmpty()
+}</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>metroLine</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>Bakerloo line</td>
 <td class='ex-result'>OK</td>
 </tr>
 </tbody>
