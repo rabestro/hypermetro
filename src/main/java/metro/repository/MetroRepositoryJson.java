@@ -34,12 +34,15 @@ public class MetroRepositoryJson implements MetroRepository, InitializingBean {
     @Value("${hypermetro.time:5}")
     private int transferTime;
 
-    @Value("#{T(java.nio.file.Path).of(systemProperties['hypermetro.file'])}")
+    @Value("${hypermetro.file:london.json}")
+    private String fileName;
+
     private Path schemaPath;
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        LOGGER.log(INFO, "Loading metro schema from file: „{0}“", schemaPath);
+        schemaPath = Path.of(fileName);
+        LOGGER.log(INFO, "Loading metro schema from file: {0}", schemaPath);
         metroMap = new JsonMapper().readValue(schemaPath.toFile(), SCHEMA_TYPE);
         LOGGER.log(INFO, "Metro map successfully loaded.");
     }

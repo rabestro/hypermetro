@@ -2,8 +2,10 @@ package metro.shell
 
 import metro.algorithm.Graph
 import metro.algorithm.SearchAlgorithm
+import metro.model.Station
 import metro.model.StationId
 import metro.repository.MetroRepository
+import org.springframework.shell.table.BorderStyle
 import org.springframework.shell.table.Table
 import spock.lang.Specification
 import spock.lang.Subject
@@ -22,6 +24,10 @@ class MetroCommandsSpec extends Specification {
             shortest: bfsAlgorithm,
             fastest: dijkstrasAlgorithm
     )
+
+    void setup() {
+        commands.borderStyle = BorderStyle.air.name()
+    }
 
     def "should execute add-head command"() {
         given: 'Metro line, station and transfer time to the next station'
@@ -139,7 +145,39 @@ class MetroCommandsSpec extends Specification {
         route = [source, target]
     }
 
+    def "should print metro lines"() {
+        when: 'we execute the command'
+        def output = commands.lines()
 
-    def "Output"() {
+        then: 'the repository requested for the metro schema'
+        1 * repository.getSchema() >> [:]
+
+        and: 'the resulting table has four columns'
+        output.getModel().columnCount == 4
+    }
+
+    def 'should output metro line by name'() {
+        when: 'we execute the command output'
+        def output = commands.output(metroLine)
+
+        then: 'the repository requested for a metro line'
+        1 * repository.findLine(metroLine) >> new ArrayDeque() {
+            {
+                add(new Station('Waterloo', 5))
+            }
+        }
+
+        and: 'the table has four columns and two rows (header and one station)'
+        with(output.getModel()) {
+            columnCount == 4
+            rowCount == 2
+            getValue(1, 0) == 'Waterloo'
+            getValue(1, 1).toString().isEmpty()
+            getValue(1, 2).toString().isEmpty()
+            getValue(1, 3).toString().isEmpty()
+        }
+
+        where:
+        metroLine = 'Bakerloo line'
     }
 }
