@@ -29,7 +29,6 @@ import static org.springframework.shell.table.SimpleHorizontalAligner.right;
 
 @ShellComponent
 public class MetroCommands {
-    private static final System.Logger LOGGER = System.getLogger(MetroCommands.class.getName());
     private static final SizeConstraints NO_WRAP = new NoWrapSizeConstraints();
 
     private MetroRepository repository;
