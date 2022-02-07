@@ -15,8 +15,8 @@ import static java.lang.annotation.ElementType.*;
 @Documented
 @NotBlank
 @Constraint(validatedBy = {})
-public @interface MetroStation {
-    String message() default "the name of metro station should not be empty";
+public @interface MetroLine {
+    String message() default "the name of metro line should not be empty";
 
     Class<?>[] groups() default {};
 

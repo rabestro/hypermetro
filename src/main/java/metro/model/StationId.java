@@ -1,5 +1,6 @@
 package metro.model;
 
+import metro.validation.MetroLine;
 import metro.validation.MetroStation;
 
 /**
@@ -8,5 +9,5 @@ import metro.validation.MetroStation;
  * @param line    the name of the subway line.
  * @param station the name of the subway station.
  */
-public record StationId(String line, @MetroStation String station) {
+public record StationId(@MetroLine String line, @MetroStation String station) {
 }
