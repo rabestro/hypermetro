@@ -7,12 +7,12 @@ import org.springframework.shell.CompletionContext
 import spock.lang.Specification
 import spock.lang.Subject
 
-class MetroLineValueProviderSpec extends Specification {
+class LineValueProviderSpec extends Specification {
     def repository = Mock MetroRepository
     def context = Mock CompletionContext
 
     @Subject
-    def valueProvider = new MetroLineValueProvider(repository)
+    def valueProvider = new LineValueProvider(repository)
 
     def "should support only parameters of type String"() {
         given:
