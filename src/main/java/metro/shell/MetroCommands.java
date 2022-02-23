@@ -4,7 +4,8 @@ import metro.algorithm.SearchAlgorithm;
 import metro.model.Station;
 import metro.model.StationId;
 import metro.repository.MetroRepository;
-import metro.validation.MetroLine;
+import metro.validation.ExistingLine;
+import metro.validation.ExistingStation;
 import metro.validation.MetroStation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -46,7 +47,7 @@ public class MetroCommands {
     @ShellMethod("Adds a new station at the beginning of the metro line")
     public String addHead(
             @ShellOption(help = "Name of the metro line", valueProvider = MetroLineValueProvider.class)
-            @MetroLine String line,
+            @ExistingLine String line,
             @ShellOption(help = "Name of the metro station")
             @MetroStation String station,
             @ShellOption(help = "Travel time to the next station in minutes")
@@ -59,7 +60,7 @@ public class MetroCommands {
     @ShellMethod("Adds a new station at the end of the line")
     public String append(
             @ShellOption(help = "Name of the metro line", valueProvider = MetroLineValueProvider.class)
-            @MetroLine String line,
+            @ExistingLine String line,
             @ShellOption(help = "Name of the metro station")
             @MetroStation String station,
             @ShellOption(help = "Travel time to the next station in minutes")
@@ -72,11 +73,11 @@ public class MetroCommands {
     @ShellMethod("Adds a transfer connection between two metro stations")
     public String connect(
             @ShellOption(help = "Name of the first metro line", valueProvider = MetroLineValueProvider.class)
-            @MetroLine String sourceLine,
+            @ExistingLine String sourceLine,
             @ShellOption(help = "Name of the first metro station")
             @MetroStation String sourceStation,
             @ShellOption(help = "Name of the second metro line", valueProvider = MetroLineValueProvider.class)
-            @MetroLine String targetLine,
+            @ExistingLine String targetLine,
             @ShellOption(help = "Name of the second metro station")
             @MetroStation String targetStation
     ) {
@@ -87,9 +88,9 @@ public class MetroCommands {
     @ShellMethod("Removes a station from the metro map")
     public String remove(
             @ShellOption(help = "Name of the metro line", valueProvider = MetroLineValueProvider.class)
-            @MetroLine String line,
+            @ExistingLine String line,
             @ShellOption(help = "Name of the metro station")
-            @MetroStation String station
+            @ExistingStation String station
     ) {
         repository.remove(line, station);
         return "Metro station successfully removed";
@@ -98,11 +99,11 @@ public class MetroCommands {
     @ShellMethod("Finds and prints the shortest route between two metro stations")
     public Table route(
             @ShellOption(help = "Name of the starting metro line", valueProvider = MetroLineValueProvider.class)
-            @MetroLine String sourceLine,
+            @ExistingLine String sourceLine,
             @ShellOption(help = "Name of the starting metro station")
             @MetroStation String sourceStation,
             @ShellOption(help = "Name of the final metro line", valueProvider = MetroLineValueProvider.class)
-            @MetroLine String targetLine,
+            @ExistingLine String targetLine,
             @ShellOption(help = "Name of the final metro station")
             @MetroStation String targetStation
     ) {
@@ -112,11 +113,11 @@ public class MetroCommands {
     @ShellMethod("Finds and prints the fastest route between two metro stations")
     public Table fastestRoute(
             @ShellOption(help = "Name of the starting metro line", valueProvider = MetroLineValueProvider.class)
-            @MetroLine String sourceLine,
+            @ExistingLine String sourceLine,
             @ShellOption(help = "Name of the starting metro station")
             @MetroStation String sourceStation,
             @ShellOption(help = "Name of the final metro line", valueProvider = MetroLineValueProvider.class)
-            @MetroLine String targetLine,
+            @ExistingLine String targetLine,
             @ShellOption(help = "Name of the final metro station")
             @MetroStation String targetStation
     ) {
@@ -158,7 +159,7 @@ public class MetroCommands {
     @ShellMethod("Outputs all stations for a given metro line")
     public Table output(
             @ShellOption(help = "Name of the metro line", valueProvider = MetroLineValueProvider.class)
-            @MetroLine String line
+            @ExistingLine String line
     ) {
         var header = Stream.ofNullable(new Object[]{"Station", "Next", "Previous", "Transfer to line"});
         var stations = repository.findLine(line).stream().map(station -> new Object[]{

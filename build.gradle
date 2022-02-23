@@ -9,9 +9,9 @@ plugins {
 group 'lv.id.jc'
 version '1.0-SNAPSHOT'
 
-//java {
-//    sourceCompatibility = JavaVersion.VERSION_17
-//}
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
 
 bootRun {
     standardInput = System.in
@@ -31,8 +31,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
+    implementation 'commons-beanutils:commons-beanutils:1.9.4'
 
-    implementation 'com.google.code.gson:gson:2.8.9'
+//    implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'org.springframework.shell:spring-shell-starter:2.0.1.RELEASE'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 

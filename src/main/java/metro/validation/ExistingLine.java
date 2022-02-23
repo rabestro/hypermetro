@@ -2,7 +2,6 @@ package metro.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.constraints.NotBlank;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -10,13 +9,12 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.*;
 
-@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
-@Retention(RetentionPolicy.RUNTIME)
 @Documented
-@NotBlank
-@Constraint(validatedBy = {})
-public @interface MetroLine {
-    String message() default "the name of metro line should not be empty";
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = ExistingLineValidator.class)
+@Target({METHOD, FIELD, PARAMETER})
+public @interface ExistingLine {
+    String message() default "must exist on metro schema";
 
     Class<?>[] groups() default {};
 
