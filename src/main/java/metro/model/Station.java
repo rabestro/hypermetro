@@ -1,7 +1,6 @@
 package metro.model;
 
-import metro.validation.MetroStation;
-
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.HashSet;
@@ -19,7 +18,7 @@ import java.util.Set;
  * @param prev     the set of previous stations
  * @param transfer the set of stations on other lines connected to this station
  */
-public record Station(@MetroStation String name,
+public record Station(@NotBlank String name,
                       @PositiveOrZero int time,
                       @NotNull Set<String> next,
                       @NotNull Set<String> prev,
@@ -30,7 +29,7 @@ public record Station(@MetroStation String name,
      * @param name the name of the subway station.
      * @param time the travel time in minutest to the next station
      */
-    public Station(@MetroStation String name, @PositiveOrZero int time) {
+    public Station(@NotBlank String name, @PositiveOrZero int time) {
         this(name, time, new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 }
