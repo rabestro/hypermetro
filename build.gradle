@@ -32,7 +32,7 @@ dependencies {
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
 
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'org.springframework.boot:spring-boot-starter-aop:2.6.3'
     implementation 'org.springframework.shell:spring-shell-starter:2.0.1.RELEASE'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
