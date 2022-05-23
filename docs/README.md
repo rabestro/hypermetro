@@ -1,3 +1,5 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rabestro_hypermetro&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=rabestro_hypermetro)
+
 ## About
 
 This project demonstrates the capabilities of the Spring Shell framework, as well as testing examples using the Spock
